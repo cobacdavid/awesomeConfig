@@ -1,0 +1,101 @@
+\documentclass{article}
+
+\usepackage[ecran,unepage]{prof}
+\usepackage{tabularx}
+\pagecolor{black}
+
+\newcommand{\ctrl}{\texttt{ctrl}}
+\newcommand{\shift}{\texttt{shift}}
+\newcommand{\win}{\texttt{win}}
+\newcommand{\alt}{\texttt{alt}}
+\newcommand{\touchef}[1]{\texttt{F#1}}
+\newcommand{\touche}[1]{\texttt{#1}}
+\newcommand{\boutong}{\texttt{Clic g.}}
+\newcommand{\boutond}{\texttt{Clic d.}}
+\newcommand{\boutonm}{\texttt{Clic m.}}
+\newcommand{\rouletteAvant}{\texttt{Roulette Avt}}
+\newcommand{\rouletteArriere}{\texttt{Roulette Arr}}
+
+\newenvironment{monTableau}[1]{%%
+  \noindent%%
+  \tabular{|p{4cm}|p{3.5cm}|}
+    \multicolumn{2}{c}{#1}\\
+    }{%%
+  \endtabular\\
+}
+
+\newcommand{\debutTab}[1]{\noindent%%
+  \begin{tabular}{|p{4cm}|p{3.5cm}|}
+      \multicolumn{2}{c}{#1}\\
+}
+\newcommand{\finTab}{%
+  \end{tabular}\\
+}
+\newcommand{\raccourci}[1]{%%
+  \begin{minipage}[t]{1.0\linewidth}
+    \begin{flushleft}#1\end{flushleft}
+  \end{minipage}
+}
+\newcommand{\commande}[1]{%%
+  \begin{minipage}[t]{1.0\linewidth}
+    \noindent #1
+  \end{minipage}
+}
+\pagestyle{empty}
+
+\begin{document}
+\color{gray}
+\begin{minipage}[t]{0.3\linewidth}
+  \debutTab{Touches \texttt{F$_n$}}
+  \raccourci{\win{} + \touchef{1}}&\commande{Bascule wibox}\\
+  \raccourci{\win{} + \touchef{2}}&\commande{Bascule racourcis}\\
+  \raccourci{\win{} + \touchef{3}}&\commande{Navigateur}\\
+  \raccourci{\win{} + \touchef{4}}&\commande{Emacs}\\
+  \raccourci{\win{} + \touchef{5}}&\commande{}
+  \finTab{}
+
+  \bigskip
+  \debutTab{Touches fléchées}
+  \raccourci{\win{} + \alt{} + \uparrow}&\commande{Luminosité +}\\
+  \raccourci{\win{} + \alt{} + \downarrow}&\commande{Luminosité -}\\
+  \raccourci{\win{} + \rightarrow}&\commande{Vers tag droit}\\
+  \raccourci{\win{} + \leftarrow}&\commande{Vers tag gauche}
+  \finTab{}
+  
+  \bigskip
+  \debutTab{Clavier}
+  \raccourci{\win{} + \touche{Entrée}}&\commande{Terminal}\\
+  \raccourci{\win{} + \touche{p}}&\commande{Barre menu}\\
+  \raccourci{\win{} + \touche{w}}&\commande{Menu souris}\\
+  \raccourci{\win{} + \touche{j}}&\commande{Bascule client}\\
+  \raccourci{\win{} + \touche{k}}&\commande{Bascule client}\\
+  \raccourci{\win{} + \touche{n}}&\commande{Réduit client}\\
+  \raccourci{\win{} + \ctrl{} + \touche{n}}&\commande{Restaure client}
+  \finTab{}
+\end{minipage}\hfill
+\begin{minipage}[t]{.3\linewidth}
+  \begin{monTableau}
+    \raccourci{\win{} + \touche{d}}&\commande{Recherche DuckDuckGo}\\
+    \raccourci{\win{} + \touche{g}}&\commande{Recherche Google}\\
+    \raccourci{\win{} + \touche{q}}&\commande{Recherche Qwant}\\
+    \raccourci{\win{} + \touche{x}}&\commande{Code lua}\\
+    \raccourci{\win{} + \touche{r}}&\commande{Ligne de  commande}
+  \end{monTableau}
+\end{minipage}\hfill
+\begin{minipage}[t]{.3\linewidth}
+  %% Sur fond
+  \debutTab{Souris}
+  \raccourci{\boutong{}}&\commande{Efface menus}\\
+  \raccourci{\boutond{}}&\commande{Menu souris}\\
+  \raccourci{\win{} + \boutong{}}&\commande{Liste fenêtres\par Bouge client}\\
+  \raccourci{\win{} + \boutond{}}&\commande{Redim. fenêtres}\\
+  \raccourci{\win{} + \shift{} + \rouletteAvant{}}&\commande{Opacité client +}\\
+  \raccourci{\win{} + \shift{} + \rouletteArriere{}}&\commande{Transparence client +}
+  \finTab{}
+\end{minipage}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
