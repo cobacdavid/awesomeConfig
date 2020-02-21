@@ -5,15 +5,6 @@
 -- 	volumeactuel = stdout
 --      end
 -- )
-if ordinateur == "asus" then
-   ecranPcp  = " eDP1 "
-   ecranAux  = " HDMI1 "
-   ecranAux2 = " VGA1 "
-else
-   ecranPcp  = " HDMI-0 "
-   ecranAux  = " DVI-0 "
-   ecranAux2 = " VGA-0 "
-end
 --
 
 function sliderBrightnessWidget ( ecran )

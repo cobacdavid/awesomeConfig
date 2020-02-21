@@ -1,7 +1,7 @@
 local sortie = " Master "
 -- commande qui fonctionnait avec Left : Right (amixer <=1.1.6)
 local commande = "amixer get" .. sortie .. "|grep Left:|cut -d ' ' -f6"
---local commande = "amixer get" .. sortie .. "|grep Mono:|cut -d ' ' -f5"
+-- local commande = "amixer get" .. sortie .. "|grep Mono:|cut -d ' ' -f5"
 local volumeactuel
 -- amixer <=1.1.6
 -- local MAX = 65536

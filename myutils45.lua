@@ -1,7 +1,7 @@
 --  raccourci pour naughty.notify
 --
-function montre ( t )
-   naughty.notify({ text = tostring(t) })
+function montre(t)
+   naughty.notify({text = tostring(t)})
 end
 
 -- de la doc officielle
@@ -84,6 +84,15 @@ function execute_command(command)
    return str
 end
 --
+
+function commande_execute(commande)
+   awful.spawn.easy_async_with_shell(commande,
+                                     function(stdout, stderr, reason, exit_code)
+                                        resultat = exit_code
+                                     end
+   )
+   return tostring(resultat)
+end
 
 --Existence d'un fichier
 -- 

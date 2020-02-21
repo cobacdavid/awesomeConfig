@@ -1,41 +1,47 @@
 -- {{{ Menu
 -- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
+-- Set the terminal for applications that require it
+menubar.utils.terminal = terminal 
 -- }}}
 myawesomemenu = {
-   { "config"      , editor_cmd .. " " .. awesome.conffile },
-   { "sauv. config", awful.spawn( configSvg ) },
-   { "hotkeys", function() return false, hotkeys_popup.show_help end},
-   { "redémarrer"  , awesome.restart },
-   { "quitter"     , --function() awesome.quit() end
-     function() sortir_awesome() end
+   {"config", editor_cmd .. " " .. awesome.conffile },
+   {"sauv. config", awful.spawn(configSvg) },
+   {"hotkeys", function() return false, hotkeys_popup.show_help end},
+   {"redémarrer", awesome.restart },
+   {"quitter", --function() awesome.quit() end
+    function() sortir_awesome() end
    }
 }
 myrcfilesmenu = {
-   { "prof.sty"   , editor_cmd .. " " .. latexRcFile},
-   { "mp dir"     , editor_cmd .. " " .. metapostRcFile},
-   { "emacs"      , editor_cmd .. " " .. emacsRcFile},
-   { "elisp dir"  , editor_cmd .. " " .. emacsElispRcFile}
+   {"prof.sty", editor_cmd .. " " .. latexRcFile},
+   {"mp dir", editor_cmd .. " " .. metapostRcFile},
+   {"emacs", editor_cmd .. " " .. emacsRcFile},
+   {"elisp dir", editor_cmd .. " " .. emacsElispRcFile}
 }
-mymainmenu = awful.menu({ items = { { "awesome",  myawesomemenu, beautiful.awesome_icon },
-				    { "rcfiles", myrcfilesmenu},
-				    --{ "nav.",     browser }
-				    { "edit",     editor_cmd },
-				    { "file mgr", fileMgr },
-                                    --{ "menudeb",  debian.menu.Debian_menu.Debian },
-                                    --{ "term",     terminal }
-                                  }
-                        })
+
+mymainmenu = awful.menu({
+      items = {
+         {"awesome", myawesomemenu, beautiful.awesome_icon},
+         {"rcfiles", myrcfilesmenu},
+         --{ "nav.",     browser }
+         {"edit",     editor_cmd},
+         {"file mgr", fileMgr},
+         --{ "menudeb",  debian.menu.Debian_menu.Debian },
+         --{ "term",     terminal }
+      }
+})
 
 -- }}}
 menubar.menu_gen.all_menu_dirs = {
-  "/usr/share/applications",
-  "/usr/local/share/applications",
-  "/home/your_user/.local/share/applications"
+   "/usr/share/applications",
+   "/usr/local/share/applications",
+   "/home/your_user/.local/share/applications"
 }
 
 menubar.cache_entries = true
-menubar.app_folders = { "/usr/share/applications/" }
+menubar.app_folders = {
+   "/usr/share/applications/"
+}
 menubar.show_categories = true 
 
 -- mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,

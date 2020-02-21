@@ -5,9 +5,10 @@ awful.mouse.snap.client_enabled = false
 -- {{{ Mouse bindings
 -- table_menu = {}
 root.buttons(gears.table.join(
-		awful.button({ modkey, }, 1, function()
+		awful.button({modkey}, 1,
+                   function()
 		      awful.menu.clients(--
-			 { width = 400 },
+			 {width = 400},
 			 nil,
 			 function(c)
 			    local s = awful.screen.focused()
@@ -16,55 +17,88 @@ root.buttons(gears.table.join(
 			    end
 			 end
 		      )
-		end),
-		awful.button({ }, 3, function () mymainmenu:toggle()  end ),
-		awful.button({ modkey, }, 4, function ()
-		      awful.tag.viewprev( 1 )
-		end),
-		awful.button({ modkey, }, 5, function()
-		      awful.tag.viewnext( 1 )
-		      end)
-))
+                   end
+                ),
+		awful.button({ }, 3,
+                   function ()
+                      mymainmenu:toggle()
+                   end
+                ),
+		awful.button({modkey}, 4,
+                   function ()
+		      awful.tag.viewprev(1)
+                   end
+                ),
+		awful.button({modkey}, 5,
+                   function()
+		      awful.tag.viewnext(1)
+                   end
+                )
+                             )
+)
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-   awful.key({ modkey }, "p", function() menubar.show() end),
+   awful.key({modkey}, "p",
+      function()
+         menubar.show()
+      end
+   ),
    --
    -- raccourcis claviers perso
    --
 --   awful.key({ modkey, }, "F1",           function()
 --	 mywibox[1].visible = not mywibox[1].visible end),
-   awful.key({ modkey, }, "F2",           function()
+   awful.key({modkey}, "F2",
+      function()
 	 affichageAide = not affichageAide
 	 if affichageAide then
-	    --awful.util.spawn( wallpaperAideCmd )
 	    gears.wallpaper.centered( "/home/david/.config/awesome/raccourcis/controles-1.png" , 1 , gears.color("#000000") )
 	 else
-	    -- awful.util.spawn( wallpaperCmd )
 	    gears.wallpaper.set( gears.color("#000000") )
 	 end
-   end),
-   awful.key({ modkey, }, "F3",           function() awful.spawn(browser) end),
-   awful.key({ modkey, }, "F4",           function() awful.spawn(editor_cmd)   end),
-   awful.key({ modkey, }, "F5",           function()  end),
-   awful.key({ modkey,},  "F9",           function()  end),
-   awful.key({ modkey,},  "F10",          function()  end),
-   awful.key({ modkey,},  "F11",          function()  end),
-   awful.key({ modkey,},  "F12",          function()  awful.spawn( "i3lock" )  end),
-   awful.key({ modkey,},  "XF86PowerOff", function() awesome.quit()     end),
-   awful.key({  },        "XF86Back",     function()
- 	 for _,c in ipairs( client.get() )
-	 do
+      end
+   ),
+   awful.key({modkey}, "F3",
+      function()
+         awful.spawn(browser)
+      end
+   ),
+   awful.key({modkey}, "F4",
+      function()
+         awful.spawn(editor_cmd)
+      end
+   ),
+   awful.key({modkey}, "F5",           function()  end),
+   awful.key({modkey}, "F9",           function()  end),
+   awful.key({modkey}, "F10",          function()  end),
+   awful.key({modkey}, "F11",          function()  end),
+   awful.key({modkey}, "F12",
+      function()
+         awful.spawn( "i3lock" )
+      end
+   ),
+   awful.key({modkey}, "XF86PowerOff",
+      function()
+         awesome.quit()
+      end
+   ),
+   awful.key({  }, "XF86Back",
+      function()
+ 	 for _, c in ipairs(client.get()) do
 	    c.opacity = .5 * c.opacity 
-            -- naughty.notify( {text= tostring(c) .. " " .. c.opacity} )
+
 	 end
    end),
-   awful.key({  },        "XF86Forward",     function()
-   	 for c in awful.client.iterate(function() return true end)
-	 do
+   awful.key({  }, "XF86Forward",
+      function()
+   	 for c in awful.client.iterate(function() return true end) do
 	    c.opacity = 1
 	 end
-   end),
-   awful.key({  },        "XF86Reload",     function()
+      end
+   ),
+   awful.key({  }, "XF86Reload",
+      function()
 	 -- local i = 0
 	 -- for _, c in ipairs(client.get()) do
 	 --    -- do something
@@ -75,59 +109,95 @@ globalkeys = gears.table.join(
 	 --    gears.surface(c.content):write_to_png( "/home/david/" .. string.format('%02i',i) .."-" .. f  ..  ".png")
 	 --    i=i+1
 	 -- end
-   end),
-   awful.key({  },        "XF86HomePage",     function()   end),
-   awful.key({  },        "XF86Search",     function()  end),
-   awful.key({  },        "XF86Mail",     function()  end),
+      end
+   ),
+   awful.key({  }, "XF86HomePage", function()   end),
+   awful.key({  }, "XF86Search", function()  end),
+   awful.key({  }, "XF86Mail", function()  end),
    --
    -- fin raccourcis claviers perso
    --
-   awful.key({ modkey,  "Mod1"   }, "Down",  function() awful.spawn( lumimoins ) end ),
-   awful.key({ modkey,  "Mod1"   }, "Up",    function()	 awful.spawn(lumiplus)   end ),
-   awful.key({ modkey,           }, "Left",  function() awful.tag.viewprev(1) end),
-   awful.key({ modkey,           }, "Right", function() awful.tag.viewnext(1) end),
-   awful.key({ modkey,           }, "k",     function ()
-   						awful.client.focus.byidx(-1)
-   						if client.focus then client.focus:raise() end
-   					     end),
+   awful.key({modkey, "Mod1"}, "Down",
+      function()
+         awful.spawn(lumimoins)
+      end
+   ),
+   awful.key({modkey, "Mod1"}, "Up",
+      function()
+	 awful.spawn(lumiplus)
+      end
+   ),
+   awful.key({modkey}, "Left",
+      function()
+         awful.tag.viewprev(1)
+      end
+   ),
+   awful.key({modkey}, "Right",
+      function()
+         awful.tag.viewnext(1)
+      end
+   ),
+   awful.key({modkey}, "k",
+      function ()
+         awful.client.focus.byidx(-1)
+         if client.focus then
+            client.focus:raise()
+         end
+      end
+   ),
    -- -- Layout manipulation
-   awful.key({ modkey,           }, "Tab",   function ()
-						awful.client.focus.history.previous()
-						if client.focus then
-						   client.focus:raise()
-						end
-					     end),
+   awful.key({ modkey}, "Tab",
+      function ()
+         awful.client.focus.history.previous()
+         if client.focus then
+            client.focus:raise()
+         end
+      end
+   ),
    -- Standard program
-   awful.key({ modkey,           }, "Return", function () awful.spawn(terminal)    end),
-   awful.key({ modkey, "Control" }, "r",      awesome.restart),
-   awful.key({ modkey, "Control" }, "q",      function() awesome.quit() end),
-   awful.key({ modkey, "Control" }, "n", function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then
-                      client.focus = c
-                      c:raise()
-                  end
-              end,
-              {description = "restore minimized", group = "client"}),
-   awful.key({ modkey },            "r",     function ()
-         local s = screen.primary
-         s.mypromptbox:run()
-                                             end,
-      {description = "run prompt", group = "launcher"}),
-   
-   awful.key({ modkey }, "x",
+   awful.key({modkey}, "Return",
+      function ()
+         awful.spawn(terminal)
+      end
+   ),
+   awful.key({modkey, "Control"}, "r",
+      awesome.restart
+   ),
+   awful.key({modkey, "Control"}, "q",
+      function()
+         awesome.quit()
+      end
+   ),
+   awful.key({modkey, "Control"}, "n",
+      function ()
+         local c = awful.client.restore()
+         -- Focus restored client
+         if c then
+            client.focus = c
+            c:raise()
+         end
+      end,
+      {description = "restore minimized", group = "client"}
+   ),
+   awful.key({modkey}, "r",
       function ()
          local s = screen.primary
-	 awful.prompt.run {
-	    prompt       = "Run Lua code: ",
-	    textbox      = s.mypromptbox.widget,
+         s.mypromptbox:run()
+      end,
+      {description = "run prompt", group = "launcher"}
+   ),
+   awful.key({modkey}, "x",
+      function ()
+         local s = screen.primary
+	 awful.prompt.run({
+	    prompt = "Run Lua code: ",
+	    textbox = s.mypromptbox.widget,
 	    exe_callback = awful.util.eval,
 	    history_path = awful.util.get_cache_dir() .. "/history_eval"
-	 }
+	 })
       end,
-      {description = "lua execute prompt", group = "awesome"}),
-   
+      {description = "lua execute prompt", group = "awesome"}
+   ),
    awful.key({ modkey }, "g",
       function ()
          local s = screen.primary
@@ -189,15 +259,16 @@ globalkeys = gears.table.join(
 -- GESTION DES CLIENTS
 -- 
 clientbuttons = gears.table.join(
-   awful.button({ },        1,  function (c)
-				   client.focus = c
-				   c:raise()
-				end),
-   awful.button({ modkey }, 1, awful.mouse.client.move),
-   awful.button({ modkey }, 3, awful.mouse.client.resize),
-   awful.button({ modkey, "Control" }, 1,
+   awful.button({}, 1,
+      function (c)
+         client.focus = c
+         c:raise()
+      end
+   ),
+   awful.button({modkey}, 1, awful.mouse.client.move),
+   awful.button({modkey}, 3, awful.mouse.client.resize),
+   awful.button({modkey, "Control"}, 1,
       function(c)
-         montre( c.floating )
          if c.floating == true then
             c.x = 10
          end
@@ -206,15 +277,21 @@ clientbuttons = gears.table.join(
 )
 --
 clientkeys = gears.table.join(
-   awful.key({ modkey,           }, "b",      function(c)
-	 awful.titlebar.toggle(c, beautiful.titlebar_premiere )
-	 awful.titlebar.toggle(c, beautiful.titlebar_seconde  )
-   end ),
+   awful.key({modkey}, "b",
+      function(c)
+	 awful.titlebar.toggle(c, beautiful.titlebar_premiere)
+	 awful.titlebar.toggle(c, beautiful.titlebar_seconde)
+      end
+   ),
    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
 --   awful.key({ modkey,           }, "o",      function (c) awful.client.movetoscreen(c,c.screen-1) end ),
    --   awful.key({ modkey,           }, "p",      function (c) awful.client.movetoscreen(c,c.screen+1) end ),
-   awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end),
+   awful.key({modkey}, "o",
+      function (c)
+         c:move_to_screen()
+      end
+   ),
    awful.key({ modkey,           }, "n",      function (c) c.minimized = true  end),
    awful.key({ modkey, "Shift"   }, "n",      function (c)
 						  local g = c:geometry()

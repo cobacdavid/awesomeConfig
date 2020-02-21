@@ -1,116 +1,164 @@
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
-client.connect_signal("manage", function (c)
-    -- Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
-    -- if not awesome.startup then awful.client.setslave(c) end
+client.connect_signal("manage",
+                      function (c)
+                         -- Set the windows at the slave, i.e. put
+                         -- it at the end of others instead of
+                         -- setting it master.  if not
+                         -- awesome.startup then
+                         -- awful.client.setslave(c) end
 
-    if awesome.startup and
-      not c.size_hints.user_position
-      and not c.size_hints.program_position then
-        -- Prevent clients from being unreachable after screen count changes.
-        awful.placement.no_offscreen(c)
-    end
-    --
-    --
-    --awful.titlebar(c,{position="bottom",size=15})
-    --awful.titlebar.hide(c)
-    awful.titlebar.hide(c, beautiful.titlebar_premiere )
-    awful.titlebar.hide(c, beautiful.titlebar_seconde  )
-    --gears.surface.apply_shape_bounding( c, gears.shape.rounded_rect )
-    c.shape = arrondiMoyen
-    -- c.shape = octogonePetit
-    -- c.shape = pArrondiGros
-    -- c.shape = gears.shape.rounded_rect
-end)
+                         if awesome.startup and
+                            not c.size_hints.user_position
+                         and not c.size_hints.program_position then
+                            -- Prevent clients from being
+                            -- unreachable after screen count
+                            -- changes.
+                            awful.placement.no_offscreen(c)
+                         end
+                         --
+                         --
+                         awful.titlebar.hide(c, beautiful.titlebar_premiere)
+                         awful.titlebar.hide(c, beautiful.titlebar_seconde)
+                         c.shape = arrondiMoyen
+                         -- c.shape = octogonePetit
+                         -- c.shape = pArrondiGros
+                         -- c.shape = gears.shape.rounded_rect
+                         local posx = c.x
+                         local posy = c.y
+                         local w = wibox({
+                               x = posx,
+                               y = posy,
+                               width = c.width * .8,
+                               height = c.height * .8,
+                               visible = false,
+                               ontop = true,
+                               widget = couvertureW(c)
+                                         }
+                         )
+                         c.mawibox = w
+                      end
+)
 
-client.connect_signal("request::titlebars", function(c)
-    -- buttons for the titlebar
-    local buttons = gears.table.join(
-        awful.button({ }, 1, function()
-            client.focus = c
-            c:raise()
-            awful.mouse.client.move(c)
-        end),
-        awful.button({ }, 3, function()
-            client.focus = c
-            c:raise()
-            awful.mouse.client.resize(c)
-        end)
-    )
-    --
-    awful.titlebar(c, {size = beautiful.titlebar_epaisseur_premiere , position = beautiful.titlebar_seconde } ) : setup {
-       { -- Left
-	  awful.titlebar.widget.titlewidget(c),
-	  buttons = buttons,
-	  layout  = wibox.layout.fixed.horizontal
-       },
-       direction = "east",
-       layout =  wibox.container.rotate
-								  }
-    awful.titlebar(c, { size = beautiful.titlebar_epaisseur_seconde , position = beautiful.titlebar_premiere } ) : setup {
-       { -- Left
-	  
-	  buttons = buttons,
-	  widget = screenshotW(c)
-	  --layout  = wibox.layout.fixed.horizontal
-        },
-        { -- Middle
+client.connect_signal("property::size",
+                      function(c)
+                         -- local geometrie = tostring(c.width) .. "x" .. tostring(c.height)
+                         -- montre(geometrie)
+                      end
+)
 
-	   { -- Title
-	      align  = "center",
-	      --widget =
-	      widget=opacity_button(c),
-               --widget = awful.titlebar.widget.titlewidget(c)
-	       --widget=separateur
-            },
-            layout  = wibox.layout.flex.horizontal
-        },
-        { -- Right
-            --awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
-            --awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
-            killneufw(c),
-            awful.titlebar.widget.closebutton    (c),
-	    --
-	    layout = wibox.layout.fixed.horizontal()
-        },
-        layout = wibox.layout.align.horizontal
-			      }
-end)
+client.connect_signal("request::titlebars",
+                      function(c)
+                         -- buttons for the titlebar
+                         local buttons = gears.table.join(
+                            awful.button({}, 1,
+                               function()
+                                  client.focus = c
+                                  c:raise()
+                                  awful.mouse.client.move(c)
+                               end
+                            ),
+                            awful.button({}, 3,
+                               function()
+                                  client.focus = c
+                                  c:raise()
+                                  awful.mouse.client.resize(c)
+                               end
+                            )
+                         )
+                         --
+                         awful.titlebar(c,
+                                        {size = beautiful.titlebar_epaisseur_premiere,
+                                         position = beautiful.titlebar_seconde}
+                         ):setup({
+                               { -- Left
+                                  awful.titlebar.widget.titlewidget(c),
+                                  buttons = buttons,
+                                  layout  = wibox.layout.fixed.horizontal
+                               },
+                               direction = "east",
+                               layout =  wibox.container.rotate
+                                })
+                         awful.titlebar(c,
+                                        {size = beautiful.titlebar_epaisseur_seconde,
+                                         position = beautiful.titlebar_premiere}
+                         ):setup({
+                               { -- Left
+                                  buttons = buttons,
+                                  widget = screenshotW(c)
+                                  --layout  = wibox.layout.fixed.horizontal
+                               },
+                               { -- Middle
+                                  { -- Barre d'opacité
+                                     align  = "center",
+                                     widget = opacity_button(c),
+                                     --widget = awful.titlebar.widget.titlewidget(c)
+                                     --widget=separateur
+                                  },
+                                  layout  = wibox.layout.flex.horizontal
+                               },
+                               { -- Right
+                                  --awful.titlebar.widget.floatingbutton (c),
+                                  awful.titlebar.widget.maximizedbutton(c),
+                                  --awful.titlebar.widget.stickybutton   (c),
+                                  awful.titlebar.widget.ontopbutton    (c),
+                                  killneufw(c),
+                                  awful.titlebar.widget.closebutton    (c),
+                                  dimension_button(c),
+                                  --
+                                  layout = wibox.layout.fixed.horizontal()
+                               },
+                               layout = wibox.layout.align.horizontal
+                                })
+                      end
+)
 
 -- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-        and awful.client.focus.filter(c) then
-        client.focus = c
-    end
-    -- awful.spawn.easy_async_with_shell(
-    --    scrollBleu,
-    --    function (stdout,stderr,reason,exit_code)
-          
-    -- end)
+client.connect_signal("mouse::enter",
+                      function(c)
+                         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+                         and awful.client.focus.filter(c) then
+                            client.focus = c
+                         end
+                         -- awful.spawn.easy_async_with_shell(
+                         --    scrollBleu,
+                         --    function (stdout,stderr,reason,exit_code)
+                         
+                         -- end)
+                      end
+)
 
-end)
+client.connect_signal("mouse::leave",
+                      function(c)
+                         -- awful.spawn.easy_async_with_shell(
+                         --    scrollBleu,
+                         --    function (stdout,stderr,reason,exit_code)
+                         
+                         -- end)
+                      end
+)
 
-client.connect_signal("mouse::leave", function(c)
-    -- awful.spawn.easy_async_with_shell(
-    --    scrollBleu,
-    --    function (stdout,stderr,reason,exit_code)
-          
-    -- end)
-end)
-
-client.connect_signal("focus", function(c)
+client.connect_signal("focus",
+                      function(c)
 			 c.border_color = beautiful.border_focus
-			 --c.opacity=1
-end)
-client.connect_signal("unfocus", function(c)
+                         awful.titlebar.toggle(c, beautiful.titlebar_premiere)
+                         awful.titlebar.toggle(c, beautiful.titlebar_seconde)
+
+                         -- c.mawibox.visible = false
+			 -- c.opacity=1
+                      end
+)
+
+client.connect_signal("unfocus",
+                      function(c)
 			 c.border_color = beautiful.border_normal
-			 --c.opacity=0.3
-			 
-end)
+                         awful.titlebar.hide(c, beautiful.titlebar_premiere)
+                         awful.titlebar.hide(c, beautiful.titlebar_seconde)
+
+			 -- c.opacity=0.3
+			 -- c.mawibox.visible = true
+                      end
+)
 -- }}}
 
 
