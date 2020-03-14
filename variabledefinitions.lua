@@ -3,28 +3,33 @@
 -- ordinateur peut valoir "asus" ou pas
 -- si asus -> portable
 -- sinon -> maison
-awful.spawn.easy_async_with_shell("hostname",
-                                  function(stdout, stderr, reason, exit_code)
-                                     ordinateur = stdout
-                                  end
-)
+-- awful.spawn.easy_async_with_shell("hostname",
+--                                   function(stdout, stderr, reason, exit_code)
+--                                      ordinateur = stdout
+--                                   end
+-- )
 if not(ordinateur == "asus") then
    ordinateur = "maison"
 end
 if ordinateur == "asus" then
-   ecranPcp  = " eDP1 " -- portable
-   ecranAux  = " HDMI1 " -- sortie HDMI
-   ecranAux2 = " VGA1 "
+   ecranPcp = "eDP1" -- portable
+   ecranAux = "HDMI1" -- sortie HDMI
+   ecranAux2 = "VGA1"
 else
-   ecranPcp  = " DVI-0 " -- sortie ppale
-   ecranAux  = " VGA-0 " -- sortie VGA
-   ecranAux2 = " HDMI-0 " -- sortie HDMI
+   ecranPcp = "HDMI-0" -- sortie HDMI
+   ecranAux  = "DVI-0" -- sortie ppale
+   ecranAux2  = "VGA-0" -- sortie VGA
+end
+--
+if ordinateur == "maison" then
+   commandeEcran = "xrandr --output DVI-0 --mode 1920x1080  --output HDMI-0 --right-of DVI-0 --pos 1920x0 --mode 1920x1200 --rotate normal"
+   awful.spawn.with_shell(commandeEcran)
 end
 --
 modkey           = "Mod4"
 os.setlocale("fr_FR.UTF-8")
 scriptsPath       = config .. "/scripts/"
-beautiful.init( config .. "/themes/david/theme.lua")
+beautiful.init(config .. "/themes/david/theme.lua")
 batteryCmd            = "cat /sys/class/power_supply/BAT0/capacity"
 imageParDefaut     = "/usr/local/share/awesome/icons/awesome64.png"
 --
@@ -50,7 +55,7 @@ cylindreEcrans     = scriptsPath .. "cylindreEcran_alt.sh"
 configEcrans       = "xrandr |egrep -o 'current [0-9]+ x [0-9]+'|cut -d ' ' -f 2-4"
 monIP              = "hostname -I|cut -d ' ' -f1"
 monIPInternet      = "wget http://checkip.dyndns.org/ -O - -o /dev/null | cut -d: -f 2 | cut -d\\< -f 1"
-versionLinux       = "echo noyau $(uname -v |cut -d ' ' -f4)"
+versionLinux       = "echo $(uname -v |cut -d ' ' -f4)"
 versionDistrib     = "cat /etc/debian_version"
 laTempExt          = "ansiweather -l angers,fr|cut -d ' ' -f 6-7"
 batterie           = "printf '%i %%' $(cat /sys/class/power_supply/BAT0/capacity)"
@@ -168,7 +173,6 @@ emacsRcFile      = RcFiles .. "emacs-config/.gnu-emacs-custom"
 emacsElispRcFile = RcFiles .. "emacs-config/elisp/"
 --
 -- }}}
-
 --
 --wiboxHeight = {20,20}
 --barreFenetre = false

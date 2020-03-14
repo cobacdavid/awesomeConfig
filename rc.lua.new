@@ -6,6 +6,7 @@ require("awful.autofocus")
 wibox = require("wibox")
 -- Theme handling library
 beautiful = require("beautiful")
+cairo = require("lgi").cairo
 -- Notification library
 naughty = require("naughty")
 menubar = require("menubar")
@@ -20,24 +21,26 @@ has_fdo, freedesktop = pcall(require, "freedesktop")
 socket = require("socket")
 ordinateur = socket.dns.gethostname()
 --
-config = awful.util.getdir ( "config" )
+config = awful.util.getdir("config")
 
 listeRcFiles = {--
    "errorhandling45.lua",
-   "myutils45.lua",
+   "fonctionsUtiles.lua",
+   "logicielsIndispensables.lua",
    "myPRIVATEvariables.lua",
    "variabledefinitions.lua",
-   "menu45.lua",
-   "mywidgets45.lua",
-   "wiboxes45.lua",
-   "wibox_sensors.lua",
-   "bindings45.lua",
+   "stats.lua",
+   "menu.lua",
+   "widgets.lua",
+   "tagWibar.lua",
+   -- "wibox_sensors.lua",
+   "sourisEtClavier.lua",
    "rules45.lua",
-   "signals45.lua",
+   "evenements.lua",
    "apponlogin45.lua",
    -- "prof.lua"
 }
+
 for i, f in ipairs(listeRcFiles) do
-   dofile ( config ..  "/" .. f)
-   -- print( f )
+   dofile (config ..  "/" .. f)
 end

@@ -1,0 +1,11 @@
+function blocage_opacite(c)
+   local bouton = wibox.widget({
+         widget = wibox.widget.textbox,
+         text = "B"
+   })
+   bouton:connect_signal("button::press",
+                         function()
+                            c.blocage = not c.blocage
+                         end
+   )
+end

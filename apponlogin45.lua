@@ -12,17 +12,19 @@ end
 --- ALERTE BATTERIE ASUS
 ---
 if ordinateur=="asus" then
-   gears.timer {
-      timeout   = 10,
-      autostart = true,
-      callback  = function()
-	 awful.spawn.easy_async_with_shell(
-	    "/home/david/travail/david/production/info/scripts/alerteBatterie.sh",
-	    function (stdout,stderr,reason,exit_code)
-	       
-	 end)
-      end
-   }
+   gears.timer(
+      {
+         timeout   = 10,
+         autostart = true,
+         callback  = function()
+            awful.spawn.easy_async_with_shell(
+               "/home/david/travail/david/production/info/scripts/alerteBatterie.sh",
+               function (stdout,stderr,reason,exit_code)
+                  
+            end)
+         end
+      }
+   )
 end
 --
 -- APPLIS AU DÉMARRAGE

@@ -17,8 +17,8 @@ theme = {}
 --
 --
 theme.police    = "abeatbyKai bold"
-theme.font      = theme.police .. " 9"
-theme.font2     = theme.police .. " 8"
+theme.font      = theme.police .. " 12"
+theme.font2     = theme.police .. " 15"
 theme.font3     = theme.police .. " 25"
 --
 -- COULEURS
@@ -28,22 +28,18 @@ theme.trans       = "99"
 theme.transparent = theme.noir .. "00"
 theme.noirtrans   = theme.noir .. theme.trans
 theme.blanc       = "#FFFFFF"
-theme.gris        = "#3F3F3F"
+theme.gris        = "#BFBFBF"
+theme.grisSombre  = "#5F5F5F"
 theme.rouge       = "#FF0000"
 theme.rougetrans  = theme.rouge .. theme.trans
-
 --
 -- WALLPAPER
 --
 theme.wallpaperImagesRep = "/home/david/.config/awesome/fondMaths"
-theme.wallpaper = function (s)
-   if s.index == 1 then
-      -- montre( papierpeint )
-      return papierpeint
+theme.ppeint = function(t)
+   gears.wallpaper.set(theme.noir)
+   if t.screen.index == 1 then
    else
-      -- bizarrement le theme awesome le remplace
-      return theme.rouge
-      -- gears.color.create_solid_pattern( theme.rouge )
    end
 end
 
@@ -51,16 +47,16 @@ end
 theme.bg_normal    = theme.noirtrans
 theme.bg_focus     = theme.gris
 theme.bg_urgent    = theme.blanc
---theme.bg_minimize  = "#444444"
+-- theme.bg_minimize  = "#444444"
 theme.bg_systray   = theme.noirtrans
-
+-- 
 theme.fg_normal    = theme.blanc .. theme.trans
 theme.fg_focus     = theme.blanc
 theme.fg_urgent    = theme.rouge
 theme.fg_minimize  = theme.blanc
 
 theme.useless_gap   = dpi(0)
---theme.border_width  = dpi(1)
+-- theme.border_width  = dpi(1)
 theme.border_width  = "0"
 theme.border_color  = theme.blanc
 theme.border_normal = theme.gris
@@ -81,7 +77,7 @@ theme.widget_font_sec   = theme.police
 --- WIDGETS PERSOS
 --------------------------
 theme.widget_heurew_font    = theme.widget_font_pri
-theme.heurew_size = "16"
+theme.heurew_size = "20"
 theme.widget_heurew_fg_jour = theme.widget_fg_pri
 theme.widget_heurew_fg_soir = theme.widget_fg_ter
 
@@ -110,13 +106,13 @@ theme.widget_sliderBrightness_handle_color_type     = "nuance"
 -- }}}
 
 -- {{{ Titlebars
-theme.titlebar_epaisseur_premiere = 20
-theme.titlebar_epaisseur_seconde  = 20
+theme.titlebar_epaisseur_premiere = 30
+theme.titlebar_epaisseur_seconde  = 18
 theme.titlebar_premiere           = "bottom"
 theme.titlebar_seconde            = "left"
-theme.titlebar_bg_normal          = theme.gris
+theme.titlebar_bg_normal          = theme.noir
 theme.titlebar_bg_focus           = theme.noirtrans
-theme.titlebar_fg_normal          = theme.gris
+theme.titlebar_fg_normal          = theme.blanc
 theme.titlebar_fg_focus           = theme.blanc
 -- }}}
 
@@ -129,9 +125,9 @@ theme.titlebar_fg_focus           = theme.blanc
 -- Example:
 --theme.taglist_bg_focus = "#CC9393"
 theme.taglist_fg_focus    = theme.blanc
-theme.taglist_fg_normal   = theme.noir
+theme.taglist_fg_normal   = theme.grisSombre
 theme.taglist_fg_occupied = theme.gris
-theme.taglist_fg_empty    = theme.noir
+theme.taglist_fg_empty    = theme.grisSombre
 theme.taglist_fg_urgent   = theme.gris
 --
 theme.taglist_bg_focus    = theme.transparent
@@ -162,11 +158,11 @@ theme.mouse_finder_color = theme.blanc
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_height       = "15"
-theme.menu_width        = "100"
-theme.menu_bg_normal    = theme.noirtrans
+theme.menu_height       = "16"
+theme.menu_width        = "130"
+theme.menu_bg_normal    = theme.noir
 theme.menu_bg_focus     = theme.blanc
-theme.menu_fg_focus     = theme.noirtrans
+theme.menu_fg_focus     = theme.noir
 theme.menu_fg_normal    = theme.blanc
 theme.menu_border_width = "0"
 -- }}}
