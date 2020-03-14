@@ -255,7 +255,11 @@ awful.screen.connect_for_each_screen(
             align = "center",
 	    widget = wibox.widget.textclock("%A %d %B %Y")
          }
-         awful.widget.calendar_popup.month():attach(clo, 'tc')
+         awful.widget.calendar_popup.month(
+            {
+               screen = 2
+            }
+         ):attach(clo, 'tc', {on_hover=false})
          s.mywibar = awful.wibar(
             {
                screen = s ,

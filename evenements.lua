@@ -87,7 +87,8 @@ client.connect_signal("request::titlebars",
                       function(c)
                          -- pour régler les clients PDF sur l'écran
                          -- auxiliaire
-                         c.bo = blocage_opacite(c) 
+                         c.bo = blocage_opacite(c)
+                         c.tb = awful.titlebar.widget.titlewidget(c)
                          -- buttons for the titlebar
                          local buttons = gears.table.join(
                             awful.button({}, 1,
@@ -106,38 +107,6 @@ client.connect_signal("request::titlebars",
                             )
                          )
                          
-                         -- barreGauche = awful.titlebar(
-                         --    c,
-                         --    {
-                         --       size = beautiful.titlebar_epaisseur_premiere,
-                         --       position = beautiful.titlebar_seconde
-                         --    }
-                         -- )
-                         -- barreGauche:setup(
-                         --    {
-                         --       {
-                         --          awful.titlebar.widget.closebutton(c),
-                         --          killneufw(c),
-                         --          awful.titlebar.widget.maximizedbutton(c),
-                         --          awful.titlebar.widget.stickybutton(c),
-                         --          awful.titlebar.widget.ontopbutton(c),
-                         --          -- buttons = buttons,
-                         --          layout = wibox.layout.fixed.vertical
-                         --       },
-                         --       {-- milieu
-                         --          { -- Barre d'opacité
-                         --             align  = "center",
-                         --             widget = opacity_button(c),
-                         --          },
-                         --          -- buttons = buttons,
-                         --          direction = "east",
-                         --          layout = wibox.container.rotate
-                         --       },
-                         --       layout =  wibox.layout.align.vertical
-                         --    }
-                         -- )
-                         
-                         
                          barreBas = awful.titlebar(
                             c,
                             {
@@ -152,7 +121,7 @@ client.connect_signal("request::titlebars",
                                      text = "    ",
                                      widget = wibox.widget.textbox,
                                   },
-                                  awful.titlebar.widget.titlewidget(c),
+                                  c.tb,
                                   buttons = buttons,
                                   layout  = wibox.layout.fixed.horizontal
                                },
@@ -205,6 +174,7 @@ client.connect_signal("mouse::leave",
 
 client.connect_signal("property::sticky",
                       function(c)
+                         c.screen = 2
                          -- table_tag = {} 
                          -- for _, s in ipairs(screen) do
                          --    for _, t in ipairs(s.tags) do
