@@ -1,8 +1,0 @@
-testclient=wibox.widget {
-   --shape  = gears.shape.circle,
-   --color="#FF00000",
-   --forced_width=5,
-   widget = wibox.widget.textbox
-}
-
-
