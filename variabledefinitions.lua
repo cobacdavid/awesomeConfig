@@ -80,7 +80,7 @@ htop             = terminal .. " -e htop"
 --
 ftpMgr           = "gftp"
 ftpMgrClass      = "gFTP"
-ftpReadyNAS      = "cd /home/david/Téléchargements/ && " .. ftpMgr .. " ftp://" .. ftpNASUser .. "@192.168.1.15/media/Videos"
+-- ftpReadyNAS      = "cd /home/david/Téléchargements/ && " .. ftpMgr .. " ftp://" .. ftpNASUser .. "@192.168.1.15/media/Videos"
 --
 editorClass      = "Emacs"
 editor           = "emacsclient -c "
@@ -109,16 +109,16 @@ metaDDGo         = "?"
 -- urlSearch        = urlQwant
 -- metaSearch       = metaQwant
 spotify          = browser .. " https://play.spotify.com"
-lastfm           = browser .. " http://beta.last.fm/fr/user/" .. lastfmUser
+-- lastfm           = browser .. " http://beta.last.fm/fr/user/" .. lastfmUser
 gmail            = browser .. " https://mail.google.com"
-flickr           = browser .. " https://www.flickr.com/photos/" .. flickrUser
-flickrAlt        = browser .. " https://www.flickr.com/photos_user.gne?path=&nsid=" .. flickrUserAlt .. "&page=&details=1"
-github           = browser .. " https://github.com/" .. githubUser
+--flickr           = browser .. " https://www.flickr.com/photos/" .. flickrUser
+--flickrAlt        = browser .. " https://www.flickr.com/photos_user.gne?path=&nsid=" .. flickrUserAlt .. "&page=&details=1"
+-- github           = browser .. " https://github.com/" .. githubUser
 youtube          = browser .. " https://www.youtube.com"
 maps             = browser .. " https://maps.google.fr"
 rabelais         = browser .. " http://francois-rabelais.anjou.e-lyco.fr"
 meteofrance      = browser .. " http://france.meteofrance.com/france/meteo?PREVISIONS_PORTLET.path=previsionsdept%2FDEPT49"
-running          = browser_alt .. " https://connect.garmin.com/profile/" .. garminUser
+-- running          = browser_alt .. " https://connect.garmin.com/profile/" .. garminUser
 --
 BTapplet         = "blueman-applet" -- "bluetooth-applet"
 WIFIapplet       = "nm-applet"

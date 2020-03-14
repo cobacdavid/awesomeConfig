@@ -44,6 +44,14 @@ client.connect_signal("manage",
 client.connect_signal("tagged",
                       function (c)
                          surTermOuPas(c)
+                         --
+                         -- bloque à 1 l'opacité des PDF sur
+                         -- l'écran auxiliaire
+                         if (c.class == "Evince" and c.screen.index == 2) then
+                            c.opacity = 1
+                            c.bo.text = "B"
+                            c.blocage = true
+                         end
                       end
 )
 
@@ -77,6 +85,9 @@ client.connect_signal("property::position",
 
 client.connect_signal("request::titlebars",
                       function(c)
+                         -- pour régler les clients PDF sur l'écran
+                         -- auxiliaire
+                         c.bo = blocage_opacite(c) 
                          -- buttons for the titlebar
                          local buttons = gears.table.join(
                             awful.button({}, 1,
@@ -154,7 +165,7 @@ client.connect_signal("request::titlebars",
                                },
                                { 
                                   separateur,
-                                  blocage_opacite(c),
+                                  c.bo,
                                   separateur,
                                   dimension_button(c),
                                   separateur,

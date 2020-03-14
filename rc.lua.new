@@ -27,7 +27,7 @@ listeRcFiles = {--
    "errorhandling45.lua",
    "fonctionsUtiles.lua",
    "logicielsIndispensables.lua",
-   "myPRIVATEvariables.lua",
+   -- "myPRIVATEvariables.lua",
    "variabledefinitions.lua",
    "stats.lua",
    "menu.lua",
