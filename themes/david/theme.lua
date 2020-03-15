@@ -29,7 +29,8 @@ theme.transparent = theme.noir .. "00"
 theme.noirtrans   = theme.noir .. theme.trans
 theme.blanc       = "#FFFFFF"
 theme.gris        = "#BFBFBF"
-theme.grisSombre  = "#5F5F5F"
+theme.grisSombrePlus  = "#5F5F5F"
+theme.grisSombre  = "#636363"
 theme.rouge       = "#FF0000"
 theme.rougetrans  = theme.rouge .. theme.trans
 --
@@ -42,6 +43,10 @@ theme.ppeint = function(t)
    else
    end
 end
+
+theme.wallpaperBandeau = theme.grisSombre
+theme.wallpaperTagPrincipal = theme.noir
+theme.wallpaperTagSecondaire = theme.grisSombrePlus
 
 -- {{{ Colors
 theme.bg_normal    = theme.noirtrans

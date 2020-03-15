@@ -15,7 +15,7 @@ end
 
 --
 -- le tableau contient val
-local function contains(tab, val)
+function contains(tab, val)
    for i = 1, #tab do
       if tab[i] == val then 
          return true
@@ -256,20 +256,20 @@ function fondEcran(t)
    texteW = T['width']
    texteH = T['height']
    -- bandeau
-   cr:set_source(gears.color("#444444"))
+   cr:set_source(gears.color(beautiful.wallpaperBandeau))
    cr:rectangle(0, (h - texteH) / 2, w, texteH + 3)
    cr:fill()
    -- texte
    cr:select_font_face("Comfortaa",
                        "CAIRO_FONT_SLANT_NORMAL",
                        "CAIRO_FONT_WEIGHT_NORMAL")
-   cr:set_source(gears.color("#000000"))
+   cr:set_source(gears.color(beautiful.wallpaperTagPrincipal))
    cr:move_to(w/2 - texteW/2, (h + texteH) / 2)
    cr:show_text(monTexte)
    -- les tags adjacents
    -- en lua les tableaux commencent à 1 !
    local hoffset = 50
-   cr:set_source(gears.color("#404040"))
+   cr:set_source(gears.color(beautiful.wallpaperTagSecondaire))
    cr:set_font_size(150)
    monTexte = t.screen.tags[((j-1)-1) % #t.screen.tags + 1].name
    T = cr:text_extents(monTexte)

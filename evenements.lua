@@ -160,6 +160,7 @@ client.connect_signal("mouse::enter",
                          and awful.client.focus.filter(c) then
                             client.focus = c
                          end
+                         c:emit_signal("focus")
                          --
                          if ordinateur == "maison" then
                             commande_execute(mouseCmd .. " -C '" .. couleurAlea() .. "'")
@@ -169,12 +170,27 @@ client.connect_signal("mouse::enter",
 
 client.connect_signal("mouse::leave",
                       function(c)
+                         c:emit_signal("unfocus")
                       end
 )
 
 client.connect_signal("property::sticky",
                       function(c)
-                         c.screen = 2
+                         -- montre(screen[2].tags[1].name)
+                         -- montre(c.sticky)
+                         
+                         -- clientsAux = screen[2].tags[1]:clients()
+                         -- if not c.sticky then
+                         --    table.insert(clientsAux, c)
+                         -- elseif contains(clientsAux, c) then
+                         --       for i=1, #clientsAux do
+                         --          if clientsAux[i] == c then 
+                         --             table.remove(clientsAux, i)
+                         --          end
+                         --       end
+                         -- end
+                         -- screen[2].tags[1]:clients(clientsAux)
+                         
                          -- table_tag = {} 
                          -- for _, s in ipairs(screen) do
                          --    for _, t in ipairs(s.tags) do
