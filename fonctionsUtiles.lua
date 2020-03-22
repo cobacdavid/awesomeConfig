@@ -32,6 +32,7 @@ function surTermOuPas(c)
    -- awful.titlebar.show(c, beautiful.titlebar_seconde)
    for i, t in pairs(c:tags()) do
       if t.name == "term" then
+         c.floating = false
          awful.titlebar.hide(c, beautiful.titlebar_premiere)
          -- awful.titlebar.hide(c, beautiful.titlebar_seconde)
       end

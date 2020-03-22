@@ -6,10 +6,11 @@ awful.rules.rules = {
 	border_width = "0",
 	border_color = beautiful.border_normal,
 	raise = true,
+        size_hints_honor = false,
 	keys = clientkeys,
 	buttons = clientbuttons,
 	screen = awful.screen.preferred,
-	placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+	placement = awful.placement.no_overlap + awful.placement.no_offscreen,
 	opacity = 1} },
    -- Add titlebars to normal clients and dialogs
    { rule_any = {type = { "normal", "dialog" } },

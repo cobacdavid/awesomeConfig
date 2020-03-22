@@ -17,9 +17,12 @@ fh:close()
 volumemasterControle = wibox.widget {
    forced_width        = 100,
    bar_shape           = gears.shape.rounded_rect,
-   bar_height          = 1,
+   bar_height          = 0,
    bar_color           = beautiful.border_color,
-   handle_shape        = gears.shape.circle,
+   -- handle_shape        = gears.shape.circle,
+   handle_shape        = function(cr, w, h)
+         gears.shape.circle (cr, w, h, 5)
+   end,
    handle_color        = couleurBarre(beautiful.widget_volumemaster_handle_color_type, volumeactuel, MIN, MAX),
    minimum             = MIN,
    maximum             = MAX,

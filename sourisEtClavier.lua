@@ -306,9 +306,9 @@ clientbuttons = gears.table.join(
    awful.button({modkey}, 3, awful.mouse.client.resize),
    awful.button({modkey, "Control"}, 1,
       function(c)
-         if c.floating == true then
-            c.x = 10
-         end
+         montre(c.floating)
+         c.floating = true
+         c.height = 1
       end
    )
 )
