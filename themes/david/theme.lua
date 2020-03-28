@@ -271,6 +271,9 @@ theme.titlebar_maximized_button_focus_inactive  = "/home/david/.config/awesome/t
 theme.titlebar_maximized_button_normal_active = "/home/david/.config/awesome/themes/david/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = "/home/david/.config/awesome/themes/david/titlebar/maximized_focus_active.png"
 
+
+theme.grip = "/home/david/.config/awesome/themes/david/grip.png"
+
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
     theme.menu_height, theme.bg_focus, theme.fg_focus
