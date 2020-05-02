@@ -24,6 +24,7 @@ infos:connect_signal(
          versionLinux,
          versionDistrib,
          laTempExt,
+         temperatureCore,
          batterie
          -- "sensors"
       }

@@ -59,6 +59,7 @@ versionLinux       = "echo $(uname -v |cut -d ' ' -f4)"
 versionDistrib     = "cat /etc/debian_version"
 laTempExt          = "ansiweather -l angers,fr|cut -d ' ' -f 6-7"
 batterie           = "printf '%i %%' $(cat /sys/class/power_supply/BAT0/capacity)"
+temperatureCore    = "sensors |grep Package|cut -d ' ' -f 5-6"
 --
 -- APPS and APPS class
 --
@@ -163,6 +164,7 @@ rawEditor        = "darktable"
 imageEditor      = "gimp"
 synaptic         = "gksudo synaptic"
 --
+-- sur arch : /usr/bin/keepassxc
 keepassCmd       = "/home/david/Téléchargements/KeePassXC-2.4.3-x86_64.AppImage"
 keepass          = keepassCmd .. " /home/david/travail/david/david.kdbx"
 --

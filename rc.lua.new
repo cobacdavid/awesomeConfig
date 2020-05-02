@@ -15,7 +15,8 @@ hotkeys_popup = require("awful.hotkeys_popup").widget
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 -- Load Debian menu entries
-debian = require("debian.menu")
+-- pose problème pour archlinux
+-- debian = require("debian.menu")
 has_fdo, freedesktop = pcall(require, "freedesktop")
 -- pour avoir hostname
 socket = require("socket")

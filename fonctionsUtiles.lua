@@ -7,6 +7,27 @@ function couleurAlea()
    return string.format("#%02X%02X%02X", R, G, B)
 end
 
+--
+-- choix alétoire dans un tableau
+function aleaTableau(T)
+   return T[math.random(#T)]
+end
+
+--
+-- https://stackoverflow.com/questions/5303174/how-to-get-list-of-directories-in-lua#11130774
+-- Lua implementation of PHP scandir function
+function scandir(directory, ext)
+    local i, t, popen = 0, {}, io.popen
+    local pfile = popen('ls -a "' .. directory .. '" *.' .. ext)
+    for filename in pfile:lines() do
+        i = i + 1
+        t[i] = directory .. "/" .. filename
+    end
+    pfile:close()
+    return t
+end
+
+
 --  
 -- raccourci pour naughty.notify
 function montre(t)
@@ -210,7 +231,7 @@ end
 --
 -- sortie d'awesome
 function sortir_awesome()
-   --
+   -- les statistiques
    fTag = io.open("statsTag.dat", "a")
    fTag:write(os.date("%Y%m%d-%H%M%S") .. " " .. tostring(chgTag) .. "\n")
    for _, t in ipairs(listeChgTag) do
@@ -218,18 +239,22 @@ function sortir_awesome()
    end
    fTag:write("\n")
    fTag:close()
-   --
+   -- la souris
    -- awful.spawn.with_shell(mouseCmd .. scrollNoir)
     awful.spawn.easy_async_with_shell(
        scrollNoir,
        function (stdout,stderr,reason,exit_code)
-          
        end
     )
     awful.spawn.easy_async_with_shell(
        "rivalcfg -c '#000000'",
        function (stdout,stderr,reason,exit_code)
-          
+       end
+    )
+    -- sortie propre d'emacs
+    awful.spawn.easy_async_with_shell(
+       "emacsclient -e '(kill-emacs)'",
+       function (stdout,stderr,reason,exit_code)
        end
     )
     awesome.quit()

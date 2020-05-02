@@ -16,7 +16,8 @@ listeWidgetFiles = {--
    -- "widget_testclient.lua",
    -- "widget_testclient2.lua",
    -- "widget_freeze.lua",
-   "widget_compte_rebours.lua"
+   "widget_compte_rebours.lua",
+   "widget_ppeint.lua"
 }
 
 for i, f in ipairs(listeWidgetFiles) do

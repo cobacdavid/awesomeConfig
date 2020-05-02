@@ -8,6 +8,7 @@ local dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
+local gears = require("gears")
 
 theme = {}
 
@@ -36,14 +37,26 @@ theme.rougetrans  = theme.rouge .. theme.trans
 --
 -- WALLPAPER
 --
-theme.wallpaperImagesRep = "/home/david/.config/awesome/fondMaths"
-theme.ppeint = function(t)
-   gears.wallpaper.set(theme.noir)
-   if t.screen.index == 1 then
-   else
+theme.wallpaperRepImagesMaths  = "/home/david/.config/awesome/fondMaths"
+theme.wallpaperRepImagesEspace = "/home/david/.config/awesome/fondEspace"
+theme.wallpaperTheme = ""
+--
+theme.ppeintTelechargement = function(themeDuFond)
+   local rep = theme.wallpaperRepImagesEspace
+   commande_execute( rep .. "/image_hasard_nasa.py" .. " " .. themeDuFond)
+end
+--
+theme.ppeintApplication = function()
+   local rep = theme.wallpaperRepImagesEspace
+   if screen.count() >= 2 and ordinateur == "maison" then
+      -- local listeFichiers = scandir(rep, "jpg")
+      -- local fichier = aleaTableau(listeFichiers)
+      local fichier = rep .. "/" .. "fond" 
+      gears.wallpaper.maximized(fichier, screen[2], theme.noir)
    end
 end
-
+--
+--
 theme.wallpaperBandeau = theme.grisSombre
 theme.wallpaperTagPrincipal = theme.noir
 theme.wallpaperTagSecondaire = theme.grisSombrePlus
@@ -203,7 +216,7 @@ theme.musique_icon           = "/home/david/.config/awesome/themes/david/musique
 theme.spotify_icon           = "/home/david/.config/awesome/themes/david/spotify-icon.png"
 theme.darktable_icon         = "/home/david/.config/awesome/themes/david/darktable-icon.png"
 theme.flickr_icon            = "/home/david/.config/awesome/themes/david/flickr-icon.png"
-theme.keepass_icon            = "/home/david/.config/awesome/themes/david/keepass-icon.png"
+theme.keepass_icon           = "/home/david/.config/awesome/themes/david/keepass-icon.png"
 -- }}}
 
 -- {{{ Layout

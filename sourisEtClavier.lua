@@ -101,7 +101,11 @@ globalkeys = gears.table.join(
          )
       end
    ),
-   awful.key({modkey}, "F7",           function()  end),
+   awful.key({modkey}, "F7",
+      function()
+         afficheDescription("/home/david/.config/awesome/fondEspace/fondDescription")
+      end
+   ),
    awful.key({modkey}, "F8",           function()  end),
    awful.key({modkey}, "F9",           function()  end),
    awful.key({modkey}, "F10",          function()  end),
@@ -255,7 +259,8 @@ globalkeys = gears.table.join(
    	 }
    end),
    
-   awful.key({ modkey }, "q", function ()
+   awful.key({modkey}, "q",
+      function ()
          local s = screen.primary
    	 awful.prompt.run {
             prompt = "Recherche Web Qwant : ",
@@ -271,7 +276,21 @@ globalkeys = gears.table.join(
    	    end,
             history_path = "/home/david/.config/awesome/google_search_history"
          }
+      end
+   ),
+   
+   awful.key({modkey}, "t",
+      function ()
+         local s = screen.primary
+	 awful.prompt.run({
+               prompt = "Thème fond : ",
+               textbox = s.mypromptbox.widget,
+               exe_callback = function(t)
+                  themeFond = t
+               end
+         })
    end)
+   
 
    -- awful.key({ modkey }, "d", function ()
    -- 	 awful.prompt.run({ prompt = "Recherche Web DuckDuckGo : " },
@@ -320,8 +339,16 @@ clientkeys = gears.table.join(
 	 -- awful.titlebar.toggle(c, beautiful.titlebar_seconde)
       end
    ),
-   awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-   awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
+   awful.key({modkey}, "f",
+      function (c)
+         c.fullscreen = not c.fullscreen
+      end
+   ),
+   awful.key({modkey, "Shift"}, "c",
+      function (c)
+         c:kill()
+      end
+   ),
 --   awful.key({ modkey,           }, "o",      function (c) awful.client.movetoscreen(c,c.screen-1) end ),
    --   awful.key({ modkey,           }, "p",      function (c) awful.client.movetoscreen(c,c.screen+1) end ),
    awful.key({modkey}, "o",
@@ -329,18 +356,25 @@ clientkeys = gears.table.join(
          c:move_to_screen()
       end
    ),
-   awful.key({ modkey,           }, "n",      function (c) c.minimized = true  end),
-   awful.key({ modkey, "Shift"   }, "n",      function (c)
-						  local g = c:geometry()
-						  g.height = 300
-						  c:geometry(g)
-					       end),
-    awful.key({ modkey,           }, "m",
-        function (c)
-            -- c.maximized_horizontal = not c.maximized_horizontal
-           -- c.maximized_vertical   = not c.maximized_vertical
-           c.maximized   = not c.maximized
-        end)
+   awful.key({modkey}, "n",
+      function (c)
+         c.minimized = true
+      end
+   ),
+   awful.key({modkey, "Shift"}, "n",
+      function (c)
+         local g = c:geometry()
+         g.height = 300
+         c:geometry(g)
+      end
+   ),
+   awful.key({modkey}, "m",
+      function (c)
+         -- c.maximized_horizontal = not c.maximized_horizontal
+         -- c.maximized_vertical   = not c.maximized_vertical
+         c.maximized   = not c.maximized
+      end
+   )
 )
 --
 -- FIN GESTION DES CLIENTS
