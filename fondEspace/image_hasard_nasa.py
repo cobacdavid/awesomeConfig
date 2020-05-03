@@ -5,7 +5,7 @@ import random
 import datetime
 
 
-def analyse_reponse(r, f_log, appel="", lien=""):
+def analyse_reponse(r, f_log, lien=""):
     heure = datetime.datetime.now().strftime("%H:%M:%S")
     with open(f_log, "a+") as fh:
         fh.write(heure + '\t')
@@ -19,14 +19,13 @@ def analyse_reponse(r, f_log, appel="", lien=""):
         else:
             fh.write(lien + "\n")
 
-
-fichier_log = "image_hasard_nasa.log"
-
 # récupération des arguments commme mots-clés de recherche
 if len(sys.argv) > 1:
     theme = " ".join(sys.argv[1:])
 else:
     theme = "earth"
+
+fichier_log = "image_hasard_nasa.log"
 
 url = "https://images-api.nasa.gov"
 recherche = "/search?"
@@ -35,8 +34,7 @@ recherche = "/search?"
 # voir API https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf
 parametres = {"q": theme,
               "media_type": "image",
-              "year_start": 2000,
-              "year_end": 2020}
+              "year_start": 2000}
 
 reponse = requests.get(url + recherche, params=parametres)
 analyse_reponse(reponse, fichier_log)
@@ -46,19 +44,20 @@ reponseJ = reponse.json()
 # le site n'affiche que 100 pages de réponses au max
 # donc 100 x 100 = 10 000 réponses au max
 N = reponseJ['collection']['metadata']['total_hits']
-N = min(1e4, N)
-n = random.randint(1, N)
-if n >= 100:
-    numero_page, n = divmod(n, 100)
-    parametres['page'] = numero_page
+N = min(10_000, N)
 
-reponse = requests.get(url + recherche, params=parametres)
-analyse_reponse(reponse, fichier_log, "page")
-reponseJ = reponse.json()
+n = random.randrange(N)
+numero_page, n = divmod(n, 100)
+parametres['page'] = numero_page + 1
+
+if numero_page != 0:
+    reponse = requests.get(url + recherche, params=parametres)
+    analyse_reponse(reponse, fichier_log)
+    reponseJ = reponse.json()
 
 # on récupère le lien vers le fichier type "thumb"
 # on remplace thumb par orig pour l'image original
-lien = reponseJ['collection']['items'][n-1]['links'][0]['href']
+lien = reponseJ['collection']['items'][n]['links'][0]['href']
 lien = lien.replace("thumb", "orig")
 
 # on met l'image dans le fichier fond sans extension
@@ -70,6 +69,6 @@ with open("/home/david/.config/awesome/fondEspace/fond", "wb") as fh:
 
 # écriture de la description
 with open("/home/david/.config/awesome/fondEspace/fondDescription", "w") as fh:
-    fh.write(reponseJ['collection']['items'][2]['data'][0]['title'])
+    fh.write(reponseJ['collection']['items'][n]['data'][0]['title'])
     fh.write("\n")
-    fh.write(reponseJ['collection']['items'][n-1]['data'][0]['description'])
+    fh.write(reponseJ['collection']['items'][n]['data'][0]['description'])
