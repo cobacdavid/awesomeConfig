@@ -52,7 +52,8 @@ theme.ppeintApplication = function()
       -- local listeFichiers = scandir(rep, "jpg")
       -- local fichier = aleaTableau(listeFichiers)
       local fichier = rep .. "/" .. "fond" 
-      gears.wallpaper.maximized(fichier, screen[2], theme.noir)
+      -- gears.wallpaper.maximized(fichier, screen[2])
+      gears.wallpaper.fit(fichier, screen[2], theme.noir)
    end
 end
 --

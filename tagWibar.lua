@@ -267,7 +267,8 @@ awful.screen.connect_for_each_screen(
                widget = clo,
                position = "top",
                ontop = false,
-               type = "dock"
+               type = "dock",
+               opacity = .75
             }
          )
          -- nouvel écran à droite du premier
