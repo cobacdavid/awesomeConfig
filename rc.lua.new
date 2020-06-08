@@ -6,7 +6,6 @@ require("awful.autofocus")
 wibox = require("wibox")
 -- Theme handling library
 beautiful = require("beautiful")
-cairo = require("lgi").cairo
 -- Notification library
 naughty = require("naughty")
 menubar = require("menubar")
@@ -14,8 +13,7 @@ hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
--- Load Debian menu entries
--- pose problème pour archlinux
+-- Load Debian menu entries pose problème pour archlinux
 -- debian = require("debian.menu")
 has_fdo, freedesktop = pcall(require, "freedesktop")
 -- pour avoir hostname
@@ -25,16 +23,28 @@ ordinateur = socket.dns.gethostname()
 config = awful.util.getdir("config")
 --
 fu = require("fonctionsUtiles")
+-- widgets 
+separateur = require("widgets.separateur")
+heure = require("widgets.heure")
+volumemaster = require("widgets.volumemaster")
+luminosite = require("widgets.luminosite")
+luminosite_ecran = require("widgets.luminosite_ecran")
+killneuf = require("widgets.killneuf")
+ppeint = require("widgets.ppeintDesc")
+-- widgets titlebar fenêtres
+blocageopacite = require("widgets.blocageopacite")
+opacite = require("widgets.opacite")
+screenshot = require("widgets.screenshot")
+infos = require("widgets.infos")
+dimFenetre = require("widgets.dimFenetre")
 --
 listeRcFiles = {--
    "errorhandling45.lua",
-   -- "fonctionsUtiles.lua",
    "logicielsIndispensables.lua",
    -- "myPRIVATEvariables.lua",
    "variabledefinitions.lua",
    "stats.lua",
    "menu.lua",
-   "widgets.lua",
    "tagWibar.lua",
    -- "wibox_sensors.lua",
    "sourisEtClavier.lua",

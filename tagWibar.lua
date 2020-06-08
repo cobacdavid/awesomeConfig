@@ -125,7 +125,7 @@ awful.screen.connect_for_each_screen(
          )
 	 --
 	 local left_layout = wibox.layout.fixed.horizontal()
-	 left_layout:add(heure())
+	 left_layout:add(heure({justify="left"}))
 	 left_layout:add(s.mytaglist)
          --
 	 if ordinateur == "asus" then

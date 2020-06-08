@@ -37,61 +37,11 @@ local appsDemarrage = {
    cloudMusique,
    keepass,
    radio,
-   --mouseBleu,
-   --scrollBleu,
-   --cylindreEcrans,
 }
 
 for _, app in ipairs(appsDemarrage) do
    run_once( app )
 end
 
--- Menubar configuration
--- menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- app a demarrer
-
--- ordinateur peut valoir "asus" ou "antec"
-
---if ordinateur != "antec" then
---    local appBureauMaison = {--
---       ["shell"] = {
--- 	 -- nasaBgCmd,
--- 	 -- phototheques,
--- 	 -- photothequesMod,
--- 	 --wallpaperCmd,
--- 	 editorD,
--- 	 terminalD,
--- 	 compositeMgr,
--- 	 --mpdScbCmd,
--- 	 -- "dropbox start -i",
--- 	 -- cloudTravail,
--- 	 cloudMusique,
--- 	 -- ncMpdClient,
--- 	 -- mpdCurrent,
--- 	 "wmname LG3D",
--- 	 keepass,
---       },
---       ["x"]    = {
--- 	 --mpdClient,
--- 	 -- browser,
--- 	 radio,
--- 	 -- BTapplet,
--- 	 -- WIFIapplet,
--- 	 -- hpsystray,
--- 	 -- rawEditor
---       }
---    }
-
--- --
---    for i , type in pairs( appBureauMaison ) do
---       print(type)
---    for j, app in ipairs( type ) do
---       run_once( app )
---       montre( tostring(j) )
---    end
--- end
---awful.spawn( editorD )
---
--- FIN app a demarrer
---
+ppeintDesc = ppeint()
 fu.montre( "Démarrage terminé")

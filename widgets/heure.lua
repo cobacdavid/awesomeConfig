@@ -1,39 +1,51 @@
+local beautiful = require("beautiful")
+local awful = require("awful")
+local wibox = require("wibox")
+local gears = require("gears")
+--
 local widget = {}
 
-local function heurew_text(w)
-   local heure = os.date("%H:%M.%S")
-   local couleur = beautiful.widget_heurew_fg_jour
+local function heurew_text(w, args)
+   local args = args or {}
+   --
+   local font = args.font or beautiful.widget_font_pri
+   local size = args.size or 20
+   local fg = args.fg or beautiful.widget_fg_pri
+   local bg = args.bg or beautiful.widget_bg
+   local format = args.format or "%H:%M.%S"
+   --
+   local heure = os.date(format)
+   local couleur = fg
    if tonumber(os.date("%H")) >= 19 then
-      couleur = beautiful.widget_heurew_fg_soir
+      couleur = fg
    end
-   local size = beautiful.heurew_size
-   local hm = "<span foreground='" .. couleur .. "' font_weight='normal' font='" .. beautiful.widget_heurew_font .. " " .. size .. "' >" .. string.sub(heure,1,5) .. "</span>"
+   local hm = "<span foreground='" .. couleur .. "' font_weight='normal' font='" 
+      .. font .. " " .. size .. "' >" .. heure .. "</span>"
    w:set_markup(hm)
 end
 
 function widget.heure(args)
-   ----------------------------------------
-   heurew = wibox.widget {
-      forced_width = 100,
-      align = "center",
+   local args = args or {}
+   local delay = args.delay or 1
+   --
+   local width = args.width or 150
+   local justify = args.justify or "center"
+   local action = args.action or function() end
+   --
+   local heurew = wibox.widget {
+      forced_width = width,
+      align = justify,
       widget = wibox.widget.textbox
    }
-   ----------------------------------------
-   heurew:buttons(gears.table.join(
-                     awful.button({ }, 1,
-                        function ()
-                           awful.util.spawn( calendrier )
-                        end
-                     )
-   ))
-   ---------------------------------------
-   -- comme pas les secondes affichées, on actualise toutes les 5 secondes
+   --
+   heurew:buttons(gears.table.join(awful.button({ }, 1, action)))
+   --
    gears.timer ({
-         timeout = 5,
+         timeout = delay,
          call_now = true,
          autostart = true,
          callback = function()
-            heurew_text(heurew)
+            heurew_text(heurew, args)
          end
    })
    return heurew

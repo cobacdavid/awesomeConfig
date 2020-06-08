@@ -58,6 +58,27 @@ theme.ppeintApplication = function()
    end
 end
 --
+themeFond = ""
+gears.timer ({
+      timeout = 120,
+      call_now = true,
+      autostart = true,
+      callback = function()
+         -- on récupère le fond sur internet
+         theme.ppeintTelechargement(themeFond)
+         -- on l'applique 5 secondes plus tard
+         -- (le temps qu'il soit téléchargé !)
+         gears.timer({
+               timeout = 5,
+               autostart = true,
+               callback =  function()
+                  theme.ppeintApplication()
+               end,
+               single_shot = true
+         })
+      end
+})
+
 --
 theme.wallpaperBandeau = theme.grisSombre
 theme.wallpaperTagPrincipal = theme.noir
@@ -86,7 +107,7 @@ theme.border_marked = "#A81414"
 --
 theme.widget_bg     = theme.noirtrans
 theme.widget_fg_pri = theme.blanc
-theme.widget_fg_sec = theme.blanc
+theme.widget_fg_sec = theme.gris
 theme.widget_fg_ter = theme.blanc
 theme.widget_fg_sel = theme.rougetrans
 --
@@ -96,11 +117,6 @@ theme.widget_font_sec   = theme.police
 --------------------------
 --- WIDGETS PERSOS
 --------------------------
-theme.widget_heurew_font    = theme.widget_font_pri
-theme.heurew_size = "20"
-theme.widget_heurew_fg_jour = theme.widget_fg_pri
-theme.widget_heurew_fg_soir = theme.widget_fg_ter
-
 theme.widget_luminosite_bar_color           = theme.border_color
 theme.widget_luminosite_handle_border_color = theme.border_color
 theme.widget_luminosite_handle_color        = theme.border_color
@@ -111,7 +127,7 @@ theme.widget_killneuf_kill      = theme.rouge
 theme.widget_killneuf_neuf      = theme.blanc
 
 -- choix entre gradient ou nuance
-theme.widget_volumemaster_handle_color_type         = "gradient"
+--theme.widget_volumemaster_handle_color_type         = "gradient"
 theme.widget_volumeBT_handle_color_type             = "gradient" 
 theme.widget_luminosite_handle_color_type           = "nuance"
 theme.widget_opacite_handle_color_type              = "nuance"

@@ -1,5 +1,10 @@
+local gears = require("gears")
+local naughty = require("naughty")
+local awful = require("awful")
+local beautiful = require("beautiful")
+local cairo = require("lgi").cairo
+--
 local fonctionsUtiles = {}
-
 --
 -- couleur aléatoire
 function fonctionsUtiles.couleurAlea()
@@ -153,7 +158,14 @@ function fonctionsUtiles.commande_execute(commande)
    )
    return tostring(resultat)
 end
+--
 
+function fonctionsUtiles.readResult(commande)
+      local fh = io.popen(commande)
+      resultat = fh:read("*a")
+      fh:close()
+      return resultat
+end
 --
 -- Existence d'un fichier 
 -- http://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists

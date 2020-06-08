@@ -103,7 +103,8 @@ globalkeys = gears.table.join(
    ),
    awful.key({modkey}, "F7",
       function()
-         ppeint.afficheDescription("/home/david/.config/awesome/fondEspace/fondDescription")
+         -- ppeintDesc est l'instance de wibox créé dans applogin45
+         ppeint.afficheDescription(ppeintDesc, "/home/david/.config/awesome/fondEspace/fondDescription")
       end
    ),
    awful.key({modkey}, "F8",           function()  end),

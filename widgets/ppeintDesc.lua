@@ -32,19 +32,20 @@ function widget.ppeintDesc(args)
    return widget_description
 end
 --
-function widget.afficheDescription(fichierDescription)
+function widget.afficheDescription(w, fichierDescription)
+   fu.montre(w)
    --
    local fh = io.open(fichierDescription, "r")
    local contenu = fh:read("*a")
    fh:close()
    --
-   widget_description.conteneur.text.desc:set_text(contenu)
-   widget_description.visible = true
-   widget_description:buttons(
+   w.conteneur.text.desc:set_text(contenu)
+   w.visible = true
+   w:buttons(
       awful.util.table.join(
          awful.button({}, 1,
             function()
-               widget_description.visible = false
+               w.visible = false
             end
          )
       )
@@ -52,29 +53,6 @@ function widget.afficheDescription(fichierDescription)
    --
 end
 --
-themeFond = ""
-gears.timer ({
-      timeout = 120,
-      call_now = true,
-      autostart = true,
-      callback = function()
-         -- on récupère le fond sur internet
-         beautiful.ppeintTelechargement(themeFond)
-         -- on l'applique 5 secondes plus tard
-         -- (le temps qu'il soit téléchargé !)
-         gears.timer({
-               timeout = 5,
-               autostart = true,
-               callback =  function()
-                  beautiful.ppeintApplication()
-               end,
-               single_shot = true
-         })
-      end
-})
-
-
-
 return setmetatable(widget, {__call=function(t, args)
                                 return widget.ppeintDesc(args)
                    end})

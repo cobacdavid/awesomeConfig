@@ -1,13 +1,21 @@
+local beautiful = require("beautiful")
+--
 local widget = {}
 
 function widget.separateur(args)
-      local separateur = wibox.widget({
-            --shape  = gears.shape.circle,
-            color="#0000000",
-            forced_width=5,
+   local args = args or {}
+   --
+   local color = args.color or beautiful.widget_bg
+   local separateur = wibox.widget({
+         {
+            forced_width = args.width or 5,
+            color = color,
             widget = wibox.widget.separator
-      })
-      return separateur
+         },
+         bg = color,
+         widget = wibox.container.background
+   })
+   return separateur
 end
 
 return setmetatable(widget, {__call=function(t, args)
