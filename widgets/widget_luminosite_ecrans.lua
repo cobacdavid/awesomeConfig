@@ -22,7 +22,7 @@ function sliderBrightnessWidget(ecran)
       bar_height          = 1,
       bar_color           = beautiful.border_color,
       handle_shape        = gears.shape.circle,
-      handle_color        = couleurBarre(beautiful.widget_sliderBrightness_handle_color_type, 100, MIN, MAX),
+      handle_color        = fu.couleurBarre(beautiful.widget_sliderBrightness_handle_color_type, 100, MIN, MAX),
       minimum             = MIN,
       maximum             = MAX,
       widget              = wibox.widget.slider,
@@ -49,10 +49,10 @@ function sliderBrightnessWidget(ecran)
          local v = tostring(mini + (sliderBrightnessControle.value * (maxi - mini) / MAX))
          v = v:gsub(",",".")                              
          local command="xrandr --output " .. ecran .." --brightness " .. v
-         -- montre(command)
-         commande_execute(command)
+         -- fu.montre(command)
+         fu.commande_execute(command)
          -- awful.spawn(command)
-         sliderBrightnessControle.handle_color = couleurBarre(beautiful.widget_sliderBrightness_handle_color_type, v, mini, maxi)
+         sliderBrightnessControle.handle_color = fu.couleurBarre(beautiful.widget_sliderBrightness_handle_color_type, v, mini, maxi)
    end)
    sliderBrightnessTexte:connect_signal("button::press", function()
          sliderBrightnessControle.value = math.floor((1 - mini) *100 / (maxi - mini))

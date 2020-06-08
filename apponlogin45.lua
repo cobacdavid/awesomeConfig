@@ -37,7 +37,6 @@ local appsDemarrage = {
    cloudMusique,
    keepass,
    radio,
-   mouseDegradeCmd,
    --mouseBleu,
    --scrollBleu,
    --cylindreEcrans,
@@ -95,4 +94,4 @@ end
 --
 -- FIN app a demarrer
 --
-montre( "Démarrage terminé")
+fu.montre( "Démarrage terminé")

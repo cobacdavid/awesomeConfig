@@ -57,8 +57,9 @@ if numero_page != 0:
 
 # on récupère le lien vers le fichier type "thumb"
 # on remplace thumb par orig pour l'image original
+# ou large plus susceptible d'être accessible que orig
 lien = reponseJ['collection']['items'][n]['links'][0]['href']
-lien = lien.replace("thumb", "orig")
+lien = lien.replace("thumb", "large")
 
 # on met l'image dans le fichier fond sans extension
 # awesome se débrouille après

@@ -39,14 +39,14 @@ local taglist_buttons = gears.table.join(
 --local s=screen.primary
 awful.screen.connect_for_each_screen(
    function(s)
-      set_wallpaper(s)
+      fu.set_wallpaper(s)
       -- attention xrandr dicte sa loi du screen.primary selon
       -- l'interface !!
       gears.wallpaper.set("#000000")
       if s.index == 1 then
 	 awful.tag.add("term",
                        {
-                          layout = awful.layout.suit.tile.left,
+                          layout = awful.layout.suit.tile.top,
 			  screen = s,
 			  selected = true,
 			  gap = 5,
@@ -73,36 +73,36 @@ awful.screen.connect_for_each_screen(
 			  screen = s,
                        }
          )
-	 awful.tag.add("2nde-5",
+	 awful.tag.add("Classe-1",
                        {
 			  layout = awful.layout.suit.floating,
 			  screen = s,
                        }
          )
-         awful.tag.add("SNT-6",
+         awful.tag.add("Classe-2",
                        {
 			  layout = awful.layout.suit.floating,
 			  screen = s,
                        }
          )
-         awful.tag.add("STL-7",
-                       {
-			  layout = awful.layout.suit.floating,
-			  screen = s,
-                       }
-         )
-         awful.tag.add("ST2S-8",
-                       {
-			  layout = awful.layout.suit.floating,
-			  screen = s,
-                       }
-         )
-         awful.tag.add("NSI-9",
-                       {
-			  layout = awful.layout.suit.floating,
-			  screen = s,
-                       }
-         )
+         -- awful.tag.add("STL-7",
+         --               {
+	 --        	  layout = awful.layout.suit.floating,
+	 --        	  screen = s,
+         --               }
+         -- )
+         -- awful.tag.add("ST2S-8",
+         --               {
+	 --        	  layout = awful.layout.suit.floating,
+	 --        	  screen = s,
+         --               }
+         -- )
+         -- awful.tag.add("NSI-9",
+         --               {
+	 --        	  layout = awful.layout.suit.floating,
+	 --        	  screen = s,
+         --               }
+         -- )
          --
          --
 	 s.mypromptbox = awful.widget.prompt()
@@ -205,7 +205,7 @@ awful.screen.connect_for_each_screen(
                   }
                )
                s.gaucheAsus:connect_signal("mouse::enter",
-                                          function(w)
+                                           function(w)
                                              mouse.coords({
                                                    x = largeurPremier + largeurSecond - 2,
                                                    y = mouse.coords().y
@@ -215,7 +215,7 @@ awful.screen.connect_for_each_screen(
             elseif ordinateur == "maison" then
                s.myjumpbox = awful.wibar(
                   {
-                     position = "right",
+                     position = "left",
                      screen = s,
                      width = 1,
                      opacity = 0,
@@ -226,7 +226,7 @@ awful.screen.connect_for_each_screen(
                s.myjumpbox:connect_signal("mouse::enter",
                                           function(w)
                                              mouse.coords({
-                                                   x = 2,
+                                                   x = 1200 + 1800,
                                                    y = mouse.coords().y
                                              })
                                           end
@@ -238,6 +238,27 @@ awful.screen.connect_for_each_screen(
       -- configuration écran supplémentaire
       -- -- --
       if s.index == 2 then
+         --
+         function decorate(w, flag, date)
+            local ret = wibox.widget(
+               {
+                  {
+                     w,
+                     widget  = wibox.container.margin
+                  },
+                  fg           = "#999999",
+                  bg           = "#000000",
+                  widget       = wibox.container.background
+               }
+            )
+            return ret
+         end
+         calendrier = wibox.widget(
+            {
+               fn_embed = decorate,
+               widget = wibox.widget.calendar.month
+            }
+         )
          --
          largeurPremier = screen[1].geometry.width
          hauteurPremier = screen[1].geometry.height
@@ -255,11 +276,7 @@ awful.screen.connect_for_each_screen(
             align = "center",
 	    widget = wibox.widget.textclock("%A %d %B %Y")
          }
-         awful.widget.calendar_popup.month(
-            {
-               screen = 2
-            }
-         ):attach(clo, 'tc', {on_hover=false})
+         -- calendrier:attach(clo, 'tc', {on_hover=false})
          s.mywibar = awful.wibar(
             {
                screen = s ,
@@ -311,7 +328,7 @@ awful.screen.connect_for_each_screen(
          elseif ordinateur == "maison" then
             s.myjumpbox = awful.wibar(
                {
-                  position = "left",
+                  position = "right",
                   screen = s ,
                   width = 1,
                   -- bg       = beautiful.noir,
@@ -325,7 +342,7 @@ awful.screen.connect_for_each_screen(
                                              -- à adapter si au lycée
                                              -- à la résolution de l'écran 
                                              mouse.coords({
-                                                   x = largeurPremier + largeurSecond - 2,
+                                                   x = 2, -- largeurPremier + largeurSecond - 2,
                                                    y = mouse.coords().y
                                              })
                                           else

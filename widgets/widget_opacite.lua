@@ -22,13 +22,13 @@ function opacity_button(c)
    c:connect_signal("property::opacity",
       function()
 	 slider.value = ( c.opacity - mini ) / ( (maxi-mini)/ MAX )
-	 slider.handle_color = couleurBarre( theme.widget_opacite_handle_color_type, slider.value, MIN, MAX)
+	 slider.handle_color = fu.couleurBarre( theme.widget_opacite_handle_color_type, slider.value, MIN, MAX)
       end
    )
    slider:connect_signal("property::value",
       function()
 	 c.opacity = mini + ( slider.value * (maxi-mini)/ MAX )
-	 slider.handle_color = couleurBarre( theme.widget_opacite_handle_color_type, slider.value, MIN, MAX)
+	 slider.handle_color = fu.couleurBarre( theme.widget_opacite_handle_color_type, slider.value, MIN, MAX)
 		 
       end
    )

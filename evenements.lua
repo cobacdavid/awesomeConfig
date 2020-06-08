@@ -17,11 +17,11 @@ client.connect_signal("manage",
                             awful.placement.no_offscreen(c)
                          end
                          --
-                         surTermOuPas(c)
+                         fu.surTermOuPas(c)
                          --
                          -- c.shape = arrondiMoyen
                          -- c.shape = octogonePetit
-                         c.shape = pArrondiGros
+                         c.shape = fu.pArrondiGros
                          -- c.shape = gears.shape.rounded_rect
                          --
                          --
@@ -43,7 +43,7 @@ client.connect_signal("manage",
 
 client.connect_signal("tagged",
                       function (c)
-                         surTermOuPas(c)
+                         fu.surTermOuPas(c)
                          --
                          -- bloque à 1 l'opacité des PDF sur
                          -- l'écran auxiliaire
@@ -179,8 +179,11 @@ client.connect_signal("mouse::enter",
                          end
                          c:emit_signal("focus")
                          --
-                         if ordinateur == "maison" then
-                            commande_execute(mouseCmd .. " -C '" .. couleurAlea() .. "'")
+                         if ordinateur == "maison" and c.class == editorClass then
+                            fu.commande_execute(clavierCmd .. " " .. configEmacs)
+                         end
+                         if ordinateur == "maison" and c.class == terminalClass then
+                            fu.commande_execute(clavierCmd .. " " .. configUrxvt)
                          end
                       end
 )
@@ -188,6 +191,9 @@ client.connect_signal("mouse::enter",
 client.connect_signal("mouse::leave",
                       function(c)
                          c:emit_signal("unfocus")
+                         if ordinateur == "maison" and (c.class == editorClass or c.class == terminalClass) then
+                            fu.commande_execute(clavierCmd .. " " .. configAwesome)
+                         end
                       end
 )
 
@@ -257,7 +263,7 @@ tag.connect_signal("property::selected",
                          chgTag = chgTag + 1
                          table.insert(listeChgTag, t)
                       end
-                      local cr = fondEcran(t)
+                      local cr = fu.fondEcran(t)
                       gears.wallpaper.maximized(cr, t.screen)
                    end
 )

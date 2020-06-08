@@ -3,7 +3,7 @@ listeWidgetFiles = {--
    "widget_heure.lua",
    "widget_luminosite.lua",
    -- "widget_volumeBT.lua",
-   "widget_volumemaster.lua",
+   -- "widget_volumemaster.lua",
    "widget_opacite.lua",
    "widget_xgamma.lua",
    "widget_luminosite_ecrans.lua",
@@ -23,3 +23,6 @@ listeWidgetFiles = {--
 for i, f in ipairs(listeWidgetFiles) do
     dofile ( config ..  "/widgets/" .. f)
 end
+
+volumemaster = require("widgets.volumemaster")
+volumemaster = volumemaster()

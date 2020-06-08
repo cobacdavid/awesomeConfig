@@ -1,6 +1,8 @@
+local fonctionsUtiles = {}
+
 --
 -- couleur aléatoire
-function couleurAlea()
+function fonctionsUtiles.couleurAlea()
    R = math.floor(math.random() * 256)
    G = math.floor(math.random() * 256)
    B = math.floor(math.random() * 256)
@@ -9,14 +11,14 @@ end
 
 --
 -- choix alétoire dans un tableau
-function aleaTableau(T)
+function fonctionsUtiles.aleaTableau(T)
    return T[math.random(#T)]
 end
 
 --
 -- https://stackoverflow.com/questions/5303174/how-to-get-list-of-directories-in-lua#11130774
 -- Lua implementation of PHP scandir function
-function scandir(directory, ext)
+function fonctionsUtiles.scandir(directory, ext)
     local i, t, popen = 0, {}, io.popen
     local pfile = popen('ls -a "' .. directory .. '" *.' .. ext)
     for filename in pfile:lines() do
@@ -27,16 +29,15 @@ function scandir(directory, ext)
     return t
 end
 
-
 --  
 -- raccourci pour naughty.notify
-function montre(t)
+function fonctionsUtiles.montre(t)
    naughty.notify({text = tostring(t)})
 end
 
 --
 -- le tableau contient val
-function contains(tab, val)
+function fonctionsUtiles.contains(tab, val)
    for i = 1, #tab do
       if tab[i] == val then 
          return true
@@ -48,7 +49,7 @@ end
 --
 -- enlève les barres de fenêtres si on est dans le tag "term", à
 -- modifier pour généraliser à tous les tags gérée avec du tiling
-function surTermOuPas(c)
+function fonctionsUtiles.surTermOuPas(c)
    awful.titlebar.show(c, beautiful.titlebar_premiere)
    -- awful.titlebar.show(c, beautiful.titlebar_seconde)
    for i, t in pairs(c:tags()) do
@@ -63,7 +64,7 @@ end
 
 -- de la doc officielle
 -- wallpapers
-function set_wallpaper(s)
+function fonctionsUtiles.set_wallpaper(s)
    if beautiful.wallpaper then
       local wallpaper = beautiful.wallpaper
       -- If wallpaper is a function, call it with the screen
@@ -78,12 +79,12 @@ function set_wallpaper(s)
    end
 end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-screen.connect_signal("property::geometry", set_wallpaper)
+-- screen.connect_signal("property::geometry", set_wallpaper)
 
 
 --
 --  gestion volume bluetooth
-function getBtVolume ()
+function fonctionsUtiles.getBtVolume ()
    -- ess b eris
    local ess="FC_58_FA_5B_DB_38"
    -- philips dhb9100rd
@@ -104,7 +105,7 @@ function getBtVolume ()
    return sortie
 end
 
-function incBtVolume( inc )
+function fonctionsUtiles.incBtVolume( inc )
    -- ess b eris
    local ess="FC_58_FA_5B_DB_38"
    -- philips dhb9100rd
@@ -133,7 +134,7 @@ end
 -- exécuter seulement des commandes avec une seule ligne de sortie.
 -- hautement déconseillé
 -- à supprimer 
-function execute_command(command)
+function fonctionsUtiles.execute_command(command)
    local fh = io.popen(command)
    local str = ""
    for i in fh:lines() do
@@ -144,7 +145,7 @@ function execute_command(command)
 end
 --
 
-function commande_execute(commande)
+function fonctionsUtiles.commande_execute(commande)
    awful.spawn.easy_async_with_shell(commande,
                                      function(stdout, stderr, reason, exit_code)
                                         resultat = exit_code
@@ -156,7 +157,7 @@ end
 --
 -- Existence d'un fichier 
 -- http://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists
-function file_exists(name)
+function fonctionsUtiles.file_exists(name)
    local f = io.open(name,"r")
    if f ~= nil then
       io.close(f)
@@ -176,7 +177,7 @@ end
 -- M : Maximum
 -- attention : pour l'instant m n'est pas utilisé...
 -- ni coulDebut ni coulFin
-function couleurBarre ( t, v , m , M , coulDebut, coulFin)
+function fonctionsUtiles.couleurBarre ( t, v , m , M , coulDebut, coulFin)
    local resultat
    if v == nil then return end
    -- if coulDebut == nil or coulFin == nil then
@@ -198,26 +199,26 @@ end
 --
 -- 
 -- définitions des formes
-arrondiGros = function(cr, width, height)
+fonctionsUtiles.arrondiGros = function(cr, width, height)
    gears.shape.rounded_rect(cr, width, height, 25)
 end
-arrondiMoyen = function(cr, width, height)
+fonctionsUtiles.arrondiMoyen = function(cr, width, height)
    gears.shape.rounded_rect(cr, width, height, 15)
 end
-arrondiPetit =  function(cr, width, height)
+fonctionsUtiles.arrondiPetit =  function(cr, width, height)
    gears.shape.rounded_rect(cr, width, height, 4)
 end
 
-octogoneGros = function(cr, width, height)
+fonctionsUtiles.octogoneGros = function(cr, width, height)
    gears.shape.octogon(cr, width, height, 25)
 end
-octogoneMoyen = function(cr, width, height)
+fonctionsUtiles.octogoneMoyen = function(cr, width, height)
    gears.shape.octogon(cr, width, height, 15)
 end
-octogonePetit = function(cr, width, height)
+fonctionsUtiles.octogonePetit = function(cr, width, height)
    gears.shape.octogon(cr, width, height, 4)
 end
-pArrondiGros  = function(cr, width, height)
+fonctionsUtiles.pArrondiGros  = function(cr, width, height)
    gears.shape.partially_rounded_rect(cr, width, height,
                                       true,
                                       true,
@@ -230,7 +231,7 @@ end
 
 --
 -- sortie d'awesome
-function sortir_awesome()
+function fonctionsUtiles.sortir_awesome()
    -- les statistiques
    fTag = io.open("statsTag.dat", "a")
    fTag:write(os.date("%Y%m%d-%H%M%S") .. " " .. tostring(chgTag) .. "\n")
@@ -239,18 +240,6 @@ function sortir_awesome()
    end
    fTag:write("\n")
    fTag:close()
-   -- la souris
-   -- awful.spawn.with_shell(mouseCmd .. scrollNoir)
-    awful.spawn.easy_async_with_shell(
-       scrollNoir,
-       function (stdout,stderr,reason,exit_code)
-       end
-    )
-    awful.spawn.easy_async_with_shell(
-       "rivalcfg -c '#000000'",
-       function (stdout,stderr,reason,exit_code)
-       end
-    )
     -- sortie propre d'emacs
     awful.spawn.easy_async_with_shell(
        "emacsclient -e '(kill-emacs)'",
@@ -261,7 +250,7 @@ function sortir_awesome()
 end
 
 -- https://awesomewm.org/doc/api/documentation/16-using-cairo.md.html
-function fondEcran(t)
+function fonctionsUtiles.fondEcran(t)
    local j = 0
    for i=1, #t.screen.tags do
       if (t == t.screen.tags[i]) then
@@ -309,3 +298,5 @@ function fondEcran(t)
    cr:stroke()
    return img
 end
+
+return fonctionsUtiles

@@ -17,7 +17,7 @@ local mini     = .5
    bar_height          = 1,
    bar_color           = beautiful.border_color,
    handle_shape        = gears.shape.circle,
-   handle_color        = couleurBarre(beautiful.widget_xgamma_handle_color_type, 100, MIN, MAX),
+   handle_color        = fu.couleurBarre(beautiful.widget_xgamma_handle_color_type, 100, MIN, MAX),
    minimum             = MIN,
    maximum             = MAX,
    widget              = wibox.widget.slider,
@@ -43,7 +43,7 @@ xgammaControle:connect_signal("property::value", function()
       local command='xgamma -g ' .. v
       -- montre( command )
       awful.spawn(command)
-      xgammaControle.handle_color = couleurBarre( beautiful.widget_xgamma_handle_color_type, v, MIN, MAX )
+      xgammaControle.handle_color = fu.couleurBarre( beautiful.widget_xgamma_handle_color_type, v, MIN, MAX )
 end)
 
 -- double click

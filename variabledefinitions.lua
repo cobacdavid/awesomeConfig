@@ -17,12 +17,13 @@ if ordinateur == "asus" then
    ecranAux2 = "VGA1"
 else
    ecranPcp = "HDMI-0" -- sortie HDMI
-   ecranAux  = "DVI-0" -- sortie ppale
-   ecranAux2  = "VGA-0" -- sortie VGA
+   ecranAux  = "VGA-0" -- sortie ppale
+   ecranAux2  = "DVI-0" -- sortie VGA
 end
 --
 if ordinateur == "maison" then
-   commandeEcran = "xrandr --output DVI-0 --mode 1920x1080  --output HDMI-0 --right-of DVI-0 --pos 1920x0 --mode 1920x1200 --rotate normal"
+   -- commandeEcran = "xrandr --output DVI-0 --mode 1920x1080  --output HDMI-0 --right-of DVI-0 --pos 1920x0 --mode 1920x1200 --rotate normal"
+   commandeEcran = "xrandr --output VGA-0 --mode 1920x1080 --pos 1200x900 --output HDMI-0 --mode 1920x1200 --rotate left"
    awful.spawn.with_shell(commandeEcran)
 end
 --
@@ -33,17 +34,6 @@ beautiful.init(config .. "/themes/david/theme.lua")
 batteryCmd            = "cat /sys/class/power_supply/BAT0/capacity"
 imageParDefaut     = "/usr/local/share/awesome/icons/awesome64.png"
 --
--- SOURIS RIVAL
---
-mouseCmd           = "/home/david/.local/bin/rivalcfg"
-mouseRouge         = mouseCmd .. " -c red"
-scrollRouge        = mouseCmd .. " -C red"
-mouseBleu          = mouseCmd .. ' -c "#004080"'
-scrollBleu         = mouseCmd .. ' -C "#004080"'
-mouseNoir          = mouseCmd .. " -c black"
-scrollNoir         = mouseCmd .. " -C black"
-mouseDegradeFile   = "/home/david/travail/david/production/lycee/algorithmique/python/themes/souris_rival/allumage.py"
-mouseDegradeCmd    = "python3 " .. mouseDegradeFile
 --
 -- SAUVEGARDE CONFIG awesome
 --
@@ -165,7 +155,7 @@ imageEditor      = "gimp"
 synaptic         = "gksudo synaptic"
 --
 -- sur arch : /usr/bin/keepassxc
-keepassCmd       = "/home/david/Téléchargements/KeePassXC-2.4.3-x86_64.AppImage"
+keepassCmd       = "/home/david/Téléchargements/KeePassXC-2.5.4-x86_64.AppImage"
 keepass          = keepassCmd .. " /home/david/travail/david/david.kdbx"
 --
 RcFiles          = "/home/david/travail/david/production/info/config/"
@@ -173,6 +163,18 @@ latexRcFile      = RcFiles .. "texmf/tex/latex/prof/"
 metapostRcFile   = RcFiles .. "texmf/metapost/macros_travail/"
 emacsRcFile      = RcFiles .. "emacs-config/.gnu-emacs-custom"
 emacsElispRcFile = RcFiles .. "emacs-config/elisp/"
+--
+clavierCmd       = "/home/david/travail/david/production/info/scripts/tyrfingcolor -s"
+clavierCfgPath   = "/home/david/travail/david/production/lycee/algorithmique/python/drevo/exemples/"
+configAwesome    = "darkred"
+configUrxvt      = "darkblue"
+configEmacs      = "forestgreen"
+
+
+-- config1          = clavierCfgPath .. "config_1.json"
+-- configAwesome    = clavierCfgPath .. "config_awesome.json"
+-- configEmacs      = clavierCfgPath .. "config_emacs.json"
+-- configUrxvt      = clavierCfgPath .. "config_urxvt.json"
 --
 -- }}}
 --

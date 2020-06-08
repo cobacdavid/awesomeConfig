@@ -24,9 +24,11 @@ ordinateur = socket.dns.gethostname()
 --
 config = awful.util.getdir("config")
 
+fu = require("fonctionsUtiles")
+
 listeRcFiles = {--
    "errorhandling45.lua",
-   "fonctionsUtiles.lua",
+   -- "fonctionsUtiles.lua",
    "logicielsIndispensables.lua",
    -- "myPRIVATEvariables.lua",
    "variabledefinitions.lua",
