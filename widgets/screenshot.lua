@@ -3,7 +3,7 @@ local widget = {}
 function widget.screenshot(c, args)
    local args = args or {}
    --
-   screenshot = wibox.widget{
+   local screenshot = wibox.widget{
       image = beautiful.flash_icon,
       widget = wibox.widget.imagebox
    }
@@ -22,7 +22,7 @@ function widget.screenshot(c, args)
                                 local geometrie = largeur .. "x" .. hauteur .. "+" .. posx .. "+" .. posy 
                                 local commande = "import -window root -crop " .. geometrie .. " " .. filename
                                 fu.montre(commande)
-                                awful.spawn(commande)
+                                fu.commande_execute(commande)
                              end
    )
    return screenshot

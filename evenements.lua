@@ -142,25 +142,25 @@ client.connect_signal("request::titlebars",
                                   layout  = wibox.layout.flex.horizontal
                                },
                                { 
-                                  separateur,
+                                  separateur(),
                                   c.bo,
-                                  separateur,
+                                  separateur(),
                                   wibox.widget {
                                      {
                                         image  = beautiful.grip,
                                         resize = true,
                                         widget = wibox.widget.imagebox
                                      },
-                                     dimension_button(c),
+                                     dimFenetre(c),
                                      layout  = wibox.layout.stack,
                                   },
-                                  separateur,
+                                  separateur(),
                                   screenshot(c),
-                                  separateur,
+                                  separateur(),
                                   awful.titlebar.widget.stickybutton(c),
                                   awful.titlebar.widget.ontopbutton(c),
                                   awful.titlebar.widget.maximizedbutton(c),
-                                  killneufw(c),
+                                  killneuf(c),
                                   awful.titlebar.widget.closebutton(c),
                                   layout = wibox.layout.fixed.horizontal()
                                },

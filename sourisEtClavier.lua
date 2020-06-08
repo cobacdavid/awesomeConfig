@@ -103,7 +103,7 @@ globalkeys = gears.table.join(
    ),
    awful.key({modkey}, "F7",
       function()
-         afficheDescription("/home/david/.config/awesome/fondEspace/fondDescription")
+         ppeint.afficheDescription("/home/david/.config/awesome/fondEspace/fondDescription")
       end
    ),
    awful.key({modkey}, "F8",           function()  end),

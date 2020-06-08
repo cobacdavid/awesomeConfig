@@ -125,7 +125,7 @@ awful.screen.connect_for_each_screen(
          )
 	 --
 	 local left_layout = wibox.layout.fixed.horizontal()
-	 left_layout:add(heurew)
+	 left_layout:add(heure())
 	 left_layout:add(s.mytaglist)
          --
 	 if ordinateur == "asus" then
@@ -134,27 +134,13 @@ awful.screen.connect_for_each_screen(
             left_layout:add(luminosite_ecran({iface=ecranPcp}))
          end
          --
-	 left_layout:add(separateur)
+	 left_layout:add(separateur())
 	 left_layout:add(volumemaster())
-	 left_layout:add(separateur)
-         -- left_layout:add(xgamma)
-         -- if not(ordinateur == "asus") then
-         -- left_layout:add(sliderBrightnessWidget(ecranPcp))
-         -- left_layout:add(separateur)
-         --  end
+	 left_layout:add(separateur())
          left_layout:add(luminosite_ecran({iface=ecranAux}))
-         -- left_layout:add(sliderBrightnessWidget(ecranAux2))
-         -- left_layout:add(testw)
-         -- left_layout:add(contenuclient)
-	 -- montre ( ordinateur)
-         left_layout:add(separateur)
-         left_layout:add(infos)
-         -- left_layout:add(freezeWidget)
-         -- if ordinateur == "asus" then
-         --   left_layout:add(separateur)
-         --   left_layout:add(volumeBT)
-         -- end
-	 left_layout:add(separateur)
+         left_layout:add(separateur())
+         left_layout:add(infos())
+	 left_layout:add(separateur())
 	 left_layout:add(s.mypromptbox)
          if ordinateur == "asus" then
             left_layout:add(car)

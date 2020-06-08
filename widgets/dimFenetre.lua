@@ -1,6 +1,8 @@
-function dimension_button(c)
+local widget = {}
+
+function widget.dimFenetre(c, args)
    local chaine = tostring(c.width) .. "x" .. tostring(c.height)
-   local texte = wibox.widget(
+   local dimFenetre = wibox.widget(
       {
          text = chaine,
          widget = wibox.widget.textbox,
@@ -11,9 +13,14 @@ function dimension_button(c)
    c:connect_signal("property::size",
                     function()
                        rapport = tonumber(string.format("%.2f", c.width/c.height))
-                       texte.text = tostring(c.width) .. "x"
+                       dimFenetre.text = tostring(c.width) .. "x"
                           .. tostring(c.height) .. " " .. rapport 
                     end
    )
-   return texte
+   return dimFenetre
 end
+
+
+return setmetatable(widget, {__call=function(t, args)
+                                return widget.dimFenetre(args)
+                   end})
