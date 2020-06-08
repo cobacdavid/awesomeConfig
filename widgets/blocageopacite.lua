@@ -1,4 +1,7 @@
-function blocage_opacite(c)
+local widget = {}
+
+
+function widget.blocage_opacite(c)
    local bouton = wibox.widget({
          widget = wibox.widget.textbox,
          text = "O"
@@ -16,3 +19,7 @@ function blocage_opacite(c)
    )
    return bouton
 end
+
+return setmetatable(widget, {__call=function(t, args)
+                                return widget.blocage_opacite(args)
+                   end})

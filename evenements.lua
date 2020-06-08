@@ -87,7 +87,7 @@ client.connect_signal("request::titlebars",
                       function(c)
                          -- pour régler les clients PDF sur l'écran
                          -- auxiliaire
-                         c.bo = blocage_opacite(c)
+                         c.bo = blocageopacite(c)
                          c.tb = awful.titlebar.widget.titlewidget(c)
                          -- buttons for the titlebar
                          local buttons = gears.table.join(
@@ -137,7 +137,7 @@ client.connect_signal("request::titlebars",
                                { 
                                    { -- Barre d'opacité
                                      align  = "center",
-                                     widget = opacity_button(c),
+                                     widget = opacite(c),
                                    },
                                   layout  = wibox.layout.flex.horizontal
                                },
@@ -155,7 +155,7 @@ client.connect_signal("request::titlebars",
                                      layout  = wibox.layout.stack,
                                   },
                                   separateur,
-                                  screenshotW(c),
+                                  screenshot(c),
                                   separateur,
                                   awful.titlebar.widget.stickybutton(c),
                                   awful.titlebar.widget.ontopbutton(c),

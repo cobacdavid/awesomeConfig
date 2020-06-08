@@ -129,20 +129,20 @@ awful.screen.connect_for_each_screen(
 	 left_layout:add(s.mytaglist)
          --
 	 if ordinateur == "asus" then
-            left_layout:add(luminosite)
+            left_layout:add(luminosite())
          else
-            left_layout:add(sliderBrightnessWidget(ecranPcp))
+            left_layout:add(luminosite_ecran({iface=ecranPcp}))
          end
          --
 	 left_layout:add(separateur)
-	 left_layout:add(volumemaster)
+	 left_layout:add(volumemaster())
 	 left_layout:add(separateur)
          -- left_layout:add(xgamma)
          -- if not(ordinateur == "asus") then
          -- left_layout:add(sliderBrightnessWidget(ecranPcp))
          -- left_layout:add(separateur)
          --  end
-         left_layout:add(sliderBrightnessWidget(ecranAux))
+         left_layout:add(luminosite_ecran({iface=ecranAux}))
          -- left_layout:add(sliderBrightnessWidget(ecranAux2))
          -- left_layout:add(testw)
          -- left_layout:add(contenuclient)

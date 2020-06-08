@@ -1,3 +1,5 @@
+local widget = {}
+
 -- local commande = "amixer get" .. sortie .. "|grep Left:|cut -d ' ' -f6"
 -- local volumeactuel
 -- awful.spawn.easy_async( commande ,
@@ -7,7 +9,9 @@
 -- )
 --
 
-function sliderBrightnessWidget(ecran)
+function widget.sliderBrightnessWidget(args)
+   local args = args or {iface="HDMI-0"}
+   --
    local MAX      = 100
    local maxi     = 2
    local MIN      = 0
@@ -30,7 +34,7 @@ function sliderBrightnessWidget(ecran)
    -- le widget texte
    local sliderBrightnessTexte = wibox.widget(
       {
-         markup = "<span foreground='white'>" .. ecran .. "</span>",
+         markup = "<span foreground='white'>" .. args.iface .. "</span>",
          align = "center",
          widget = wibox.widget.textbox
       }
@@ -48,7 +52,7 @@ function sliderBrightnessWidget(ecran)
    sliderBrightnessControle:connect_signal("property::value", function()
          local v = tostring(mini + (sliderBrightnessControle.value * (maxi - mini) / MAX))
          v = v:gsub(",",".")                              
-         local command="xrandr --output " .. ecran .." --brightness " .. v
+         local command="xrandr --output " .. args.iface .." --brightness " .. v
          -- fu.montre(command)
          fu.commande_execute(command)
          -- awful.spawn(command)
@@ -64,3 +68,7 @@ function sliderBrightnessWidget(ecran)
    --
    return sliderBrightness
 end
+
+return setmetatable(widget, {__call=function(t, args)
+                                return widget.sliderBrightnessWidget(args)
+                   end})

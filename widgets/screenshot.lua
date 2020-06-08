@@ -1,9 +1,13 @@
-function screenshotW (c)
+local widget = {}
+
+function widget.screenshot(c, args)
+   local args = args or {}
+   --
    screenshot = wibox.widget{
       image = beautiful.flash_icon,
       widget = wibox.widget.imagebox
    }
-   
+   --
    screenshot:connect_signal("button::press",
                              function()
                                 local filename = os.date("%Y%m%d-%H%M%S") .. "-" ..  c.class  ..  ".png"
@@ -17,9 +21,14 @@ function screenshotW (c)
                                 local posy = c.y
                                 local geometrie = largeur .. "x" .. hauteur .. "+" .. posx .. "+" .. posy 
                                 local commande = "import -window root -crop " .. geometrie .. " " .. filename
-                                montre(commande)
+                                fu.montre(commande)
                                 awful.spawn(commande)
                              end
    )
    return screenshot
 end
+
+
+return setmetatable(widget, {__call=function(t, args)
+                                return widget.screenshot(args)
+                   end})

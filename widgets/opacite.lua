@@ -1,4 +1,10 @@
-function opacity_button(c)
+local fu = require("fonctionsUtiles")
+
+local widget = {}
+
+function widget.opacite(c, args)
+   local args = args or {}
+   --
    local MIN = 0
    local mini = 0.2
    local MAX = 100
@@ -15,20 +21,20 @@ function opacity_button(c)
        handle_border_width = 1,
        minimum             = MIN,
        maximum             = MAX,
-       value               = ( c.opacity - mini ) / ( (maxi-mini) / MAX ),
+       value               = (c.opacity - mini) / ((maxi-mini) / MAX),
        widget              = wibox.widget.slider,
     }
 
    c:connect_signal("property::opacity",
       function()
-	 slider.value = ( c.opacity - mini ) / ( (maxi-mini)/ MAX )
+	 slider.value = (c.opacity - mini) / ((maxi-mini)/ MAX)
 	 slider.handle_color = fu.couleurBarre( theme.widget_opacite_handle_color_type, slider.value, MIN, MAX)
       end
    )
    slider:connect_signal("property::value",
       function()
-	 c.opacity = mini + ( slider.value * (maxi-mini)/ MAX )
-	 slider.handle_color = fu.couleurBarre( theme.widget_opacite_handle_color_type, slider.value, MIN, MAX)
+	 c.opacity = mini + (slider.value * (maxi-mini)/ MAX)
+	 slider.handle_color = fu.couleurBarre(theme.widget_opacite_handle_color_type, slider.value, MIN, MAX)
 		 
       end
    )
@@ -38,3 +44,7 @@ function opacity_button(c)
     local result = slider
     return slider
 end
+
+return setmetatable(widget, {__call=function(t, args)
+                                return widget.opacite(args)
+                   end})
