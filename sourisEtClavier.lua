@@ -117,6 +117,22 @@ globalkeys = gears.table.join(
       end
    ),
    --
+   awful.key({modkey, "Shift"}, "F5",
+      function()
+         mpdCom.stopmusic()
+   end),
+   awful.key({modkey, "Shift"}, "F6",
+      function()
+         mpdCom.previous()
+   end),
+   awful.key({modkey, "Shift"}, "F7",
+      function()
+         mpdCom.playorpause()
+   end),
+   awful.key({modkey, "Shift"}, "F8",
+      function()
+         mpdCom.next()
+   end),
    --
    awful.key({modkey}, "XF86PowerOff",
       function()

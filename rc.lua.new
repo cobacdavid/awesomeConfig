@@ -38,6 +38,8 @@ screenshot = require("widgets.screenshot")
 infos = require("widgets.infos")
 dimFenetre = require("widgets.dimFenetre")
 --
+mpdCom = require("mpdCommande")
+--
 listeRcFiles = {--
    "errorhandling45.lua",
    "logicielsIndispensables.lua",

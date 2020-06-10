@@ -14,7 +14,7 @@ myawesomemenu = {
    {"redémarrer", awesome.restart },
    {"quitter", --function() awesome.quit() end
     function()
-       sortir_awesome()
+       fu.sortir_awesome()
     end
    }
 }
