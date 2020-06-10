@@ -4,7 +4,8 @@ local fu = require("fonctionsUtiles")
 --
 mpd = {}
 
-mpd.csong = nil
+mpd.cartist = nil
+mpd.ctrack = nil
 mpd.statusList = nil
 mpd._socket = nil
 
@@ -91,8 +92,10 @@ function mpd.currentsong()
    return tableauReponse
 end
 
-function mpd.artist()
-   mpd.csong = mpd.currentsong()['Artist']
+function mpd.artistAndTrack()
+   local t = mpd.currentsong()
+   mpd.cartist = t['Artist']
+   mpd.ctrack  = t['Title']
 end
 
 function mpd.isstopped()

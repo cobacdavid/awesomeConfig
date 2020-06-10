@@ -133,10 +133,15 @@ globalkeys = gears.table.join(
       function()
          mpdCom.next()
    end),
-   --
-   awful.key({modkey}, "XF86PowerOff",
+   awful.key({modkey, "Shift"}, "F8",
       function()
-         awesome.quit()
+         mpdCom.next()
+   end),
+   --
+   awful.key({modkey, "Shift"}, "F9",
+      function()
+         mpdCom.artistAndTrack()
+         fu.montre(mpdCom.cartist .. "\n" .. mpdCom.ctrack)
       end
    ),
    awful.key({  }, "XF86Back",
