@@ -107,13 +107,13 @@ awful.screen.connect_for_each_screen(
          --
 	 s.mypromptbox = awful.widget.prompt()
          --
-	 s.mytaglist = awful.widget.taglist(
-            {
-               screen = s,
-               filter = awful.widget.taglist.filter.all,
-               buttons = taglist_buttons
-            }
-         )
+	 -- s.mytaglist = awful.widget.taglist(
+         --    {
+         --       screen = s,
+         --       filter = awful.widget.taglist.filter.all,
+         --       buttons = taglist_buttons
+         --    }
+         -- )
          --
          --
 	 s.mywibar = awful.wibar(
@@ -126,7 +126,7 @@ awful.screen.connect_for_each_screen(
 	 --
 	 local left_layout = wibox.layout.fixed.horizontal()
 	 left_layout:add(heure({justify="left"}))
-	 left_layout:add(s.mytaglist)
+	 -- left_layout:add(s.mytaglist)
          --
 	 if ordinateur == "asus" then
             left_layout:add(luminosite())
