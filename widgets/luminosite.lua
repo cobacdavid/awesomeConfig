@@ -1,3 +1,8 @@
+local gears = require("gears")
+local beautiful = require("beautiful")
+local wibox = require("wibox")
+local fu = require("fonctionsUtiles")
+--
 local widget = {}
 
 local MAX = 937
@@ -42,13 +47,12 @@ function widget.createWidget(args)
                                         --
                                         local command='echo '.. v .. ' > '.. FIC
                                         --montre( command )
-                                        awful.spawn.easy_async_with_shell( command, function(s,t,u,v)
-                                        end)
+                                        awful.spawn.easy_async_with_shell(command, function(s,t,u,v)  end)
                                         --
                                         --local valeur=math.floor(v*255/MAX)
                                         --local nuance = string.format("#%x%x%x", valeur,valeur,valeur)
                                         --luminositeControle.handle_color=nuance
-                                        luminositeControle.handle_color = couleurBarre( theme.widget_luminosite_handle_color_type, v, MIN, MAX)
+                                        luminositeControle.handle_color = fu.couleurBarre(theme.widget_luminosite_handle_color_type, v, MIN, MAX)
    end)
 --
    if ordinateur == "asus" then

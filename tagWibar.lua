@@ -143,7 +143,7 @@ awful.screen.connect_for_each_screen(
 	 left_layout:add(separateur())
 	 left_layout:add(s.mypromptbox)
          if ordinateur == "asus" then
-            left_layout:add(car)
+            -- left_layout:add(car)
          end
          --
 	 local right_layout = wibox.layout.fixed.horizontal()

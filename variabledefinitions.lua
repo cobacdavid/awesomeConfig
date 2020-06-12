@@ -8,9 +8,6 @@
 --                                      ordinateur = stdout
 --                                   end
 -- )
-if not(ordinateur == "asus") then
-   ordinateur = "maison"
-end
 if ordinateur == "asus" then
    ecranPcp = "eDP1" -- portable
    ecranAux = "HDMI1" -- sortie HDMI

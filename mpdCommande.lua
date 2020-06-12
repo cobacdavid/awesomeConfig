@@ -20,6 +20,8 @@ local function strip(chaine)
 end
 
 function mpd.run()
+   -- mpd est lancé via play
+   -- pas de démarrage auto avec apponlogin...
    fu.commande_execute("/usr/bin/mpd ~/.config/mpd/mpd.conf")
 end
 
@@ -27,7 +29,11 @@ function mpd.connect()
    local host = "localhost"
    local port = 6600
    mpd._socket = socket.connect(host, port)
-   local r = mpd._socket:receive()
+   if mpd._socket == nil then
+      mpd.run()
+   else 
+      local r = mpd._socket:receive()
+   end
    -- ajouter un test de bon déroulement !!
 end
 
@@ -98,25 +104,34 @@ function mpd.artistAndTrack()
    mpd.ctrack  = t['Title']
 end
 
-function mpd.isstopped()
-   mpd.statusListe = mpd.status()
-   return mpd.statusListe['state'] == "stop"
-end
-
 function mpd.previous()
-   mpd.com("previous")
+   mpd.statusListe = mpd.status()
+   if mpd.statusListe['state'] == "play" then
+      mpd.com("previous")
+   end
 end
 
 function mpd.next()
-   mpd.com("next")
+   mpd.statusListe = mpd.status()
+   if mpd.statusListe['state'] == "play" then
+      mpd.com("next")
+   end
 end
 
 function mpd.playorpause()
-   if mpd.isstopped() then
+   mpd.statusListe = mpd.status()
+   local etat = ""
+   if mpd.statusListe['state'] == "stop" then
       mpd.com("play")
    else
+      if mpd.statusListe['state'] == "pause" then
+         etat = "play"
+      else
+         etat = "pause"
+      end
       mpd.com("pause")
    end
+    fu.montre("Serveur MPD : " .. etat)
 end
 
 function mpd.stopmusic()
