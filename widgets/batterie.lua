@@ -5,6 +5,7 @@ local io = require("io")
 local os = require("os")
 local gears = require("gears")
 local fu = require("fonctionsUtiles")
+local beautiful = require("beautiful")
 --
 local widget = {}
 
@@ -18,7 +19,16 @@ if ordinateur == "maison" then
 end
 
 function widget.batterie(args)
-   local w = wibox.widget.textbox()
+   local w = wibox({})
+   w:setup({
+         {
+            id="text",
+            widget = wibox.widget.textbox
+         },
+         id="conteneur",
+         bg=beautiful.widget_bg,
+         widget=wibox.container.background
+   })
    --
    gears.timer({
          timeout=widget.delai,
@@ -32,11 +42,11 @@ function widget.batterie(args)
             local fH = io.open(widget.logFile, "a")
             fH:write(os.date("%Y%m%d-%H%M%S") .. " " .. niveau .. "\n")
             fH:close()
-            w:set_text(niveau .. "%")
+            w.conteneur.text:set_text(niveau .. "%")
          end
    })
-
-   return w
+   --
+   return w.conteneur
 end
 
 

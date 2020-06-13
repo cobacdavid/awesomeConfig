@@ -40,7 +40,9 @@ opacite = require("widgets.opacite")
 screenshot = require("widgets.screenshot")
 infos = require("widgets.infos")
 dimFenetre = require("widgets.dimFenetre")
-batt = require("widgets.batterie")
+if ordinateur == "asus" then
+   batt = require("widgets.batterie")
+end
 --
 mpdCom = require("mpdCommande")
 --

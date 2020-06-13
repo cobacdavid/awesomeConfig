@@ -145,8 +145,10 @@ awful.screen.connect_for_each_screen(
 	 left_layout:add(separateur())
          left_layout:add(luminosite_ecran({iface=ecranAux}))
          left_layout:add(separateur())
-         left_layout:add(batt())
-         left_layout:add(separateur())
+         if ordinateur == "asus" then
+            left_layout:add(batt())
+            left_layout:add(separateur())
+         end
          left_layout:add(infos())
 	 left_layout:add(separateur())
 	 left_layout:add(s.mypromptbox)
