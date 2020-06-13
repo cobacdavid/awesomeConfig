@@ -44,9 +44,15 @@ awful.screen.connect_for_each_screen(
       -- l'interface !!
       gears.wallpaper.set("#000000")
       if s.index == 1 then
+         local layoutterm = ""
+         if ordinateur == "maison" then
+            layoutterm = awful.layout.suit.tile.top
+         else
+            layoutterm = awful.layout.suit.tile.left
+         end
 	 awful.tag.add("term",
                        {
-                          layout = awful.layout.suit.tile.top,
+                          layout = layoutterm,
 			  screen = s,
 			  selected = true,
 			  gap = 5,
@@ -138,6 +144,8 @@ awful.screen.connect_for_each_screen(
 	 left_layout:add(volumemaster())
 	 left_layout:add(separateur())
          left_layout:add(luminosite_ecran({iface=ecranAux}))
+         left_layout:add(separateur())
+         left_layout:add(batt())
          left_layout:add(separateur())
          left_layout:add(infos())
 	 left_layout:add(separateur())

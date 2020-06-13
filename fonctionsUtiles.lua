@@ -245,7 +245,7 @@ end
 -- sortie d'awesome
 function fonctionsUtiles.sortir_awesome()
    -- les statistiques
-   fTag = io.open("statsTag.dat", "a")
+   local fTag = io.open("statsTag.dat", "a")
    fTag:write(os.date("%Y%m%d-%H%M%S") .. " " .. tostring(chgTag) .. "\n")
    for _, t in ipairs(listeChgTag) do
       fTag:write(t.name .. " ")

@@ -257,7 +257,6 @@ client.connect_signal("unfocus",
 
 tag.connect_signal("property::selected",
                    function(t)
-                      -- montre(t)
                       if #listeChgTag == 0
                       or t ~= listeChgTag[#listeChgTag] then
                          chgTag = chgTag + 1

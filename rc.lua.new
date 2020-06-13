@@ -40,6 +40,7 @@ opacite = require("widgets.opacite")
 screenshot = require("widgets.screenshot")
 infos = require("widgets.infos")
 dimFenetre = require("widgets.dimFenetre")
+batt = require("widgets.batterie")
 --
 mpdCom = require("mpdCommande")
 --
