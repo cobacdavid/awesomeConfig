@@ -182,7 +182,7 @@ configUrxvt      = "darkblue"
 configEmacs      = "forestgreen"
 --
 --
-local appsDemarrage = {
+appsDemarrage = {
    "wmname LG3D",
    compositeMgr,
    editorD,
