@@ -1,5 +1,19 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+--
+local wibox = require("wibox")
+local gears = require("gears")
+local beautiful = require("beautiful")
+--
+local fu = require("fonctionsUtiles")
+--
 local widget = {}
-
+--
 function widget.ppeintDesc(args)
    local args = args or {}
    local widget_description = wibox({
@@ -8,7 +22,7 @@ function widget.ppeintDesc(args)
          ontop = true,
          screen = mouse.screen,
          expand = true,
-         bg = theme.noir,
+         bg = beautiful.noir,
          max_widget_size = 500,
          border_width = 3,
          border_color = theme.gris,
@@ -29,15 +43,12 @@ function widget.ppeintDesc(args)
          id = "conteneur",
          layout  = wibox.layout.fixed.horizontal
    })
+   --
    return widget_description
 end
 --
 function widget.afficheDescription(w, fichierDescription)
-   fu.montre(w)
-   --
-   local fh = io.open(fichierDescription, "r")
-   local contenu = fh:read("*a")
-   fh:close()
+   local contenu = fu.readFile(fichierDescription)
    --
    w.conteneur.text.desc:set_text(contenu)
    w.visible = true

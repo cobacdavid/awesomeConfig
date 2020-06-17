@@ -1,11 +1,19 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
 local awful = require("awful")
 local wibox = require("wibox")
 local math = require("math")
 local io = require("io")
 local os = require("os")
 local gears = require("gears")
-local fu = require("fonctionsUtiles")
 local beautiful = require("beautiful")
+--
+local fu = require("fonctionsUtiles")
 --
 local widget = {}
 

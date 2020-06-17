@@ -1,3 +1,14 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-- some parts from awesome wm 
+-- ditribution
+-- copyright ??
+-------------------------------------------------
 -- désactivation de ces deux nouvelles fonctionnalités
 awful.mouse.snap.edge_enabled = false
 awful.mouse.snap.client_enabled = false
@@ -281,25 +292,25 @@ globalkeys = gears.table.join(
    	 }
    end),
    
-   awful.key({modkey}, "q",
-      function ()
-         local s = screen.primary
-   	 awful.prompt.run {
-            prompt = "Recherche Web Qwant : ",
-   	    textbox = s.mypromptbox.widget,
-   	    exe_callback = function (recherche)
-   	       if recherche:len() == 0 then
-   		  url = " '" .. urlQwant .. "'"
-   	       else
-   		  recherche = string.gsub( recherche , " " , "+" )
-   		  url = " '" .. urlQwant .. metaQwant .. "q=" .. recherche .. "'"
-   	       end
-   	       awful.spawn( browser .. url )
-   	    end,
-            history_path = "/home/david/.config/awesome/google_search_history"
-         }
-      end
-   ),
+   -- awful.key({modkey}, "q",
+   --    function ()
+   --       local s = screen.primary
+   -- 	 awful.prompt.run {
+   --          prompt = "Recherche Web Qwant : ",
+   -- 	    textbox = s.mypromptbox.widget,
+   -- 	    exe_callback = function (recherche)
+   -- 	       if recherche:len() == 0 then
+   -- 		  url = " '" .. urlQwant .. "'"
+   -- 	       else
+   -- 		  recherche = string.gsub( recherche , " " , "+" )
+   -- 		  url = " '" .. urlQwant .. metaQwant .. "q=" .. recherche .. "'"
+   -- 	       end
+   -- 	       awful.spawn( browser .. url )
+   -- 	    end,
+   --          history_path = "/home/david/.config/awesome/google_search_history"
+   --       }
+   --    end
+   -- ),
    
    awful.key({modkey}, "t",
       function ()

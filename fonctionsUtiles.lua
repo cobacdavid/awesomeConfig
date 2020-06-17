@@ -1,3 +1,18 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-- some parts from awesome wm 
+-- ditribution
+-- copyright ??
+-------------------------------------------------
+--
+local string = require("string")
+local io = require("io")
+local os = require("os")
 local gears = require("gears")
 local naughty = require("naughty")
 local awful = require("awful")
@@ -8,9 +23,9 @@ local fonctionsUtiles = {}
 --
 -- couleur aléatoire
 function fonctionsUtiles.couleurAlea()
-   R = math.floor(math.random() * 256)
-   G = math.floor(math.random() * 256)
-   B = math.floor(math.random() * 256)
+   local R = math.floor(math.random() * 256)
+   local G = math.floor(math.random() * 256)
+   local B = math.floor(math.random() * 256)
    return string.format("#%02X%02X%02X", R, G, B)
 end
 
@@ -41,14 +56,14 @@ function fonctionsUtiles.montre(t)
 end
 
 --
--- le tableau contient val
 function fonctionsUtiles.contains(tab, val)
-   for i = 1, #tab do
-      if tab[i] == val then 
-         return true
-      end
+   local trouve = false
+   local i = 1
+   while (not trouve) and (i <= #tab) do
+      trouve = tab[i] == val
+      i = i + 1
    end
-   return false
+   return trouve
 end
 
 --
@@ -62,6 +77,7 @@ function fonctionsUtiles.surTermOuPas(c)
          c.floating = false
          awful.titlebar.hide(c, beautiful.titlebar_premiere)
          -- awful.titlebar.hide(c, beautiful.titlebar_seconde)
+         break
       end
    end
 end
@@ -148,8 +164,8 @@ function fonctionsUtiles.execute_command(command)
    io.close(fh)
    return str
 end
---
 
+--
 function fonctionsUtiles.commande_execute(commande)
    awful.spawn.easy_async_with_shell(commande,
                                      function(stdout, stderr, reason, exit_code)
@@ -158,14 +174,34 @@ function fonctionsUtiles.commande_execute(commande)
    )
    return tostring(resultat)
 end
---
 
-function fonctionsUtiles.readResult(commande)
-      local fh = io.popen(commande)
-      resultat = fh:read("*a")
-      fh:close()
-      return resultat
+--
+function fonctionsUtiles.executeUneFois(cmd)
+   local findme = "ps x U david |grep '" .. cmd .. "' |wc -l"
+   awful.spawn.easy_async_with_shell(findme,
+                                     function(stdout,stderr,reason,exit_code)
+                                        if tonumber(stdout) <= 2 then
+                                           awful.spawn( cmd )
+                                        end
+   end)
 end
+
+-- resultat d'une commande bash
+function fonctionsUtiles.readResult(commande)
+   local fh = io.popen(commande)
+   local resultat = fh:read("*a")
+   fh:close()
+   return resultat
+end
+
+-- lecture complète d'un fichier
+function fonctionsUtiles.readFile(fichier)
+   local fh = io.open(fichier)
+   local contenu = fh:read("*a")
+   fh:close()
+   return contenu
+end
+
 --
 -- Existence d'un fichier 
 -- http://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists
@@ -310,5 +346,16 @@ function fonctionsUtiles.fondEcran(t)
    cr:stroke()
    return img
 end
+
+function fonctionsUtiles.imagesFonds()
+   local rep = "/tmp/"
+   local s = screen[1]
+   local surface = nil
+   for i, t in ipairs(s.tags) do
+      surface = fonctionsUtiles.fondEcran(t)
+      surface:write_to_png(rep .. t.name .. ".png")
+   end
+end
+
 
 return fonctionsUtiles

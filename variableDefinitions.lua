@@ -1,3 +1,14 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-- some parts from awesome wm 
+-- ditribution
+-- copyright ??
+-------------------------------------------------
 -- {{{ Variable definitions
 
 -- ordinateur peut valoir "asus" ou pas
@@ -45,7 +56,6 @@ monIPInternet      = "wget http://checkip.dyndns.org/ -O - -o /dev/null | cut -d
 versionLinux       = "echo $(uname -v |cut -d ' ' -f4)"
 versionDistrib     = "cat /etc/debian_version"
 laTempExt          = "ansiweather -l angers,fr|cut -d ' ' -f 6-7"
-batterie           = "printf '%i %%' $(cat /sys/class/power_supply/BAT0/capacity)"
 temperatureCore    = "sensors |grep Package|cut -d ' ' -f 5-6"
 --
 -- APPS and APPS class
@@ -90,8 +100,8 @@ browser_alt      = operaCmd
 browser_altClass = operaClass
 urlGoogle        = "https://www.google.com/"
 metaGoogle       = "#"
-urlQwant         = "https://www.qwant.com/"
-metaQwant        = "?"
+-- urlQwant         = "https://www.qwant.com/"
+-- metaQwant        = "?"
 urlDDGo          = "https://duckduckgo.com/"
 metaDDGo         = "?"
 -- urlSearch        = urlQwant
@@ -104,7 +114,7 @@ gmail            = browser .. " https://mail.google.com"
 -- github           = browser .. " https://github.com/" .. githubUser
 youtube          = browser .. " https://www.youtube.com"
 maps             = browser .. " https://maps.google.fr"
-rabelais         = browser .. " http://francois-rabelais.anjou.e-lyco.fr"
+-- rabelais         = browser .. " http://francois-rabelais.anjou.e-lyco.fr"
 meteofrance      = browser .. " http://france.meteofrance.com/france/meteo?PREVISIONS_PORTLET.path=previsionsdept%2FDEPT49"
 -- running          = browser_alt .. " https://connect.garmin.com/profile/" .. garminUser
 --
@@ -117,6 +127,10 @@ radio            = "radiotray-lite"
 -- cloudMusique     = "google-musicmanager"
 cloudMusique     = "google-play-music-desktop-player"
 --
+--mpdClient        = "ario"
+--ncMpdClient      = "ncmpc -cm"
+--ncMpdClient      =  terminal .. ' -e ' .. "ncmpcpp"
+--mpdCurrent       =  scriptsPath .. "currentsong.sh &"
 amixerplus       = "amixer set Master 3%+"
 amixermoins      = "amixer set Master 3%-"
 amixerzero       = "amixer set Master 0%"
@@ -166,7 +180,17 @@ clavierCfgPath   = "/home/david/travail/david/production/lycee/algorithmique/pyt
 configAwesome    = "darkred"
 configUrxvt      = "darkblue"
 configEmacs      = "forestgreen"
-
+--
+--
+local appsDemarrage = {
+   "wmname LG3D",
+   compositeMgr,
+   editorD,
+   terminalD,
+   cloudMusique,
+   keepass,
+   radio,
+}
 
 -- config1          = clavierCfgPath .. "config_1.json"
 -- configAwesome    = clavierCfgPath .. "config_awesome.json"
@@ -229,7 +253,4 @@ configEmacs      = "forestgreen"
 -- timeoutPOD2        = 600
 --jdownloader      = "/home/david/Téléchargements/jd2/JDownloader2 -org=/home/david/.jdownloader/JDownloader.jar"
 --
---mpdClient        = "ario"
---ncMpdClient      = "ncmpc -cm"
---ncMpdClient      =  terminal .. ' -e ' .. "ncmpcpp"
---mpdCurrent       =  scriptsPath .. "currentsong.sh &"
+

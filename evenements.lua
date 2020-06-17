@@ -1,3 +1,14 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-- some parts from awesome wm 
+-- ditribution
+-- copyright ??
+-------------------------------------------------
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage",
@@ -262,8 +273,10 @@ tag.connect_signal("property::selected",
                          chgTag = chgTag + 1
                          table.insert(listeChgTag, t)
                       end
-                      local cr = fu.fondEcran(t)
-                      gears.wallpaper.maximized(cr, t.screen)
+                      -- local cr = fu.fondEcran(t)
+                      -- gears.wallpaper.maximized(cr, t.screen)
+                      local rep = "/tmp/"
+                      gears.wallpaper.maximized(rep .. t.name .. ".png", t.screen)
                    end
 )
 
