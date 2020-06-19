@@ -167,6 +167,10 @@ end
 
 --
 function fonctionsUtiles.commande_execute(commande)
+   return fonctionsUtiles.commandeExecute(commande)
+end
+
+function fonctionsUtiles.commandeExecute(commande)
    awful.spawn.easy_async_with_shell(commande,
                                      function(stdout, stderr, reason, exit_code)
                                         resultat = exit_code

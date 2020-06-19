@@ -376,45 +376,45 @@ awful.screen.connect_for_each_screen(
       -- xrandr --output HDMI-0 --primary --mode 1920x1200 --pos 1440x0
       -- >> --output DVI-0 --mode 1440x900 --pos 0x300 --rotate normal
       -- >> --output VGA-0  --mode 1440x900 --pos 3360x0 --rotate left
-      if s.index == 3 then
-	 awful.tag.add("Auxiliaire", {
-			  layout             = awful.layout.suit.floating,
-			  screen             = s,
-	 })
-	 local clo=wibox.widget {
-            align = "center",
-	    widget = wibox.widget.textclock(" %A %d %B %Y ")
-         }
-	 s.mywibox = awful.wibar({
-	       screen = s ,
-	       bg = beautiful.noir,
-	       widget=clo,
-               position = "top",
-               ontop = false,
-               type = "dock"
-	 })
-         s.myjumpbox = awful.wibar({
-               position = "right",
-               screen   = s ,
-               width    = 1,
-               -- bg       = beautiful.noir,
-               opacity  = 0,
-               ontop    = true
-         })
-         s.myjumpbox:connect_signal("mouse::enter", function(w)
-                                       if mouse.coords().y > 300 then
-                                          mouse.coords {
-                                             x = 2 ,
-                                             y = mouse.coords().y
-                                          }
-                                       else
-                                          mouse.coords {
-                                             x = 2 ,
-                                             y = 300
-                                          }
-                                       end
-         end)
-      end
+      -- if s.index == 3 then
+      --    awful.tag.add("Auxiliaire", {
+      --   		  layout             = awful.layout.suit.floating,
+      --   		  screen             = s,
+      --    })
+      --    local clo=wibox.widget {
+      --       align = "center",
+      --       widget = wibox.widget.textclock(" %A %d %B %Y ")
+      --    }
+      --    s.mywibox = awful.wibar({
+      --          screen = s ,
+      --          bg = beautiful.noir,
+      --          widget=clo,
+      --          position = "top",
+      --          ontop = false,
+      --          type = "dock"
+      --    })
+      --    s.myjumpbox = awful.wibar({
+      --          position = "right",
+      --          screen   = s ,
+      --          width    = 1,
+      --          -- bg       = beautiful.noir,
+      --          opacity  = 0,
+      --          ontop    = true
+      --    })
+      --    s.myjumpbox:connect_signal("mouse::enter", function(w)
+      --                                  if mouse.coords().y > 300 then
+      --                                     mouse.coords {
+      --                                        x = 2 ,
+      --                                        y = mouse.coords().y
+      --                                     }
+      --                                  else
+      --                                     mouse.coords {
+      --                                        x = 2 ,
+      --                                        y = 300
+      --                                     }
+      --                                  end
+      --    end)
+      -- end
    end
 )
 

@@ -275,8 +275,10 @@ tag.connect_signal("property::selected",
                       end
                       -- local cr = fu.fondEcran(t)
                       -- gears.wallpaper.maximized(cr, t.screen)
-                      local rep = "/tmp/"
-                      gears.wallpaper.maximized(rep .. t.name .. ".png", t.screen)
+                      if mouse.screen.index == 1 then
+                         local rep = "/tmp/"
+                         gears.wallpaper.maximized(rep .. t.name .. ".png", t.screen)
+                      end
                    end
 )
 

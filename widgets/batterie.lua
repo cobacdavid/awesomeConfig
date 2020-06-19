@@ -43,7 +43,9 @@ function widget.batterie(args)
          call_now=true,
          autostart=true,
          callback=function()
-            local niveau = fu.readResult(widget.fichier)
+            local niveau = fu.readFile(widget.fichier)
+            -- enlèvement saut à la ligne
+            niveau = niveau:sub(1, -2)
             if ordinateur == "maison" then
                niveau = tostring(math.floor(math.random() * 101))
             end

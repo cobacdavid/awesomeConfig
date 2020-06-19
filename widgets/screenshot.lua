@@ -1,3 +1,9 @@
+local beautiful = require("beautiful")
+local wibox = require("wibox")
+local os = require("os")
+--
+local fu = require("fonctionsUtiles")
+--
 local widget = {}
 
 function widget.screenshot(c, args)
@@ -15,9 +21,9 @@ function widget.screenshot(c, args)
                                 -- opacité non gérée
                                 -- gears.surface(c.content):write_to_png(
                                 -- "/home/david/" .. filename )
-                                local largeur = c.width  - beautiful.titlebar_epaisseur_premiere
-                                local hauteur = c.height - beautiful.titlebar_epaisseur_seconde
-                                local posx = c.x + beautiful.titlebar_epaisseur_premiere
+                                local largeur = c.width -- - beautiful.titlebar_epaisseur_premiere
+                                local hauteur = c.height -- - beautiful.titlebar_epaisseur_seconde
+                                local posx = c.x -- + beautiful.titlebar_epaisseur_premiere
                                 local posy = c.y
                                 local geometrie = largeur .. "x" .. hauteur .. "+" .. posx .. "+" .. posy 
                                 local commande = "import -window root -crop " .. geometrie .. " " .. filename
