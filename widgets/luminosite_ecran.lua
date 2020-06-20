@@ -1,3 +1,9 @@
+local wibox = require("wibox")
+local beautiful = require("beautiful")
+local gears = require("gears")
+--
+local fu = require("fonctionsUtiles")
+--
 local widget = {}
 
 -- local commande = "amixer get" .. sortie .. "|grep Left:|cut -d ' ' -f6"

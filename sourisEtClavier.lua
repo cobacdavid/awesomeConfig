@@ -193,21 +193,25 @@ globalkeys = gears.table.join(
          awful.spawn(lumimoins)
       end
    ),
+   --
    awful.key({modkey, "Mod1"}, "Up",
       function()
 	 awful.spawn(lumiplus)
       end
    ),
+   --
    awful.key({modkey}, "Left",
       function()
          awful.tag.viewprev(1)
       end
    ),
+   --
    awful.key({modkey}, "Right",
       function()
          awful.tag.viewnext(1)
       end
    ),
+   --
    awful.key({modkey}, "k",
       function ()
          awful.client.focus.byidx(-1)
@@ -231,15 +235,18 @@ globalkeys = gears.table.join(
          awful.spawn(terminal)
       end
    ),
+   --
    awful.key({modkey, "Control"}, "r",
       awesome.restart
    ),
+   --
    awful.key({modkey, "Control"}, "q",
       function()
          --  awesome.quit()
-         sortir_awesome()
+         fu.sortir_awesome()
       end
    ),
+   --
    awful.key({modkey, "Control"}, "n",
       function ()
          local c = awful.client.restore()
@@ -251,6 +258,7 @@ globalkeys = gears.table.join(
       end,
       {description = "restore minimized", group = "client"}
    ),
+   --
    awful.key({modkey}, "r",
       function ()
          local s = screen.primary
@@ -258,6 +266,7 @@ globalkeys = gears.table.join(
       end,
       {description = "run prompt", group = "launcher"}
    ),
+   --
    awful.key({modkey}, "x",
       function ()
          local s = screen.primary
@@ -272,6 +281,7 @@ globalkeys = gears.table.join(
       end,
       {description = "lua execute prompt", group = "awesome"}
    ),
+   --
    awful.key({ modkey }, "g",
       function ()
          local s = screen.primary

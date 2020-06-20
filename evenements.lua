@@ -127,21 +127,27 @@ client.connect_signal("request::titlebars",
                          )
                          barreBas:setup(
                             {
-                               { 
-                                  {
-                                     text = "    ",
-                                     widget = wibox.widget.textbox,
-                                  },
-                                  wibox.widget({
-                                        {
-                                           image  = beautiful.grip,
-                                           resize = true,
-                                           widget = wibox.widget.imagebox,
-                                        },
-                                        awful.titlebar.widget.titlewidget(c),
-                                        --c.tb,
-                                        layout  = wibox.layout.stack,
-                                  }),
+                               -- { 
+                               --    {
+                               --       text = "    ",
+                               --       widget = wibox.widget.textbox,
+                               --    },
+                               --    wibox.widget({
+                               --          {
+                               --             image  = beautiful.grip,
+                               --             resize = true,
+                               --             widget = wibox.widget.imagebox,
+                               --          },
+                               --          awful.titlebar.widget.titlewidget(c),
+                               --          --c.tb,
+                               --          layout  = wibox.layout.stack,
+                               --    }),
+                               --    buttons = buttons,
+                               --    layout  = wibox.layout.fixed.horizontal
+                               -- }
+                               -- ,
+                               {
+                                  awful.titlebar.widget.titlewidget(c),
                                   buttons = buttons,
                                   layout  = wibox.layout.fixed.horizontal
                                },
@@ -156,15 +162,21 @@ client.connect_signal("request::titlebars",
                                   separateur(),
                                   c.bo,
                                   separateur(),
-                                  wibox.widget {
-                                     {
-                                        image  = beautiful.grip,
-                                        resize = true,
-                                        widget = wibox.widget.imagebox
-                                     },
-                                     dimFenetre(c),
-                                     layout  = wibox.layout.stack,
-                                  },
+                                  -- wibox.widget {
+                                  --    {
+                                  --       image  = beautiful.grip,
+                                  --       resize = true,
+                                  --       widget = wibox.widget.imagebox
+                                  --    },
+                                     dimFenetre(c, {
+                                                   font = "Inconsolata"
+                                     }),
+                                  --    layout  = wibox.layout.stack,
+                                  -- },
+                                  separateur(),
+                                  tempsPasse(c, {
+                                                font="Inconsolata"
+                                  }),
                                   separateur(),
                                   screenshot(c),
                                   separateur(),

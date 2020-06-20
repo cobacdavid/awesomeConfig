@@ -17,7 +17,7 @@ local fu = require("fonctionsUtiles")
 --
 local widget = {}
 
-widget.delai = 15 * 60
+widget.delai = 5 * 60
 widget.fichier = "/sys/class/power_supply/BAT0/capacity"
 widget.logFile = "/home/david/temp/logBatterie"
 

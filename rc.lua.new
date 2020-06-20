@@ -52,6 +52,7 @@ opacite = require("widgets.opacite")
 screenshot = require("widgets.screenshot")
 infos = require("widgets.infos")
 dimFenetre = require("widgets.dimFenetre")
+tempsPasse = require("widgets.tempsPasse")
 -- 
 if ordinateur == "asus" then
    batt = require("widgets.batterie")

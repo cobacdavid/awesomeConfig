@@ -38,13 +38,12 @@ function widget.opacite(c, args)
 		 
       end
    )
-
-    -- Wrap other widgets around slider here if you want,
-    -- e.g. your stack widget and the textbox
-    local result = slider
-    return slider
+   --
+   return slider
 end
 
-return setmetatable(widget, {__call=function(t, args)
+return setmetatable(widget, {
+                       __call=function(t, args)
                                 return widget.opacite(args)
-                   end})
+                            end}
+)
