@@ -45,7 +45,7 @@ volumemaster = require("widgets.volumemaster")
 luminosite = require("widgets.luminosite")
 luminosite_ecran = require("widgets.luminosite_ecran")
 killneuf = require("widgets.killneuf")
-ppeint = require("widgets.ppeintDesc")
+ppeint = require("widgets.ppeintNasa")
 -- widgets titlebar fenêtres
 blocageopacite = require("widgets.blocageopacite")
 opacite = require("widgets.opacite")

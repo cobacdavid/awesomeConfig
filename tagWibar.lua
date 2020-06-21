@@ -50,10 +50,9 @@ local taglist_buttons = gears.table.join(
 --local s=screen.primary
 awful.screen.connect_for_each_screen(
    function(s)
-      fu.set_wallpaper(s)
       -- attention xrandr dicte sa loi du screen.primary selon
       -- l'interface !!
-      gears.wallpaper.set("#000000")
+      gears.wallpaper.set(beautiful.wallpaperTagPrincipal)
       if s.index == 1 then
          local layoutterm = ""
          if ordinateur == "maison" then

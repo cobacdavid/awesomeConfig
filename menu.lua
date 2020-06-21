@@ -23,7 +23,7 @@ myawesomemenu = {
    },
    {"hotkeys", function() return false, hotkeys_popup.show_help end},
    {"redémarrer", awesome.restart },
-   {"quitter", --function() awesome.quit() end
+   {"quitter", 
     function()
        fu.sortir_awesome()
     end

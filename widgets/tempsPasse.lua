@@ -20,6 +20,8 @@ local fu = require ("fonctionsUtiles")
 --
 local widget = {}
 
+widget.logFile = nil 
+
 local function normaliseDuree(t)
    if t >= 3600 then
       h = t // 3600
@@ -52,27 +54,28 @@ local function actualiseTemps(w, t1, t2, args)
    --
    t1 = normaliseDuree(math.floor(t1))
    t2 = normaliseDuree(math.floor(t2))
-   w.texte:set_markup("<span font='" .. font .. " " .. size .. "'>".. tostring(t1) .. "\n" .. tostring(t2) .. "</span>")
+   w:set_markup("<span font='" .. font .. " " .. size .. "'>".. tostring(t1) .. "\n" .. tostring(t2) .. "</span>")
 end
 
 function widget:createWidget(c, args)
    -- fu.montre(c)
    local args = args or {}
    local width = args.width or 100
+   widget.logFile = args.logFile or "/home/david/tmp/logFenetre" 
    --
    local color = args.color or beautiful.widget_bg
    --
    local w = wibox.widget(
-      {
+      -- {
          {
             id = 'texte',
             forced_width = width,
             align = "center",
             widget = wibox.widget.textbox
-         },
-         bg = color,
-         widget =  wibox.container.background
-      }
+         }--,
+         -- bg = color,
+         -- widget =  wibox.container.background
+      -- }
    )
    --
    c.heureFocus = nil
@@ -94,10 +97,16 @@ function widget:createWidget(c, args)
       }
    )
    --
-   c:connect_signal("manage",
-                    function()
+   c:connect_signal("unmanage",
+                    function(c)
+                       local t = math.floor(c.tempsPasse + c.tempsDuFocus)
+                       local ligne = os.date("%Y%m%d-%H%M%S")
+                          .. "," .. c.class .. ","
+                          .. tostring(t)
+                          .. "\n"
+                       fu.appendFile(widget.logFile, ligne)
                     end
-   )
+)
    c:connect_signal("focus",
                     function()
                        c.tempsPasse = c.tempsPasse + c.tempsDuFocus

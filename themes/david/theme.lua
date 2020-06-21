@@ -14,7 +14,6 @@ local fu = require("fonctionsUtiles")
 theme = {}
 
 --
---
 -- POLICES
 --
 --
@@ -22,6 +21,7 @@ theme.police    = "abeatbyKai bold"
 theme.font      = theme.police .. " 12"
 theme.font2     = theme.police .. " 15"
 theme.font3     = theme.police .. " 25"
+
 --
 -- COULEURS
 --
@@ -39,50 +39,11 @@ theme.rougetrans  = theme.rouge .. theme.trans
 -- WALLPAPER
 --
 theme.wallpaperRepImagesMaths  = "/home/david/.config/awesome/fondMaths"
-theme.wallpaperRepImagesEspace = "/home/david/.config/awesome/fondEspace"
-theme.wallpaperTheme = ""
---
-theme.ppeintTelechargement = function(themeDuFond)
-   local rep = theme.wallpaperRepImagesEspace
-   fu.commande_execute( rep .. "/image_hasard_nasa.py" .. " " .. themeDuFond)
-end
---
-theme.ppeintApplication = function()
-   local rep = theme.wallpaperRepImagesEspace
-   if screen.count() >= 2 and ordinateur == "maison" then
-      -- local listeFichiers = scandir(rep, "jpg")
-      -- local fichier = aleaTableau(listeFichiers)
-      local fichier = rep .. "/" .. "fond" 
-      -- gears.wallpaper.maximized(fichier, screen[2])
-      gears.wallpaper.fit(fichier, screen[2], theme.noir)
-   end
-end
---
-themeFond = ""
-gears.timer ({
-      timeout = 120,
-      call_now = true,
-      autostart = true,
-      callback = function()
-         -- on récupère le fond sur internet
-         theme.ppeintTelechargement(themeFond)
-         -- on l'applique 5 secondes plus tard
-         -- (le temps qu'il soit téléchargé !)
-         gears.timer({
-               timeout = 5,
-               autostart = true,
-               callback =  function()
-                  theme.ppeintApplication()
-               end,
-               single_shot = true
-         })
-      end
-})
-
 --
 theme.wallpaperBandeau = theme.grisSombre
 theme.wallpaperTagPrincipal = theme.noir
 theme.wallpaperTagSecondaire = theme.grisSombrePlus
+theme.wallpaper_color = theme.noir
 
 -- {{{ Colors
 theme.bg_normal    = theme.noirtrans
@@ -202,7 +163,12 @@ theme.menu_fg_focus     = theme.noir
 theme.menu_fg_normal    = theme.blanc
 theme.menu_border_width = "0"
 -- }}}
-
+theme.separator_thickness        = 0	-- number 	The separator thickness.
+--theme.separator_border_color     = 	-- color 	The separator border color.
+--theme.separator_border_width     =	-- number 	The separator border width.
+--theme.separator_span_ratio 	 =      -- number 	The relative percentage covered by the bar.
+--theme.separator_color 	         =      -- string 	The separator’s color.
+--theme.separator_shape 	         =      -- function 	The separator’s shape.
 -- {{{ Icons
 -- {{{ Taglist
 --theme.taglist_squares_sel   = "/home/david/.config/awesome/themes/david/taglist/squarefz.png"

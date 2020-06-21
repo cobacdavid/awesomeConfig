@@ -49,9 +49,8 @@ function widget.batterie(args)
             if ordinateur == "maison" then
                niveau = tostring(math.floor(math.random() * 101))
             end
-            local fH = io.open(widget.logFile, "a")
-            fH:write(os.date("%Y%m%d-%H%M%S") .. " " .. niveau .. "\n")
-            fH:close()
+            local ligne = os.date("%Y%m%d-%H%M%S") .. " " .. niveau .. "\n"
+            fu.appendFile(widget.logFile, ligne)
             w.conteneur.text:set_text(niveau .. "%")
          end
    })

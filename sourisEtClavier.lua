@@ -87,10 +87,10 @@ globalkeys = gears.table.join(
 	 if affichageAide then
 	    gears.wallpaper.centered("/home/david/.config/awesome/raccourcis/controles-1.png",
                                      1,
-                                     gears.color("#000000")
+                                     gears.color(beautiful.wallpaper)
             )
 	 else
-	    gears.wallpaper.set(gears.color("#000000"))
+	    gears.wallpaper.set(gears.color(beautiful.wallpaper))
 	 end
       end
    ),
@@ -242,7 +242,6 @@ globalkeys = gears.table.join(
    --
    awful.key({modkey, "Control"}, "q",
       function()
-         --  awesome.quit()
          fu.sortir_awesome()
       end
    ),

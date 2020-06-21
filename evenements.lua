@@ -67,10 +67,8 @@ client.connect_signal("tagged",
 )
 
 client.connect_signal("unmanage",
-                      function (c)
-                         -- WIDGET sur-contenu
-                         -- montre("OK")
-                         -- c.mawibox = nil
+                      function(c)
+                         --
                       end
 )
 

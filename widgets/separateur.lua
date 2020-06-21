@@ -8,13 +8,13 @@ function widget.separateur(args)
    --
    local color = args.color or beautiful.widget_bg
    local separateur = wibox.widget({
-         {
+          {
             forced_width = args.width or 5,
             color = color,
             widget = wibox.widget.separator
-         },
-         bg = color,
-         widget = wibox.container.background
+          },
+          -- bg = color,
+          widget = wibox.container.background
    })
    return separateur
 end

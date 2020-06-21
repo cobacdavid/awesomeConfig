@@ -85,20 +85,20 @@ end
 
 -- de la doc officielle
 -- wallpapers
-function fonctionsUtiles.set_wallpaper(s)
-   if beautiful.wallpaper then
-      local wallpaper = beautiful.wallpaper
-      -- If wallpaper is a function, call it with the screen
-      if type(wallpaper) == "function" then
-	 --montre ( "OK" )
-         -- la fonction wallpaper (dans le thème
-         -- beautiful) doit renvoie un objet utilisable par
-         -- gears.wallpaper
-	 wallpaper = wallpaper(s)
-      end
-      gears.wallpaper.fit(wallpaper, s, false)
-   end
-end
+-- function fonctionsUtiles.set_wallpaper(s)
+--    if beautiful.wallpaper then
+--       local wallpaper = beautiful.wallpaper
+--       -- If wallpaper is a function, call it with the screen
+--       if type(wallpaper) == "function" then
+-- 	 --montre ( "OK" )
+--          -- la fonction wallpaper (dans le thème
+--          -- beautiful) doit renvoie un objet utilisable par
+--          -- gears.wallpaper
+-- 	 -- wallpaper = wallpaper(s)
+--       end
+--       -- gears.wallpaper.fit(wallpaper, s, false)
+--    end
+-- end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 -- screen.connect_signal("property::geometry", set_wallpaper)
 
@@ -171,6 +171,7 @@ function fonctionsUtiles.commande_execute(commande)
 end
 
 function fonctionsUtiles.commandeExecute(commande)
+   local resultat = nil
    awful.spawn.easy_async_with_shell(commande,
                                      function(stdout, stderr, reason, exit_code)
                                         resultat = exit_code
@@ -209,7 +210,7 @@ end
 --
 -- Existence d'un fichier 
 -- http://stackoverflow.com/questions/4990990/lua-check-if-a-file-exists
-function fonctionsUtiles.file_exists(name)
+function fonctionsUtiles.fileExists(name)
    local f = io.open(name,"r")
    if f ~= nil then
       io.close(f)
@@ -219,6 +220,13 @@ function fonctionsUtiles.file_exists(name)
    end
 end
 --
+
+function fonctionsUtiles.appendFile(name, lines)
+   local fH= io.open(name, "a")
+   fH:write(lines)
+   fH:close()
+end
+
 
 -- Gestion couleur 
 --
@@ -285,20 +293,24 @@ end
 -- sortie d'awesome
 function fonctionsUtiles.sortir_awesome()
    -- les statistiques
-   local fTag = io.open("statsTag.dat", "a")
-   fTag:write(os.date("%Y%m%d-%H%M%S") .. " " .. tostring(chgTag) .. "\n")
+   local fichierStat = "statsTag.dat"
+   local lignes = "\n" .. os.date("%Y%m%d-%H%M%S") .. " " .. tostring(chgTag) .. "\n"
    for _, t in ipairs(listeChgTag) do
-      fTag:write(t.name .. " ")
+      lignes = lignes .. t.name .. " "
    end
-   fTag:write("\n")
-   fTag:close()
-    -- sortie propre d'emacs
-    awful.spawn.easy_async_with_shell(
-       "emacsclient -e '(kill-emacs)'",
-       function (stdout,stderr,reason,exit_code)
-       end
-    )
-    awesome.quit()
+   fonctionsUtiles.appendFile(fichierStat, lignes)
+   -- 
+   --
+   -- sortie propre d'emacs
+   awful.spawn.easy_async_with_shell(
+      "emacsclient -e '(kill-emacs)'",
+      function (stdout,stderr,reason,exit_code)
+      end
+   )
+   for _, c in ipairs(client.get()) do
+      c:emit_signal("unmanage")
+   end
+   awesome.quit()
 end
 
 -- https://awesomewm.org/doc/api/documentation/16-using-cairo.md.html
@@ -330,13 +342,13 @@ function fonctionsUtiles.fondEcran(t)
    cr:select_font_face("Comfortaa",
                        "CAIRO_FONT_SLANT_NORMAL",
                        "CAIRO_FONT_WEIGHT_NORMAL")
-   cr:set_source(gears.color(beautiful.wallpaperTagPrincipal))
+   cr:set_source(gears.color(beautiful.wallpaper_color))
    cr:move_to(w/2 - texteW/2, (h + texteH) / 2)
    cr:show_text(monTexte)
    -- les tags adjacents
    -- en lua les tableaux commencent à 1 !
    local hoffset = 50
-   cr:set_source(gears.color(beautiful.wallpaperTagSecondaire))
+   cr:set_source(gears.color(beautiful.wallpaper_color))
    cr:set_font_size(150)
    monTexte = t.screen.tags[((j-1)-1) % #t.screen.tags + 1].name
    T = cr:text_extents(monTexte)
