@@ -14,6 +14,7 @@ local wibox = require("wibox")
 local gears = require("gears")
 local beautiful = require("beautiful")
 local os = require("os")
+local math = require("math")
 local string = require("string")
 --
 local fu = require ("fonctionsUtiles")
@@ -46,12 +47,7 @@ local function normaliseDuree(t)
 end
 
 
-local function actualiseTemps(w, t1, t2, args)
-   local args = args or {}
-   --   
-   local font = args.font or beautiful.widget_font_pri
-   local size = args.size or 8
-   --
+local function actualiseTemps(w, t1, t2, font, size)
    t1 = normaliseDuree(math.floor(t1))
    t2 = normaliseDuree(math.floor(t2))
    w:set_markup("<span font='" .. font .. " " .. size .. "'>".. tostring(t1) .. "\n" .. tostring(t2) .. "</span>")
@@ -61,7 +57,13 @@ function widget:createWidget(c, args)
    -- fu.montre(c)
    local args = args or {}
    local width = args.width or 100
-   widget.logFile = args.logFile or "/home/david/tmp/logFenetre" 
+   local font = args.font or beautiful.widget_font_pri
+   local size = args.size or 8
+   if ordinateur == "maison" then
+      widget.logFile = "/home/david/tmp/logFenetre"
+   else
+      widget.logFile = args.logFile or "/home/david/temp/logFenetre"
+   end
    --
    local color = args.color or beautiful.widget_bg
    --
@@ -91,7 +93,8 @@ function widget:createWidget(c, args)
             actualiseTemps(w,
                            c.tempsPasse + c.tempsDuFocus,
                            c.tempsDuFocus,
-                           args)
+                           font,
+                           size)
          end,
          signe_shot=false
       }
