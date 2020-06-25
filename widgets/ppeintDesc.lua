@@ -25,7 +25,7 @@ function widget.ppeintDesc(args)
          bg = beautiful.noir,
          max_widget_size = 500,
          border_width = 3,
-         border_color = theme.gris,
+         border_color = beautiful.gris,
          shape = function(cr, width, height)
             gears.shape.rounded_rect(cr, width, height, 3)
          end
@@ -41,7 +41,7 @@ function widget.ppeintDesc(args)
             layout = wibox.layout.fixed.vertical,
          },
          id = "conteneur",
-         layout  = wibox.layout.fixed.horizontal
+         layout = wibox.layout.fixed.horizontal
    })
    --
    return widget_description

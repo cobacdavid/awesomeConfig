@@ -46,6 +46,7 @@ luminosite = require("widgets.luminosite")
 luminosite_ecran = require("widgets.luminosite_ecran")
 killneuf = require("widgets.killneuf")
 ppeint = require("widgets.ppeintNasa")
+calendrier = require("widgets.calendrier")
 -- widgets titlebar fenêtres
 blocageopacite = require("widgets.blocageopacite")
 opacite = require("widgets.opacite")

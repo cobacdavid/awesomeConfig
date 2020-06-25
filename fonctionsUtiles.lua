@@ -291,7 +291,7 @@ end
 
 --
 -- sortie d'awesome
-function fonctionsUtiles.sortir_awesome()
+function fonctionsUtiles.sortirAwesome()
    -- les statistiques
    local fichierStat = "statsTag.dat"
    local lignes = "\n" .. os.date("%Y%m%d-%H%M%S") .. " " .. tostring(chgTag) .. "\n"
@@ -313,6 +313,17 @@ function fonctionsUtiles.sortir_awesome()
    awesome.quit()
 end
 
+--
+-- redémarrage d'awesome
+function fonctionsUtiles.restartAwesome()
+   -- les statistiques
+   for _, c in ipairs(client.get()) do
+      c:emit_signal("unmanage")
+   end
+   awesome.restart()
+end
+
+--
 -- https://awesomewm.org/doc/api/documentation/16-using-cairo.md.html
 function fonctionsUtiles.fondEcran(t)
    local font_size = 180

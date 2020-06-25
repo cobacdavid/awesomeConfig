@@ -22,10 +22,13 @@ myawesomemenu = {
     end
    },
    {"hotkeys", function() return false, hotkeys_popup.show_help end},
-   {"redémarrer", awesome.restart },
+   {"redémarrer", function()
+       fu.restartAwesome()
+                  end
+   },
    {"quitter", 
     function()
-       fu.sortir_awesome()
+       fu.sortirAwesome()
     end
    }
 }

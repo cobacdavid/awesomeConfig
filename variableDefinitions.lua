@@ -153,7 +153,7 @@ lumiplus            = "luminosite.sh +"
 --
 --alterneMode      = scriptsPath .. "alterneMode.sh"
 calculatrice     = "wish8.6 /home/david/travail/david/maths/hp15/hp15simulation/HP-15C.tcl"
-calendrier       = "gsimplecal"
+-- calendrier       = "gsimplecal"
 compositeMgr     = "xcompmgr" --"unagi"-- 
 --
 fileMgr          = "nautilus" --  "pcmanfm"

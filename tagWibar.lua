@@ -245,27 +245,6 @@ awful.screen.connect_for_each_screen(
       -- -- --
       if s.index == 2 then
          --
-         function decorate(w, flag, date)
-            local ret = wibox.widget(
-               {
-                  {
-                     w,
-                     widget  = wibox.container.margin
-                  },
-                  fg           = "#999999",
-                  bg           = "#000000",
-                  widget       = wibox.container.background
-               }
-            )
-            return ret
-         end
-         calendrier = wibox.widget(
-            {
-               fn_embed = decorate,
-               widget = wibox.widget.calendar.month
-            }
-         )
-         --
          largeurPremier = screen[1].geometry.width
          hauteurPremier = screen[1].geometry.height
          largeurSecond = s.geometry.width
@@ -293,6 +272,17 @@ awful.screen.connect_for_each_screen(
                type = "dock",
                opacity = .75
             }
+         )
+         --
+         s.mywibar:buttons(
+            awful.util.table.join(
+               awful.button({}, 1,
+                  function()
+                     fu.montre("OK")
+                     calendrier.afficheCalendrier(calendrier())
+                  end
+               )
+            )
          )
          -- nouvel écran à droite du premier
          if ordinateur == "asus" then

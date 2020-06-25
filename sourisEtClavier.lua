@@ -237,12 +237,14 @@ globalkeys = gears.table.join(
    ),
    --
    awful.key({modkey, "Control"}, "r",
-      awesome.restart
+      function()
+         fu.restartAwesome()
+      end
    ),
    --
    awful.key({modkey, "Control"}, "q",
       function()
-         fu.sortir_awesome()
+         fu.sortirAwesome()
       end
    ),
    --
