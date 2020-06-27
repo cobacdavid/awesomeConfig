@@ -36,7 +36,6 @@ if ordinateur == "maison" then
 end
 --
 modkey           = "Mod4"
-os.setlocale("fr_FR.UTF-8")
 scriptsPath       = config .. "/scripts/"
 beautiful.init(config .. "/themes/david/theme.lua")
 batteryCmd            = "cat /sys/class/power_supply/BAT0/capacity"
@@ -47,17 +46,7 @@ imageParDefaut     = "/usr/local/share/awesome/icons/awesome64.png"
 --
 configSvg          = "cd /home/david/travail/david/production/info/config/awesome/ && tar czf awesome_$(date +%Y%m%d-%H%M%S)-config.tgz /home/david/.config/awesome"
 --
--- BARRE INFOS
---
-cylindreEcrans     = scriptsPath .. "cylindreEcran_alt.sh"
-configEcrans       = "xrandr |egrep -o 'current [0-9]+ x [0-9]+'|cut -d ' ' -f 2-4"
-monIP              = "hostname -I|cut -d ' ' -f1"
-monIPInternet      = "wget http://checkip.dyndns.org/ -O - -o /dev/null | cut -d: -f 2 | cut -d\\< -f 1"
-versionLinux       = "echo $(uname -v |cut -d ' ' -f4)"
-versionDistrib     = "cat /etc/debian_version"
-laTempExt          = "ansiweather -l angers,fr|cut -d ' ' -f 6-7"
-temperatureCore    = "sensors |grep Package|cut -d ' ' -f 5-6"
---
+-- cylindreEcrans     = scriptsPath .. "cylindreEcran_alt.sh"
 -- APPS and APPS class
 --
 --

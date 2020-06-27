@@ -37,6 +37,8 @@ end
 --
 config = awful.util.getdir("config")
 --
+os.setlocale("fr_FR.UTF-8")
+--
 fu = require("fonctionsUtiles")
 -- widgets 
 separateur = require("widgets.separateur")

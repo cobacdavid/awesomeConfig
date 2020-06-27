@@ -1,3 +1,15 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-------------------------------------------------
+-- some parts from awesome wm 
+-- ditribution
+-- copyright ??
+-------------------------------------------------
 local socket = require("socket")
 local fu = require("fonctionsUtiles")
 
@@ -31,8 +43,10 @@ function mpd.connect()
    mpd._socket = socket.connect(host, port)
    if mpd._socket == nil then
       mpd.run()
+      return nil
    else 
       local r = mpd._socket:receive()
+      return 1
    end
    -- ajouter un test de bon déroulement !!
 end
@@ -119,6 +133,10 @@ function mpd.next()
 end
 
 function mpd.playorpause()
+   if not mpd.connect() then
+      fu.montre("Serveur MPD : lancement")
+      return nil
+   end
    mpd.statusListe = mpd.status()
    local etat = ""
    if mpd.statusListe['state'] == "stop" then

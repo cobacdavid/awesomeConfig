@@ -330,8 +330,9 @@ globalkeys = gears.table.join(
                prompt = "Thème fond : ",
                textbox = s.mypromptbox.widget,
                exe_callback = function(t)
-                  themeFond = t
-               end
+                  ppeint.themeFond = t
+               end,
+               history_path = "/home/david/.config/awesome/fondEspace/themeHistory"
          })
    end)
    

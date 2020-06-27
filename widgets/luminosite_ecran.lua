@@ -1,3 +1,11 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+--
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local gears = require("gears")
@@ -24,7 +32,7 @@ function widget.sliderBrightnessWidget(args)
    local mini     = .5
    --
    -- valeur de départ
-   local vDepart  = 1
+   local vDepart  = args.startLevel or 1
    -- le widget slider
    local sliderBrightnessControle = wibox.widget {
       forced_width        = 100,

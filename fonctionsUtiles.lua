@@ -170,14 +170,16 @@ function fonctionsUtiles.commande_execute(commande)
    return fonctionsUtiles.commandeExecute(commande)
 end
 
+fonctionsUtiles.resultat = nil
 function fonctionsUtiles.commandeExecute(commande)
-   local resultat = nil
    awful.spawn.easy_async_with_shell(commande,
                                      function(stdout, stderr, reason, exit_code)
-                                        resultat = exit_code
+                                        -- resultat = exit_code
+                                        fonctionsUtiles.resultat = stdout
                                      end
    )
-   return tostring(resultat)
+   -- ça n'a pas de sens
+   -- return tostring(fonctionsUtiles.resultat)
 end
 
 --

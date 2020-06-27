@@ -22,5 +22,8 @@ end
 --
 -- mise en route ppeint nasa
 ppeintDesc = ppeint()
--- 
+--
+-- ce qui suit ne règle pas le problème du fond au démarrage
+-- gears.wallpaper.maximized("/tmp/term.png", screen[1])
+--
 fu.montre( "Démarrage terminé")

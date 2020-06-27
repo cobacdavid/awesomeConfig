@@ -26,6 +26,7 @@ liste_softs = {
    "import",
    "keepassxc",
    "mpd",
+   "mpdscribble",
    "nautilus",
    "nm-applet",
    "opera-developer",

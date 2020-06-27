@@ -153,7 +153,12 @@ awful.screen.connect_for_each_screen(
 	 left_layout:add(separateur())
 	 left_layout:add(volumemaster())
 	 left_layout:add(separateur())
-         left_layout:add(luminosite_ecran({iface=ecranAux}))
+         left_layout:add(luminosite_ecran(
+                            {
+                               iface=ecranAux,
+                               startLevel=.75
+                            }
+         ))
          left_layout:add(separateur())
          if ordinateur == "asus" then
             left_layout:add(batt())
@@ -261,7 +266,6 @@ awful.screen.connect_for_each_screen(
             align = "center",
 	    widget = wibox.widget.textclock("%A %d %B %Y")
          }
-         -- calendrier:attach(clo, 'tc', {on_hover=false})
          s.mywibar = awful.wibar(
             {
                screen = s ,
@@ -278,7 +282,6 @@ awful.screen.connect_for_each_screen(
             awful.util.table.join(
                awful.button({}, 1,
                   function()
-                     fu.montre("OK")
                      calendrier.afficheCalendrier(calendrier())
                   end
                )
@@ -407,9 +410,3 @@ awful.screen.connect_for_each_screen(
    end
 )
 
-
-      -- for s in screen do
-      -- 	 naught.notify({ text = s.index })
-      -- end
-
-      
