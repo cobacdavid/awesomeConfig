@@ -188,7 +188,7 @@ function fonctionsUtiles.executeUneFois(cmd)
    awful.spawn.easy_async_with_shell(findme,
                                      function(stdout,stderr,reason,exit_code)
                                         if tonumber(stdout) <= 2 then
-                                           awful.spawn( cmd )
+                                           awful.spawn(cmd)
                                         end
    end)
 end
@@ -229,7 +229,18 @@ function fonctionsUtiles.appendFile(name, lines)
    fH:close()
 end
 
-
+--
+-- https://stackoverflow.com/questions/1426954/split-string-in-lua
+function fonctionsUtiles.splitString (inputstr, sep)
+        if sep == nil then
+                sep = "%s"
+        end
+        local t={}
+        for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+                table.insert(t, str)
+        end
+        return t
+end
 -- Gestion couleur 
 --
 -- renvoie une couleur nuance ou gradient (vert au rouge) 

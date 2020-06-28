@@ -29,7 +29,6 @@ widget.commandes = {
 --
 widget.indiceInfos = -1
 
-
 local function appliqueCommande(t)
    setmetatable(t, {__index={sameCmd=false}})
    --
@@ -39,8 +38,7 @@ local function appliqueCommande(t)
       widget.indiceInfos = (widget.indiceInfos+1) % #widget.commandes
    end 
    local c = widget.commandes[1+widget.indiceInfos]
-   awful.spawn.easy_async_with_shell(c,
-                                     function(stdout, stderr, reason, exit_code)
+   awful.spawn.easy_async_with_shell(c, function(stdout, stderr, reason, exit_code)
                                         local lt = string.len(stdout)
                                         texte = stdout:sub(1, lt-1)
                                         w.markup = "<span foreground='"
@@ -48,7 +46,7 @@ local function appliqueCommande(t)
                                            .. "' size='large'>"
                                            .. texte ..
                                            "</span>"
-   end)
+                                        end)
 end
 
 function widget.infos(args)

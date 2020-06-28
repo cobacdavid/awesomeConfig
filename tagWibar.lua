@@ -147,19 +147,12 @@ awful.screen.connect_for_each_screen(
 	 if ordinateur == "asus" then
             left_layout:add(luminosite())
          else
-            left_layout:add(luminosite_ecran({iface=ecranPcp}))
+            left_layout:add(luminosite_ecran())
          end
          --
 	 left_layout:add(separateur())
 	 left_layout:add(volumemaster())
 	 left_layout:add(separateur())
-         left_layout:add(luminosite_ecran(
-                            {
-                               iface=ecranAux,
-                               startLevel=.75
-                            }
-         ))
-         left_layout:add(separateur())
          if ordinateur == "asus" then
             left_layout:add(batt())
             left_layout:add(separateur())
