@@ -3,7 +3,7 @@
 -- twitter: @david_cobac
 -- github: https://github.com/cobacdavid
 -- date: 2020
--- copyright: CC-BY-NC-SA
+-- copyright: CC-BY-NC-SA + SO question
 -------------------------------------------------
 --
 local wibox = require("wibox")
@@ -11,7 +11,44 @@ local beautiful = require("beautiful")
 local gears = require("gears")
 local awful = require("awful")
 --
-local fu = require("fonctionsUtiles")
+-- Some useful functions
+--
+-- https://stackoverflow.com/questions/1426954/split-string-in-lua
+local function splitString (inputstr, sep)
+        if sep == nil then
+                sep = "%s"
+        end
+        local t={}
+        for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+                table.insert(t, str)
+        end
+        return t
+end
+-- renvoie une couleur nuance ou gradient (vert au rouge) 
+-- t : theme beautiful
+-- v : valeur à colorer
+-- m : minimum
+-- M : Maximum
+-- attention : pour l'instant m n'est pas utilisé...
+-- ni coulDebut ni coulFin
+local function couleurBarre (t, v , m , M , coulDebut, coulFin)
+   local resultat
+   if v == nil then return end
+   -- if coulDebut == nil or coulFin == nil then
+   local niveau = math.floor(255*v/M)
+   --
+   if t == "gradient" then
+      -- couleur du vert au rouge
+      local r = niveau
+      local g = 255 - r
+      resultat  = string.format("#%02X%02X00", r, g)
+   elseif t == "nuance" then 
+      resultat = string.format("#%02X%02X%02X", niveau, niveau, niveau)
+   end
+   return resultat .. "DD"
+end
+--
+--
 --
 local widget = {}
 --
@@ -22,17 +59,24 @@ widget.limits = {MAX = 100, maxi = 2,
                  MIN = 0, mini = .5}
 --
 local function listAllInterfaces()
+   -- uneasy to make this with async execution of this command
+   -- needed to have all interafces knowledge
    local ifaces = "xrandr |grep ' connected'|cut -d' ' -f 1"
    local fh = io.popen(ifaces)
    local resultat = fh:read("*a")
    fh:close()
-   widget.interfaces = fu.splitString(resultat, "\n")
+   widget.interfaces = splitString(resultat, "\n")
 end
 --
-local function modifieTexte(w, iface)
-   w:set_markup("<span foreground='white'>" .. iface .. "</span>")
+-- todo: should add some custom args values...
+local function modifieTexte(w, iface, args)
+   local args = args or {}
+   local fg = args.fg or beautiful.fg_normal
+   w:set_markup("<span foreground='" .. fg .. "'>" .. iface .. "</span>")
 end
 --
+-- update display of slider value at start or when changing
+-- active interface
 local function valeurDepartSlider(w)
    local vDepart = widget.levels[widget.interfaces[widget.activeIndex]]
    w.value = math.floor((vDepart - widget.limits.mini) *100
@@ -42,8 +86,11 @@ end
 function widget.sliderBrightnessWidget(args)
    --
    local args = args or {}
+   local width = args.width or 150
+   local handle_color_type = args.handle_color_type or "nuance"
+   local bar_height = args.bar_height or 1
    --
-   -- le widget complet
+   -- complete widget
    local widgetComplet = wibox.widget(
       {
          {
@@ -55,11 +102,9 @@ function widget.sliderBrightnessWidget(args)
             {
                id           = "slider",
                bar_shape    = gears.shape.rounded_rect,
-               bar_height   = 1,
-               bar_color    = beautiful.border_color,
+               bar_height   = bar_height,
+               -- bar_color    = beautiful.border_color,
                handle_shape = gears.shape.circle,
-               handle_color = fu.couleurBarre(beautiful.widget_sliderBrightness_handle_color_type,
-                                              100, widget.limits.MIN, widget.limits.MAX),
                minimum      = widget.limits.MIN,
                maximum      = widget.limits.MAX,
                widget       = wibox.widget.slider,
@@ -68,23 +113,37 @@ function widget.sliderBrightnessWidget(args)
             vertical_offset = 0,
             layout          = wibox.layout.stack
          },
-         forced_width = 150,
-         bg           = beautiful.noir,
+         forced_width = width,
+         bg           = beautiful.bg_normal,
          widget       = wibox.container.background
       }
    )
    --
-   -- callback changement de la barre
-   widgetComplet.stack.slider:connect_signal("property::value", function()
-                                                local iface = widget.interfaces[widget.activeIndex]
-                                                local v = tostring(widget.limits.mini + (widgetComplet.stack.slider.value * (widget.limits.maxi - widget.limits.mini) / widget.limits.MAX))
-                                                v = v:gsub(",",".")
-                                                widget.levels[iface] = v
-                                                local command="xrandr --output " .. iface .." --brightness " .. v
-                                                fu.commandeExecute(command)
-                                                widgetComplet.stack.slider.handle_color = fu.couleurBarre(beautiful.widget_sliderBrightness_handle_color_type, v, widget.limits.mini, widget.limits.maxi)
-   end)
-   -- callbak changement de widget
+   -- change slider value callback 
+   widgetComplet.stack.slider:connect_signal("property::value",
+     function()
+        local iface = widget.interfaces[widget.activeIndex]
+        local v = tostring(widget.limits.mini + (widgetComplet.stack.slider.value
+                                                    * (widget.limits.maxi - widget.limits.mini)
+                                                    / widget.limits.MAX))
+        v = v:gsub(",",".")
+        widget.levels[iface] = v
+        local command="xrandr --output " .. iface .." --brightness " .. v
+        awful.spawn.easy_async_with_shell(command,
+                                          function(stdout, stderr, reason, exit_code)
+                                             -- should handle possible error...
+                                          end
+        )
+        widgetComplet.stack.slider.handle_color =
+           couleurBarre(handle_color_type,
+                        v,
+                        widget.limits.mini,
+                        widget.limits.maxi)
+        widgetComplet.stack.slider.bar_color =  widgetComplet.stack.slider.handle_color
+     end
+   )
+   --
+   -- change interface callback
    widgetComplet:buttons(
       gears.table.join(
          awful.button({}, 3,
@@ -97,16 +156,19 @@ function widget.sliderBrightnessWidget(args)
       )
    )
    --
+   -- applying custom startLevel
    for i, iface in ipairs(widget.interfaces) do
       widget.levels[iface] = args.startLevel and args.startLevel[iface] or 1
    end
    --
+   -- update widget at start up
    modifieTexte(widgetComplet.stack.texte, widget.interfaces[widget.activeIndex])
    valeurDepartSlider(widgetComplet.stack.slider)
    --
    return widgetComplet
 end
 
+-- list all interfaces when lib is called...why not?
 listAllInterfaces()
 
 return setmetatable(widget, {__call=function(t, args)

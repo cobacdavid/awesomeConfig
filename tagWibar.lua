@@ -147,7 +147,12 @@ awful.screen.connect_for_each_screen(
 	 if ordinateur == "asus" then
             left_layout:add(luminosite())
          else
-            left_layout:add(luminosite_ecran())
+            local sLevel = {}
+            sLevel["HDMI-0"] = 1
+            sLevel["VGA-0"] = .7
+            left_layout:add(luminosite_ecran({
+                                  startLevel = sLevel,
+            }))
          end
          --
 	 left_layout:add(separateur())
