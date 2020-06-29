@@ -43,12 +43,6 @@ function widget.sliderBrightnessWidget(args)
    --
    local args = args or {}
    --
-   -- local MAX      = 100
-   -- local maxi     = 2
-   -- local MIN      = 0
-   -- local mini     = .5
-   --
-   --
    -- le widget complet
    local widgetComplet = wibox.widget(
       {
