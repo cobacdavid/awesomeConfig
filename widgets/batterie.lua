@@ -16,15 +16,17 @@ local beautiful = require("beautiful")
 local fu = require("fonctionsUtiles")
 --
 local widget = {}
-
+--
+local home = os.getenv("HOME") .. "/"
+--
 widget.delai = 5 * 60
 widget.fichier = "/sys/class/power_supply/BAT0/capacity"
-widget.logFile = "/home/david/temp/logBatterie"
+widget.logFile = home .. ".logBatterie"
 
-if ordinateur == "maison" then
-   widget.delai = 5
-   widget.logFile = "/home/david/tmp/logBatterie"
-end
+-- if ordinateur == "maison" then
+--    widget.delai = 5
+--    widget.logFile = home .. "tmp/logBatterie"
+-- end
 
 function widget.batterie(args)
    local w = wibox({})
@@ -46,9 +48,11 @@ function widget.batterie(args)
             local niveau = fu.readFile(widget.fichier)
             -- enlèvement saut à la ligne
             niveau = niveau:sub(1, -2)
-            if ordinateur == "maison" then
-               niveau = tostring(math.floor(math.random() * 101))
-            end
+            --
+            -- niveau aléatoire pour tests
+            -- if ordinateur == "maison" then
+            --    niveau = tostring(math.floor(math.random() * 101))
+            -- end
             local ligne = os.date("%Y%m%d-%H%M%S") .. " " .. niveau .. "\n"
             fu.appendFile(widget.logFile, ligne)
             w.conteneur.text:set_text(niveau .. "%")
@@ -57,7 +61,6 @@ function widget.batterie(args)
    --
    return w.conteneur
 end
-
 
 
 return setmetatable(widget, {__call=function(t, args)

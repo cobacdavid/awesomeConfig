@@ -18,6 +18,8 @@ require("awful.autofocus")
 wibox = require("wibox")
 -- Theme handling library
 beautiful = require("beautiful")
+config = awful.util.getdir("config")
+beautiful.init(config .. "/themes/david/theme.lua")
 -- Notification library
 naughty = require("naughty")
 menubar = require("menubar")
@@ -34,8 +36,6 @@ ordinateur = socket.dns.gethostname()
 if not(ordinateur == "asus") then
    ordinateur = "maison"
 end
---
-config = awful.util.getdir("config")
 --
 os.setlocale("fr_FR.UTF-8")
 --

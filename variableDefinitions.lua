@@ -37,7 +37,6 @@ end
 --
 modkey           = "Mod4"
 scriptsPath       = config .. "/scripts/"
-beautiful.init(config .. "/themes/david/theme.lua")
 batteryCmd            = "cat /sys/class/power_supply/BAT0/capacity"
 imageParDefaut     = "/usr/local/share/awesome/icons/awesome64.png"
 --
