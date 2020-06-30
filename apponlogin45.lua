@@ -12,13 +12,13 @@
 --
 local fu = require("fonctionsUtiles")
 --
--- fond des tags screen1
-fu.imagesFonds()
---
 -- appsDemarrage dans variableDefinitions
 for _, app in ipairs(appsDemarrage) do
    fu.executeUneFois(app)
 end
+--
+-- fond des tags screen1
+fu.imagesFonds()
 --
 -- mise en route ppeint nasa
 ppeintDesc = ppeint()
