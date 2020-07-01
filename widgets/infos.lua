@@ -41,9 +41,9 @@ local function appliqueCommande(args)
    awful.spawn.easy_async_with_shell(c, function(stdout, stderr, reason, exit_code)
                                         local lt = string.len(stdout)
                                         texte = stdout:sub(1, lt-1)
-                                        w.markup = "<span foreground='" .. fg .. "'>"
-                                           .. texte ..
-                                           "</span>"
+                                        w:set_markup("<span foreground='" .. fg .. "'>"
+                                                        .. texte ..
+                                                        "</span>")
    end)
 end
 --
@@ -82,7 +82,7 @@ function widget.infos(args)
       )
    )
    --
-   appliqueCommande({infos})
+   appliqueCommande({w=infos})
    return infos
 end
 

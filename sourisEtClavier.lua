@@ -282,6 +282,27 @@ globalkeys = gears.table.join(
       end,
       {description = "lua execute prompt", group = "awesome"}
    ),
+   awful.key({modkey}, "c",
+      function ()
+         local s = screen.primary
+	 awful.prompt.run(
+            {
+               prompt = "Expression Rpn : ",
+               textbox = s.mypromptbox.widget,
+               exe_callback = function(expression)
+                  local commande = "python3 /home/david/.config/awesome/rpnEval/rpnEval.py '" .. expression .. "'"
+                  awful.spawn.easy_async_with_shell(commande,
+                                                    function(stdout, stderr, reason, exit_code)
+                                                       s.mypromptbox.widget.font = "Inconsolata 20"
+                                                       s.mypromptbox.widget:set_text(expression .. " " .. stdout)
+                  end)
+               end,
+               history_path = awful.util.get_cache_dir() .. "/expression_eval"
+            }
+         )
+      end,
+      {description = "rpn prompt", group = "awesome"}
+   ),
    --
    awful.key({ modkey }, "g",
       function ()
@@ -451,7 +472,7 @@ for i = 1, 9 do
                   end,
                   {description = "toggle tag #" .. i, group = "tag"}),
 	-- Move client to tag.                                               
-        awful.key({ modkey, "Shift" }, "#" .. i + 9,                                                                              
+        awful.key({ modkey, "Shift" }, "#" .. i + 9,
 	   function ()
               if client.focus then
                  local tag = client.focus.screen.tags[i]

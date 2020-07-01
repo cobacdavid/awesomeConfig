@@ -116,7 +116,7 @@ function fonctionsUtiles.getBtVolume ()
    local choix=sony
    --
    local vol_actuel_hexa = "pacmd dump | egrep 'set-sink-volume bluez_sink." ..  choix ..".a2dp_sink '| cut -d ' ' -f 3"
-   awful.spawn.esay_async(vol_actuel_hexa,
+   awful.spawn.easy_async(vol_actuel_hexa,
                           function(stdout,stderr,reason,exit_code)
                              vol_actuel_hexa = stdout	      
                           end
