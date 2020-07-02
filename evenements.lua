@@ -30,25 +30,7 @@ client.connect_signal("manage",
                          --
                          fu.surTermOuPas(c)
                          --
-                         -- c.shape = arrondiMoyen
-                         -- c.shape = octogonePetit
                          c.shape = fu.pArrondiGros
-                         -- c.shape = gears.shape.rounded_rect
-                         --
-                         --
-                         -- WIDGET sur-contenu
-                         -- local posx = c.x
-                         -- local posy = c.y
-                         -- local w = wibox({
-                         --       x = posx,
-                         --       y = posy,
-                         --       width = c.width,
-                         --       height = c.height,
-                         --       visible = false,
-                         --       ontop = true,
-                         --       widget = couvertureW(c)
-                         -- })
-                         -- c.mawibox = w
                       end
 )
 
@@ -74,21 +56,11 @@ client.connect_signal("unmanage",
 
 client.connect_signal("property::size",
                       function(c)
-                         -- WIDGET sur-contenu
-                         -- if c.mawibox then
-                         --    c.mawibox.width = c.width
-                         --    c.mawibox.height = c.height
-                         -- end
                       end
 )
 
 client.connect_signal("property::position",
                       function(c)
-                         -- WIDGET sur-contenu
-                         -- if c.mawibox then
-                         --    c.mawibox.x = c.x
-                         --    c.mawibox.y = c.y
-                         -- end
                       end
 )
 
@@ -98,6 +70,12 @@ client.connect_signal("request::titlebars",
                          -- auxiliaire
                          c.bo = blocageopacite(c)
                          c.tb = awful.titlebar.widget.titlewidget(c)
+                         if (string.len(c.name) > 50+3) then
+                            local n = c.name
+                            local pref = string.sub(n, 1, 35)
+                            local suff = string.sub(n, -15)
+                            c.tb:set_text(pref .. "..." .. suff)
+                         end
                          -- buttons for the titlebar
                          local buttons = gears.table.join(
                             awful.button({}, 1,
@@ -145,7 +123,7 @@ client.connect_signal("request::titlebars",
                                -- }
                                -- ,
                                {
-                                  awful.titlebar.widget.titlewidget(c),
+                                  c.tb,
                                   buttons = buttons,
                                   layout  = wibox.layout.fixed.horizontal
                                },
@@ -248,10 +226,7 @@ client.connect_signal("property::sticky",
 client.connect_signal("focus",
                       function(c)
 			 c.border_color = beautiful.border_focus
-                         -- WIDGET sur-contenu
-                         -- if c.mawibox then
-                         --    c.mawibox.visible = false
-                         -- end
+                         --
                          if not c.blocage then
                             c.opacity = 1
                          end
@@ -262,14 +237,7 @@ client.connect_signal("focus",
 client.connect_signal("unfocus",
                       function(c)
 			 c.border_color = beautiful.border_normal
-                         -- WIDGET sur-contenu
-                         -- if c.mawibox then
-                         --    if c:isvisible() then
-                         --       c.mawibox.visible = true
-                         --    else
-                         --       c.mawibox.visible = false
-                         --    end
-                         -- end
+                         --
                          if not c.blocage then
                             c.opacity = 0.5
                          end
@@ -292,18 +260,6 @@ tag.connect_signal("property::selected",
                    end
 )
 
-
-                      --
-                      -- WIDGET sur-contenu
-                      -- for i, c in ipairs(client.get()) do
-                      --    if c.mawibox then
-                      --       if c:isvisible() and contains(c:tags(), t) then
-                      --          c.mawibox.visible = true
-                      --       else
-                      --          c.mawibox.visible = false
-                      --       end
-                      --    end
-                      -- end
 -- }}}
 -- 			 -- Enable sloppy focus
 -- 			 c:connect_signal("mouse::enter", function(c)

@@ -49,7 +49,6 @@ local function couleurBarre (t, v , m , M , coulDebut, coulFin)
 end
 --
 --
---
 local widget = {}
 --
 widget.interfaces = {}
@@ -57,6 +56,17 @@ widget.activeIndex = 1
 widget.levels = {}
 widget.limits = {MAX = 100, maxi = 2,
                  MIN = 0, mini = .5}
+--
+local function slider2Value(s)
+   return tostring(widget.limits.mini +
+                      (s * (widget.limits.maxi - widget.limits.mini)
+                          / widget.limits.MAX))
+end
+
+local function value2Slider(v)
+   return math.floor((v - widget.limits.mini) *100
+         / (widget.limits.maxi - widget.limits.mini))
+end
 --
 local function listAllInterfaces()
    -- uneasy to make this with async execution of this command
@@ -77,10 +87,19 @@ end
 --
 -- update display of slider value at start or when changing
 -- active interface
-local function valeurDepartSlider(w)
-   local vDepart = widget.levels[widget.interfaces[widget.activeIndex]]
-   w.value = math.floor((vDepart - widget.limits.mini) *100
-         / (widget.limits.maxi - widget.limits.mini))
+local function valeurDepartSlider(w, index)
+   local vDepart = widget.levels[widget.interfaces[index]]
+   w.value = value2Slider(vDepart)
+end
+--
+function widget.applyCommand(iface, stringValue)
+   local value = stringValue:gsub(",",".")
+   local command="xrandr --output " .. iface .." --brightness " .. value
+   awful.spawn.easy_async_with_shell(command,
+                                          function(stdout, stderr, reason, exit_code)
+                                             -- should handle possible error...
+                                          end
+        )
 end
 --
 function widget.sliderBrightnessWidget(args)
@@ -123,17 +142,10 @@ function widget.sliderBrightnessWidget(args)
    widgetComplet.stack.slider:connect_signal("property::value",
      function()
         local iface = widget.interfaces[widget.activeIndex]
-        local v = tostring(widget.limits.mini + (widgetComplet.stack.slider.value
-                                                    * (widget.limits.maxi - widget.limits.mini)
-                                                    / widget.limits.MAX))
+        local v = slider2Value(widgetComplet.stack.slider.value)
         v = v:gsub(",",".")
         widget.levels[iface] = v
-        local command="xrandr --output " .. iface .." --brightness " .. v
-        awful.spawn.easy_async_with_shell(command,
-                                          function(stdout, stderr, reason, exit_code)
-                                             -- should handle possible error...
-                                          end
-        )
+        widget.applyCommand(iface, v)
         widgetComplet.stack.slider.handle_color =
            couleurBarre(handle_color_type,
                         v,
@@ -150,7 +162,7 @@ function widget.sliderBrightnessWidget(args)
             function()
                widget.activeIndex = 1 + widget.activeIndex%#widget.interfaces
                modifieTexte(widgetComplet.stack.texte, widget.interfaces[widget.activeIndex])
-               valeurDepartSlider(widgetComplet.stack.slider)
+               valeurDepartSlider(widgetComplet.stack.slider, widget.activeIndex)
             end
          )
       )
@@ -159,11 +171,12 @@ function widget.sliderBrightnessWidget(args)
    -- applying custom startLevel
    for i, iface in ipairs(widget.interfaces) do
       widget.levels[iface] = args.startLevel and args.startLevel[iface] or 1
+      widget.applyCommand(iface, tostring(widget.levels[iface]))
    end
-   --
-   -- update widget at start up
+   -- --
+   -- -- update widget at start up
    modifieTexte(widgetComplet.stack.texte, widget.interfaces[widget.activeIndex])
-   valeurDepartSlider(widgetComplet.stack.slider)
+   valeurDepartSlider(widgetComplet.stack.slider, widget.activeIndex)
    --
    return widgetComplet
 end

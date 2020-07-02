@@ -171,13 +171,13 @@ configEmacs      = "forestgreen"
 --
 --
 appsDemarrage = {
-   "wmname LG3D",
    compositeMgr,
    editorD,
    terminalD,
-   cloudMusique,
+   -- cloudMusique,
    keepass,
-   radio,
+   "wmname LG3D",
+   -- radio,
 }
 
 -- config1          = clavierCfgPath .. "config_1.json"
