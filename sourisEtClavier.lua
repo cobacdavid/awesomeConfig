@@ -203,6 +203,8 @@ globalkeys = gears.table.join(
    awful.key({modkey}, "Left",
       function()
          awful.tag.viewprev(1)
+         -- local t = screen[1].selected_tag
+         -- t.selected = true
       end
    ),
    --

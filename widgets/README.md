@@ -143,5 +143,63 @@ mylayout:add(infos({fg    = "#ff0000",
 }))
 ```
 
-
 ![screenshot](infosScreenshot.png "infos screenshot")
+
+# titreClient widget for clients
+
+Just a textbox displaying client's name
+
+### Installation and usage
+
+If you drop `titreClient.lua` file in a `widgets` directory, you
+should consider this command line in your `rc.lua`:
+
+``` lua
+titreClient = require("widgets.titreClient")
+```
+
+To use this widget, add this at the beginning of your `client.connect_signal("request::titlebars",...` callback function:
+
+``` lua
+client.connect_signal("request::titlebars",
+    function(c)
+       if not c.titre then
+          c.titre = titreClient(c)
+     end
+     -- the function continues, defining your titlebar
+     ...
+     -- you insert the widget somewhere:
+     c.titre,
+     ...
+  end
+)
+```
+
+### Options
+
+You can pass a table as an optional argument containing some custom values for
+these keys:
+`limit` (default is 30 characters), `color` (default is `beautiful.bg_normal`) and `callback` (default is the function `widget.raccourcirTitre` slicing title to limit number of characters used).
+
+For example:
+
+``` lua
+if not c.titre then
+    c.titre = titreClient(c, {
+                              limit = 10,
+                              callback = function(titre)
+                                  if string.match(titre, "emacs") then
+                                      titre = "emacs, what else?"
+                                  elseif string.match(titre, "david@") then
+                                      titre = "zsh"
+                                  else
+                                      titre = titreClient.raccourcirTitre(titre)
+                                  end
+                                  return titre
+                              end
+                             }
+    )
+end
+```
+
+![screenshot](titreClientScreenshot.png "titreClient screenshot")

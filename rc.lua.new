@@ -47,8 +47,10 @@ volumemaster = require("widgets.volumemaster")
 luminosite = require("widgets.luminosite")
 luminosite_ecran = require("widgets.luminosite_ecran")
 killneuf = require("widgets.killneuf")
-ppeint = require("widgets.ppeintNasa")
 calendrier = require("widgets.calendrier")
+--
+ppeintTag = require("ppeintTag")
+ppeintNasa = require("widgets.ppeintNasa")
 -- widgets titlebar fenêtres
 blocageopacite = require("widgets.blocageopacite")
 opacite = require("widgets.opacite")
@@ -56,6 +58,7 @@ screenshot = require("widgets.screenshot")
 infos = require("widgets.infos")
 dimFenetre = require("widgets.dimFenetre")
 tempsPasse = require("widgets.tempsPasse")
+titreClient = require("widgets.titreClient")
 -- 
 if ordinateur == "asus" then
    batt = require("widgets.batterie")

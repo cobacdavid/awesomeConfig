@@ -64,18 +64,26 @@ client.connect_signal("property::position",
                       end
 )
 
-client.connect_signal("request::titlebars",
-                      function(c)
+client.connect_signal("request::titlebars",function(c)
+                         if not c.titre then
+                            c.titre = titreClient(c, {
+                                                     limit = 10,
+                                                     callback = function(titre)
+                                                        if string.match(titre, "emacs") then
+                                                           titre = "emacs, what else?"
+                                                        elseif string.match(titre, "david@") then
+                                                           titre = "zsh"
+                                                        else
+                                                           titre = titreClient.raccourcirTitre(titre)
+                                                        end
+                                                        return titre
+                                                     end
+                                                     }
+                            )
+                         end
                          -- pour régler les clients PDF sur l'écran
                          -- auxiliaire
                          c.bo = blocageopacite(c)
-                         c.tb = awful.titlebar.widget.titlewidget(c)
-                         if (string.len(c.name) > 50+3) then
-                            local n = c.name
-                            local pref = string.sub(n, 1, 35)
-                            local suff = string.sub(n, -15)
-                            c.tb:set_text(pref .. "..." .. suff)
-                         end
                          -- buttons for the titlebar
                          local buttons = gears.table.join(
                             awful.button({}, 1,
@@ -123,8 +131,8 @@ client.connect_signal("request::titlebars",
                                -- }
                                -- ,
                                {
-                                  c.tb,
-                                  buttons = buttons,
+                                  c.titre,
+                                  --buttons = buttons,
                                   layout  = wibox.layout.fixed.horizontal
                                },
                                { 
@@ -251,12 +259,13 @@ tag.connect_signal("property::selected",
                          chgTag = chgTag + 1
                          table.insert(listeChgTag, t)
                       end
-                      -- local cr = fu.fondEcran(t)
-                      -- gears.wallpaper.maximized(cr, t.screen)
-                      if mouse.screen.index == 1 then
-                         local rep = "/tmp/"
-                         gears.wallpaper.maximized(rep .. t.name .. ".png", t.screen)
-                      end
+                      --
+                      -- change screen1 wallpaper according to
+                      -- tag.name, one unique tag on screen2 so no
+                      -- change on screen2
+                      -- if tag.viewprev|next event -> screen1 change
+                      local rep = "/tmp/"
+                      gears.wallpaper.maximized(rep .. t.name .. ".png", t.screen)
                    end
 )
 

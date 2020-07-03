@@ -86,7 +86,6 @@ function widget.infos(args)
    return infos
 end
 
-
 return setmetatable(widget, {__call=function(t, args)
                                 return widget.infos(args)
                    end})

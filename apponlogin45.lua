@@ -18,10 +18,10 @@ for _, app in ipairs(appsDemarrage) do
 end
 --
 -- fond des tags screen1
-fu.imagesFonds()
+ppeintTag.imagesFonds()
 --
 -- mise en route ppeint nasa
-ppeintDesc = ppeint()
+ppeintDesc = ppeintNasa()
 --
 -- ce qui suit ne règle pas le problème du fond au démarrage
 -- gears.wallpaper.maximized("/tmp/term.png", screen[1])
