@@ -1,9 +1,9 @@
 # Some awesome widgets
 
 ## for the moment
-I'm trying my widgets to be easily usable in any awesome conf.
-For the moment, only widgets that documented below responds to this.
-Others need my `fonctionsUtiles.lua` lib. to work properly.
+I'm trying my widgets to be easily usable in any awesome conf.  For
+the moment, only widgets that are documented below responds to
+this. Others need my `fonctionsUtiles.lua` lib. to work properly.
 
 # calendar widget
 ### Installation and usage

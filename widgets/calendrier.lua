@@ -106,12 +106,13 @@ function widget.createWidget(args)
 end
 
 function widget.afficheCalendrier(w)
-   -- w.visible = true
    w:buttons(
       awful.util.table.join(
          awful.button({}, 1,
             function()
                w.visible = false
+               -- destroy object?
+               w = nil
             end
          )
       )
