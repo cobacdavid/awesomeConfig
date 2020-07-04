@@ -14,7 +14,7 @@ function widget.createWidget(args)
    local args = args or {}
    --
    -- le widget slider
-   luminositeControle = wibox.widget {
+   luminositeControle = wibox.widget({
       forced_width        = 100,
       bar_height          = 1,
       bar_shape           = gears.shape.rounded_rect,
@@ -27,20 +27,20 @@ function widget.createWidget(args)
       maximum             = MAX,
       --   value               = valeurLue,
       widget              = wibox.widget.slider,
-   }
+   })
    -- le widget text
-   luminositeTexte = wibox.widget {
+   luminositeTexte = wibox.widget({
       text                = "luminosite",
       align               = "center",
       widget              = wibox.widget.textbox,
-   }
+   })
    -- le widget à afficher
-   luminosite = wibox.widget {
+   luminosite = wibox.widget({
       luminositeTexte,
       luminositeControle,
       vertical_offset=5,
       layout=wibox.layout.stack
-   }
+   })
    -- actualisation
    luminositeControle:connect_signal("property::value", function()
                                         local v=luminositeControle.value
@@ -55,7 +55,7 @@ function widget.createWidget(args)
                                         luminositeControle.handle_color = fu.couleurBarre(theme.widget_luminosite_handle_color_type, v, MIN, MAX)
    end)
 --
-   if ordinateur == "asus" then
+   if ordinateur == "laptop" then
       local f = io.open( FIC )
       local valeurLue = tonumber(f:read "*a")
       luminositeControle.value = valeurLue

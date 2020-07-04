@@ -55,7 +55,7 @@ awful.screen.connect_for_each_screen(
       gears.wallpaper.set(beautiful.wallpaperTagPrincipal)
       if s.index == 1 then
          local layoutterm = ""
-         if ordinateur == "maison" then
+         if ordinateur == "desktop" then
             layoutterm = awful.layout.suit.tile.top
          else
             layoutterm = awful.layout.suit.tile.left
@@ -154,7 +154,7 @@ awful.screen.connect_for_each_screen(
 	 left_layout:add(heureW)
 	 -- left_layout:add(s.mytaglist)
          --
-	 if ordinateur == "asus" then
+	 if ordinateur == "laptop" then
             left_layout:add(luminosite())
          else
             local sLevel = {}
@@ -168,14 +168,14 @@ awful.screen.connect_for_each_screen(
 	 left_layout:add(separateur())
 	 left_layout:add(volumemaster())
 	 left_layout:add(separateur())
-         if ordinateur == "asus" then
+         if ordinateur == "laptop" then
             left_layout:add(batt())
             left_layout:add(separateur())
          end
          left_layout:add(infos())
 	 left_layout:add(separateur())
 	 left_layout:add(s.mypromptbox)
-         if ordinateur == "asus" then
+         if ordinateur == "laptop" then
             -- left_layout:add(car)
          end
          --
@@ -212,8 +212,8 @@ awful.screen.connect_for_each_screen(
             largeurSecond = screen[2].geometry.width
             hauteurSecond = screen[2].geometry.height
             --
-            if ordinateur == "asus" then
-               s.gaucheAsus = awful.wibar(
+            if ordinateur == "laptop" then
+               s.gaucheLaptop = awful.wibar(
                   {
                      position = "left",
                      screen = s,
@@ -223,7 +223,7 @@ awful.screen.connect_for_each_screen(
                      -- bg      = beautiful.noir,
                   }
                )
-               s.gaucheAsus:connect_signal("mouse::enter",
+               s.gaucheLaptop:connect_signal("mouse::enter",
                                            function(w)
                                              mouse.coords({
                                                    x = largeurPremier + largeurSecond - 2,
@@ -231,7 +231,7 @@ awful.screen.connect_for_each_screen(
                                              })
                                           end
                )
-            elseif ordinateur == "maison" then
+            elseif ordinateur == "desktop" then
                s.myjumpbox = awful.wibar(
                   {
                      position = "left",
@@ -296,8 +296,8 @@ awful.screen.connect_for_each_screen(
             )
          )
          -- nouvel écran à droite du premier
-         if ordinateur == "asus" then
-            s.droiteAsus = awful.wibar(
+         if ordinateur == "laptop" then
+            s.droiteLaptop = awful.wibar(
                {
                   position = "right",
                   screen = s ,
@@ -307,7 +307,7 @@ awful.screen.connect_for_each_screen(
                   ontop = true
                }
             )
-            s.droiteAsus:connect_signal("mouse::enter",
+            s.droiteLaptop:connect_signal("mouse::enter",
                                        function(w)
                                           if screen:count() == 2 then
                                              -- à adapter si au lycée
@@ -332,7 +332,7 @@ awful.screen.connect_for_each_screen(
                                        end
             )
          -- nouvel écran à gauche du premier
-         elseif ordinateur == "maison" then
+         elseif ordinateur == "desktop" then
             s.myjumpbox = awful.wibar(
                {
                   position = "right",

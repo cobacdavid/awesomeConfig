@@ -63,7 +63,11 @@ function widget.createWidget(c, args)
                       function(c)
                          local n = c.name
                          local t = callback(n)
-                         c.titre.texte:set_markup(t)
+                         -- sometimes crashes due to c.titre does
+                         -- not exist
+                         if c.titre then
+                            c.titre.texte:set_markup(t)
+                         end
                       end
    )
    --

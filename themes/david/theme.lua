@@ -1,3 +1,15 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-------------------------------------------------
+-- some parts from awesome wm 
+-- ditribution
+-- copyright ??
+-------------------------------------------------
 ----------------------------------------
 --  "david" awesome theme              --
 -----------------------------------------
@@ -174,39 +186,39 @@ theme.separator_thickness        = 0	-- number 	The separator thickness.
 -- }}}
 
 -- {{{ Misc
-theme.awesome_icone          = "/home/david/.config/awesome/themes/david/awesome-icon_2.png"
+theme.awesome_icone          = myhome .. ".config/awesome/themes/david/awesome-icon_2.png"
 -- }}}
 
 -- {{{ Layout
 
-theme.titlebar_close_button_normal = "/home/david/.config/awesome/themes/david/titlebar/close_normal.png"
-theme.titlebar_close_button_focus  = "/home/david/.config/awesome/themes/david/titlebar/close_focus.png"
+theme.titlebar_close_button_normal = myhome .. ".config/awesome/themes/david/titlebar/close_normal.png"
+theme.titlebar_close_button_focus  = myhome .. ".config/awesome/themes/david/titlebar/close_focus.png"
 
--- theme.titlebar_minimize_button_normal = "/home/david/.config/awesome/themes/david/titlebar/minimize_normal.png"
--- theme.titlebar_minimize_button_focus  = "/home/david/.config/awesome/themes/david/titlebar/minimize_focus.png"
+-- theme.titlebar_minimize_button_normal = myhome .. ".config/awesome/themes/david/titlebar/minimize_normal.png"
+-- theme.titlebar_minimize_button_focus  = myhome .. ".config/awesome/themes/david/titlebar/minimize_focus.png"
 
-theme.titlebar_ontop_button_normal_inactive = "/home/david/.config/awesome/themes/david/titlebar/ontop_normal_inactive.png"
-theme.titlebar_ontop_button_focus_inactive  = "/home/david/.config/awesome/themes/david/titlebar/ontop_focus_inactive.png"
-theme.titlebar_ontop_button_normal_active = "/home/david/.config/awesome/themes/david/titlebar/ontop_normal_active.png"
-theme.titlebar_ontop_button_focus_active  = "/home/david/.config/awesome/themes/david/titlebar/ontop_focus_active.png"
+theme.titlebar_ontop_button_normal_inactive = myhome .. ".config/awesome/themes/david/titlebar/ontop_normal_inactive.png"
+theme.titlebar_ontop_button_focus_inactive  = myhome .. ".config/awesome/themes/david/titlebar/ontop_focus_inactive.png"
+theme.titlebar_ontop_button_normal_active = myhome .. ".config/awesome/themes/david/titlebar/ontop_normal_active.png"
+theme.titlebar_ontop_button_focus_active  = myhome .. ".config/awesome/themes/david/titlebar/ontop_focus_active.png"
 
-theme.titlebar_sticky_button_normal_inactive = "/home/david/.config/awesome/themes/david/titlebar/sticky_normal_inactive.png"
-theme.titlebar_sticky_button_focus_inactive  = "/home/david/.config/awesome/themes/david/titlebar/sticky_focus_inactive.png"
-theme.titlebar_sticky_button_normal_active = "/home/david/.config/awesome/themes/david/titlebar/sticky_normal_active.png"
-theme.titlebar_sticky_button_focus_active  = "/home/david/.config/awesome/themes/david/titlebar/sticky_focus_active.png"
+theme.titlebar_sticky_button_normal_inactive = myhome .. ".config/awesome/themes/david/titlebar/sticky_normal_inactive.png"
+theme.titlebar_sticky_button_focus_inactive  = myhome .. ".config/awesome/themes/david/titlebar/sticky_focus_inactive.png"
+theme.titlebar_sticky_button_normal_active = myhome .. ".config/awesome/themes/david/titlebar/sticky_normal_active.png"
+theme.titlebar_sticky_button_focus_active  = myhome .. ".config/awesome/themes/david/titlebar/sticky_focus_active.png"
 
--- theme.titlebar_floating_button_normal_inactive = "/home/david/.config/awesome/themes/david/titlebar/floating_normal_inactive.png"
--- theme.titlebar_floating_button_focus_inactive  = "/home/david/.config/awesome/themes/david/titlebar/floating_focus_inactive.png"
--- theme.titlebar_floating_button_normal_active = "/home/david/.config/awesome/themes/david/titlebar/floating_normal_active.png"
--- theme.titlebar_floating_button_focus_active  = "/home/david/.config/awesome/themes/david/titlebar/floating_focus_active.png"
+-- theme.titlebar_floating_button_normal_inactive = myhome .. ".config/awesome/themes/david/titlebar/floating_normal_inactive.png"
+-- theme.titlebar_floating_button_focus_inactive  = myhome .. ".config/awesome/themes/david/titlebar/floating_focus_inactive.png"
+-- theme.titlebar_floating_button_normal_active = myhome .. ".config/awesome/themes/david/titlebar/floating_normal_active.png"
+-- theme.titlebar_floating_button_focus_active  = myhome .. ".config/awesome/themes/david/titlebar/floating_focus_active.png"
 
-theme.titlebar_maximized_button_normal_inactive = "/home/david/.config/awesome/themes/david/titlebar/maximized_normal_inactive.png"
-theme.titlebar_maximized_button_focus_inactive  = "/home/david/.config/awesome/themes/david/titlebar/maximized_focus_inactive.png"
-theme.titlebar_maximized_button_normal_active = "/home/david/.config/awesome/themes/david/titlebar/maximized_normal_active.png"
-theme.titlebar_maximized_button_focus_active  = "/home/david/.config/awesome/themes/david/titlebar/maximized_focus_active.png"
+theme.titlebar_maximized_button_normal_inactive = myhome .. ".config/awesome/themes/david/titlebar/maximized_normal_inactive.png"
+theme.titlebar_maximized_button_focus_inactive  = myhome .. ".config/awesome/themes/david/titlebar/maximized_focus_inactive.png"
+theme.titlebar_maximized_button_normal_active = myhome .. ".config/awesome/themes/david/titlebar/maximized_normal_active.png"
+theme.titlebar_maximized_button_focus_active  = myhome .. ".config/awesome/themes/david/titlebar/maximized_focus_active.png"
 
 
--- theme.grip = "/home/david/.config/awesome/themes/david/grip.png"
+-- theme.grip = myhome .. ".config/awesome/themes/david/grip.png"
 
 -- Generate Awesome icon:
 --theme.awesome_icon = theme_assets.awesome_icon(
