@@ -50,7 +50,10 @@ client.connect_signal("tagged",
 
 client.connect_signal("unmanage",
                       function(c)
-                         --
+                         local n = mouse.object_under_pointer()
+                         if n ~= nil and n ~= client.focus then
+                            client.focus = n
+                         end
                       end
 )
 
@@ -72,7 +75,7 @@ client.connect_signal("request::titlebars",function(c)
                                                         if string.match(titre, "emacs") then
                                                            titre = "emacs, what else?"
                                                         elseif string.match(titre, "david@") then
-                                                           titre = "zsh"
+                                                           titre = "Home sweet home"
                                                         else
                                                            titre = titreClient.raccourcirTitre(titre)
                                                         end
@@ -180,25 +183,33 @@ client.connect_signal("request::titlebars",function(c)
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter",
                       function(c)
-                         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-                         and awful.client.focus.filter(c) then
-                            client.focus = c
-                         end
-                         c:emit_signal("focus")
+                         c:emit_signal("request::activate", "mouse_enter", {raise = false})
+                         --c:activate { context = "mouse_enter", raise = false }
+                         --if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+                         --and awful.client.focus.filter(c) then
+                         --  client.focus = c
+                         --end
                          --
-                         if ordinateur == "maison" and c.class == editorClass then
+                         if ordinateur == "desktop" and c.class == editorClass then
                             fu.commande_execute(clavierCmd .. " " .. configEmacs)
                          end
-                         if ordinateur == "maison" and c.class == terminalClass then
+                         if ordinateur == "desktop" and c.class == terminalClass then
                             fu.commande_execute(clavierCmd .. " " .. configUrxvt)
                          end
+                         --
+                          c.border_color = beautiful.border_focus
+                         --
+                         if not c.blocage then
+                            c.opacity = 1
+                         end
+                         --
                       end
 )
 
 client.connect_signal("mouse::leave",
                       function(c)
                          c:emit_signal("unfocus")
-                         if ordinateur == "maison" and (c.class == editorClass or c.class == terminalClass) then
+                         if ordinateur == "desktop" and (c.class == editorClass or c.class == terminalClass) then
                             fu.commande_execute(clavierCmd .. " " .. configAwesome)
                          end
                       end
@@ -233,12 +244,9 @@ client.connect_signal("property::sticky",
 
 client.connect_signal("focus",
                       function(c)
-			 c.border_color = beautiful.border_focus
-                         --
-                         if not c.blocage then
+			if not c.blocage then
                             c.opacity = 1
                          end
-                         -- client.focus.first_tag:emit_signal("property::selected")
                       end
 )
 

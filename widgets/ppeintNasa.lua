@@ -6,15 +6,18 @@
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
 --
-local wibox = require("wibox")
-local gears = require("gears")
+local wibox     = require("wibox")
+local gears     = require("gears")
 local beautiful = require("beautiful")
+local os        = require("os")
+--
+myhome = os.getenv("HOME") .. "/"
 --
 local fu = require("fonctionsUtiles")
 --
 local widget = {}
 --
-widget.wallpaperRepImagesEspace = "/home/david/.config/awesome/fondEspace"
+widget.wallpaperRepImagesEspace = myhome .. ".config/awesome/fondEspace"
 widget.wallpaperTheme = ""
 widget.themeFond = ""
 --
@@ -26,7 +29,7 @@ end
 
 local function ppeintApplication()
    local rep = widget.wallpaperRepImagesEspace
-   if screen.count() >= 2 and ordinateur == "maison" then
+   if screen.count() >= 2 and ordinateur == "desktop" then
       -- local listeFichiers = scandir(rep, "jpg")
       -- local fichier = aleaTableau(listeFichiers)
       local fichier = rep .. "/" .. "fond" 

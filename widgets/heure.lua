@@ -25,12 +25,12 @@ local function heurew_text(w, args)
 end
 
 function widget.heure(args)
-   local args = args or {}
-   local delay = args.delay or 1
+   local args    = args         or {}
+   local delay   = args.delay   or 1
    --
-   local width = args.width or 150
+   local width   = args.width   or 150
    local justify = args.justify or "center"
-   local action = args.action or function() end
+   local action  = args.action  or function() end
    --
    local heurew = wibox.widget {
       forced_width = width,

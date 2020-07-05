@@ -11,14 +11,13 @@
 -- copyright ??
 -------------------------------------------------
 -- Standard awesome library
-awful = require("awful")
+awful             = require("awful")
 config = awful.util.getdir("config")
 --
 -- IMPORTANT VARIABLES
 -- also see variableDefinitions.lua
-myhome = "/home/david/"
 os.setlocale("fr_FR.UTF-8")
-socket = require("socket")
+socket            = require("socket")
 ordinateur = socket.dns.gethostname()
 -- asus is my laptop's hostname
 if ordinateur == "asus" then
@@ -29,55 +28,59 @@ else
    awful.spawn.with_shell(commandeEcran)
 end
 -- other variables
+myhome = os.getenv("HOME") .. "/"
 dofile (config ..  "/variableDefinitions.lua")
 --
 --
 --
-gears = require("gears")
+gears            = require("gears")
 require("awful.autofocus")
 -- Theme handling library
-beautiful = require("beautiful")
+beautiful        = require("beautiful")
 beautiful.init(config .. "/themes/david/theme.lua")
 -- widgets
-wibox = require("wibox")
+wibox            = require("wibox")
 -- Notification library
-naughty = require("naughty")
-menubar = require("menubar")
-hotkeys_popup = require("awful.hotkeys_popup").widget
+naughty          = require("naughty")
+menubar          = require("menubar")
+hotkeys_popup    = require("awful.hotkeys_popup").widget
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 -- Load Debian menu entries pose problème pour archlinux
 -- debian = require("debian.menu")
 has_fdo, freedesktop = pcall(require, "freedesktop")
--- pour avoir hostname
 --
-fu = require("fonctionsUtiles")
+fu               = require("fonctionsUtiles")
 -- widgets 
-separateur = require("widgets.separateur")
-heure = require("widgets.heure")
-volumemaster = require("widgets.volumemaster")
-luminosite = require("widgets.luminosite")
+separateur       = require("widgets.separateur")
+heure            = require("widgets.heure")
+volumemaster     = require("widgets.volumemaster")
+luminosite       = require("widgets.luminosite")
 luminosite_ecran = require("widgets.luminosite_ecran")
-killneuf = require("widgets.killneuf")
-calendrier = require("widgets.calendrier")
+killneuf         = require("widgets.killneuf")
+calendrier       = require("widgets.calendrier")
 --
-ppeintTag = require("ppeintTag")
-ppeintNasa = require("widgets.ppeintNasa")
+ppeintTag        = require("ppeintTag")
+ppeintNasa       = require("widgets.ppeintNasa")
 -- widgets titlebar fenêtres
-blocageopacite = require("widgets.blocageopacite")
-opacite = require("widgets.opacite")
-screenshot = require("widgets.screenshot")
-infos = require("widgets.infos")
-dimFenetre = require("widgets.dimFenetre")
-tempsPasse = require("widgets.tempsPasse")
-titreClient = require("widgets.titreClient")
+blocageopacite   = require("widgets.blocageopacite")
+opacite          = require("widgets.opacite")
+screenshot       = require("widgets.screenshot")
+infos            = require("widgets.infos")
+dimFenetre       = require("widgets.dimFenetre")
+tempsPasse       = require("widgets.tempsPasse")
+titreClient      = require("widgets.titreClient")
 -- 
 if ordinateur == "laptop" then
-   batt = require("widgets.batterie")
+   batt          = require("widgets.batterie")
 end
 --
-mpdCom = require("mpdCommande")
+mpdCom           = require("mpdCommande")
+--
+--
+ecranFlou        = require("widgets.ecranFlou")
+ecranFlou.isActivated = true
 --
 listeRcFiles = {--
    "errorhandling45.lua",

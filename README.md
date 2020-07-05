@@ -35,17 +35,17 @@ else
 end
 ```
 
-`myhome` intends to point to `HOME` env. variable, maybe I should
+* `myhome` intends to point to `HOME` env. variable, maybe I should
 use lua to retrieve this variable...
 
-Some lines of the whole config. test whether you're on "laptop" or
-not ("asus" is my laptop's hostname).
+* some lines of the whole config. test whether you're on "laptop"
+or not ("asus" is my laptop's hostname).
 
-`variableDefinitions` which contains a lot of variables. For the
-moment it's rather a mess... menus, rules and apps (at awesome
-startup) depend on it.
+* `variableDefinitions` contains a lot of variables, for the moment
+it's rather a mess... menus, rules and apps (at awesome startup)
+depend on it.
 
-`logicielsIndispensables.lua` is not evaluated. It just contains a
-list of soft. names I use.
+* `logicielsIndispensables.lua` is not evaluated. It just contains
+a list of software that I use.
 
 ![screenshot](awesomeScreenshot.png "awesomeWM screenshot")

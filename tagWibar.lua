@@ -141,16 +141,11 @@ awful.screen.connect_for_each_screen(
          )
 	 --
 	 local left_layout = wibox.layout.fixed.horizontal()
-         local heureW = heure({justify="left"})
-         heureW:buttons(
-            awful.util.table.join(
-               awful.button({}, 1,
-                  function()
-                     calendrier.afficheCalendrier(calendrier())
-                  end
-               )
-            )
-         )
+         local heureW = heure({
+               justify="left",
+               action = function()
+                  calendrier.afficheCalendrier(calendrier())
+                  end})
 	 left_layout:add(heureW)
 	 -- left_layout:add(s.mytaglist)
          --

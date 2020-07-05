@@ -12,10 +12,6 @@
 --
 local fu = require("fonctionsUtiles")
 --
--- appsDemarrage dans variableDefinitions
-for _, app in ipairs(appsDemarrage) do
-   fu.executeUneFois(app)
-end
 --
 -- fond des tags screen1
 ppeintTag.imagesFonds()
@@ -23,7 +19,10 @@ ppeintTag.imagesFonds()
 -- mise en route ppeint nasa
 ppeintDesc = ppeintNasa()
 --
--- ce qui suit ne règle pas le problème du fond au démarrage
--- gears.wallpaper.maximized("/tmp/term.png", screen[1])
+--
+-- appsDemarrage dans variableDefinitions
+for _, app in ipairs(appsDemarrage) do
+   fu.executeUneFois(app)
+end
 --
 fu.montre( "Démarrage terminé")

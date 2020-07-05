@@ -85,7 +85,7 @@ globalkeys = gears.table.join(
       function()
    	 affichageAide = not affichageAide
 	 if affichageAide then
-	    gears.wallpaper.centered("/home/david/.config/awesome/raccourcis/controles-1.png",
+	    gears.wallpaper.centered(myhome .. ".config/awesome/raccourcis/controles-1.png",
                                      1,
                                      gears.color(beautiful.wallpaper)
             )
@@ -115,7 +115,7 @@ globalkeys = gears.table.join(
    awful.key({modkey}, "F7",
       function()
          -- ppeintDesc est l'instance de wibox créé dans applogin45
-         ppeintNasa.afficheDescription(ppeintDesc, "/home/david/.config/awesome/fondEspace/fondDescription")
+         ppeintNasa.afficheDescription(ppeintDesc, myhome .. ".config/awesome/fondEspace/fondDescription")
       end
    ),
    awful.key({modkey}, "F8",           function()  end),
@@ -171,16 +171,6 @@ globalkeys = gears.table.join(
    ),
    awful.key({  }, "XF86Reload",
       function()
-	 -- local i = 0
-	 -- for _, c in ipairs(client.get()) do
-	 --    -- do something
-	 --    --end
-	 -- --for c in awful.client.iterate(function() return true end)
-	 --    --do
-	 --    local f = c.name
-	 --    gears.surface(c.content):write_to_png( "/home/david/" .. string.format('%02i',i) .."-" .. f  ..  ".png")
-	 --    i=i+1
-	 -- end
       end
    ),
    awful.key({  }, "XF86HomePage", function()   end),
@@ -292,7 +282,7 @@ globalkeys = gears.table.join(
                prompt = "Expression Rpn : ",
                textbox = s.mypromptbox.widget,
                exe_callback = function(expression)
-                  local commande = "python3 /home/david/.config/awesome/rpnEval/rpnEval.py '" .. expression .. "'"
+                  local commande = "python3 " .. myhome .. ".config/awesome/rpnEval/rpnEval.py '" .. expression .. "'"
                   awful.spawn.easy_async_with_shell(commande,
                                                     function(stdout, stderr, reason, exit_code)
                                                        s.mypromptbox.widget.font = "Inconsolata 20"
@@ -322,7 +312,7 @@ globalkeys = gears.table.join(
    	       awful.spawn( browser .. url )
    	       --awful.tag.viewonly(tags[ecranGauche][1])
    	    end,
-   	    history_path = "/home/david/.config/awesome/google_search_history"
+   	    history_path = myhome .. ".config/awesome/google_search_history"
    	 }
    end),
    
@@ -353,9 +343,9 @@ globalkeys = gears.table.join(
                prompt = "Thème fond : ",
                textbox = s.mypromptbox.widget,
                exe_callback = function(t)
-                  ppeint.themeFond = t
+                  ppeintNasa.themeFond = t
                end,
-               history_path = "/home/david/.config/awesome/fondEspace/themeHistory"
+               history_path = myhome .. ".config/awesome/fondEspace/themeHistory"
          })
    end)
    
