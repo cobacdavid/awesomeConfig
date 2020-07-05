@@ -1,0 +1,84 @@
+local secretFenetre = {}
+secretFenetre.wiboxList = {}
+--
+function secretFenetre.create(c, args)
+   local w = wibox({
+         x = c.x,
+         y = c.y,
+         width = c.width,
+         height = c.height,
+         bg = "#ff0000",
+         visible = true,
+         ontop = true
+   })
+   table.insert(secretFenetre.wiboxList, c)
+   --
+   w:buttons(gears.table.join(
+                awful.button({}, 1,
+                   function()
+                      w.visible = false
+                      w = nil
+                      table.remove(secretFenetre.wiboxList, fu.tableFind(secretFenetre.wiboxList, c))
+                       -- 
+                      -- get mouse focus the client below
+                      local enDessous = mouse.object_under_pointer()
+                      if type(enDessous) == 'client' then
+                         client.focus = enDessous
+                         enDessous:emit_signal("focus")
+                      end
+                   end
+                )
+   ))
+   return w
+end
+--
+function secretFenetre.createButton(c, args)
+   c.estSecret = false
+   --
+   local w = wibox.widget({
+         widget =  wibox.widget.textbox,
+         text = "NS"
+   })
+   --
+   w:buttons(gears.table.join(
+                awful.button({}, 1,
+                   function()
+                      c.estSecret = not c.estSecret
+                      if c.estSecret then
+                         w:set_text("S")
+                      else
+                         w:set_text("NS")
+                         
+                      end
+                   end
+                )
+   ))
+   return w
+end
+--
+--
+tag.connect_signal("property::selected",
+                   function(t)
+                      for i, c in ipairs(secretFenetre.wiboxList) do
+                         if fu.contains(t:clients(), c) or c.visible then
+                            c.secretWidget.visible = true
+                         else
+                            c.secretWidget.visible = false
+                         end
+                      end
+                      
+                   end
+)
+
+client.connect_signal("unfocus",
+                      function(c)
+                         -- unless these conditions... it is created multiple times...
+                         if c.estSecret and (not c.secretWidget or not c.secretWidget.visible) then
+                            c.secretWidget = secretFenetre.create(c)
+                         end
+                      end
+)
+
+return setmetatable(secretFenetre, {__call=function(t, args)
+                                       return secretFenetre.createButton(args)
+                   end})

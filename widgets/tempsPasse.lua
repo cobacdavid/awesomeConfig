@@ -102,6 +102,9 @@ function widget:createWidget(c, args)
    --
    c:connect_signal("unmanage",
                     function(c)
+                       if not c.class then
+                          c.class = "Inconnu"
+                       end
                        local t = math.floor(c.tempsPasse + c.tempsDuFocus)
                        local ligne = os.date("%Y%m%d-%H%M%S")
                           .. "," .. c.class .. ","

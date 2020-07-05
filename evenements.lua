@@ -149,6 +149,8 @@ client.connect_signal("request::titlebars",function(c)
                                   separateur(),
                                   c.bo,
                                   separateur(),
+                                  secretFenetre(c),
+                                  separateur(),
                                   -- wibox.widget {
                                   --    {
                                   --       image  = beautiful.grip,

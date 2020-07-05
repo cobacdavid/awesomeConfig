@@ -34,7 +34,7 @@ dofile (config ..  "/variableDefinitions.lua")
 --
 --
 gears            = require("gears")
-require("awful.autofocus")
+-- require("awful.autofocus")
 -- Theme handling library
 beautiful        = require("beautiful")
 beautiful.init(config .. "/themes/david/theme.lua")
@@ -58,19 +58,20 @@ heure            = require("widgets.heure")
 volumemaster     = require("widgets.volumemaster")
 luminosite       = require("widgets.luminosite")
 luminosite_ecran = require("widgets.luminosite_ecran")
-killneuf         = require("widgets.killneuf")
 calendrier       = require("widgets.calendrier")
+infos            = require("widgets.infos")
 --
 ppeintTag        = require("ppeintTag")
 ppeintNasa       = require("widgets.ppeintNasa")
 -- widgets titlebar fenêtres
+killneuf         = require("widgets.killneuf")
 blocageopacite   = require("widgets.blocageopacite")
 opacite          = require("widgets.opacite")
 screenshot       = require("widgets.screenshot")
-infos            = require("widgets.infos")
 dimFenetre       = require("widgets.dimFenetre")
 tempsPasse       = require("widgets.tempsPasse")
 titreClient      = require("widgets.titreClient")
+secretFenetre    = require("widgets.secretFenetre")
 -- 
 if ordinateur == "laptop" then
    batt          = require("widgets.batterie")

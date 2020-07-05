@@ -42,8 +42,9 @@ function ecranFlou.create(s, args)
                                 -- 
                                 -- get mouse focus the client below
                                 local enDessous = mouse.object_under_pointer()
-                                if type(enDessous) == 'client' and enDessous ~= client.focus then
+                                if type(enDessous) == 'client' then
                                    client.focus = enDessous
+                                   enDessous:emit_signal("focus")
                                 end
                              end
             )

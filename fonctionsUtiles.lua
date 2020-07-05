@@ -67,6 +67,14 @@ function fonctionsUtiles.contains(tab, val)
 end
 
 --
+function fonctionsUtiles.tableFind(tab, val)
+   for index, value in pairs(tab) do
+      if value == val then
+         return index
+      end
+   end
+end
+--
 -- enlève les barres de fenêtres si on est dans le tag "term", à
 -- modifier pour généraliser à tous les tags gérée avec du tiling
 function fonctionsUtiles.surTermOuPas(c)
