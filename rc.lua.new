@@ -10,6 +10,7 @@
 -- ditribution
 -- copyright ??
 -------------------------------------------------
+--
 -- Standard awesome library
 awful             = require("awful")
 config = awful.util.getdir("config")
@@ -18,15 +19,33 @@ config = awful.util.getdir("config")
 -- also see variableDefinitions.lua
 os.setlocale("fr_FR.UTF-8")
 socket            = require("socket")
-ordinateur = socket.dns.gethostname()
 -- asus is my laptop's hostname
-if ordinateur == "asus" then
-   ordinateur = "laptop"
-else
-   ordinateur = "desktop"
-   commandeEcran = "xrandr --output VGA-0 --mode 1920x1080 --pos 1200x900 --output HDMI-0 --mode 1920x1200 --rotate left"
+ordinateur = socket.dns.gethostname() == "asus" and "laptop" or "desktop"
+-- 2 screens config 
+--
+if screen:count() == 2 then
+   -- HDMI ou edP
+   largeurPremier = screen[1].geometry.width
+   hauteurPremier = screen[1].geometry.height
+   -- DVI ou HDMI
+   largeurSecond = screen[2].geometry.width
+   hauteurSecond = screen[2].geometry.height
+   --
+   if ordinateur == "laptop" then
+      commandeEcran =  "xrandr --output eDP1 --mode "
+         .. largeurPremier .. "x" .. hauteurPremier
+         .. " --output HDMI1 --right-of eDP1 --mode "
+         .. largeurSecond .. "x" .. hauteurSecond .. " --rotate normal"
+   else
+      commandeEcran = "xrandr --output VGA-0 --mode "
+         .. largeurSecond .. "x" .. hauteurSecond
+         .. " --pos " .. largeurPremier .. "x" .. (largeurPremier - hauteurSecond)
+         .. " --output HDMI-0 --mode "
+         .. largeurPremier .. "x" .. hauteurPremier .. " --rotate left"
+   end
    awful.spawn.with_shell(commandeEcran)
 end
+--
 -- other variables
 myhome = os.getenv("HOME") .. "/"
 dofile (config ..  "/variableDefinitions.lua")
@@ -34,7 +53,7 @@ dofile (config ..  "/variableDefinitions.lua")
 --
 --
 gears            = require("gears")
--- require("awful.autofocus")
+require("awful.autofocus")
 -- Theme handling library
 beautiful        = require("beautiful")
 beautiful.init(config .. "/themes/david/theme.lua")
@@ -81,7 +100,7 @@ mpdCom           = require("mpdCommande")
 --
 --
 ecranFlou        = require("widgets.ecranFlou")
-ecranFlou.isActivated = true
+ecranFlou.isActivated = false
 --
 listeRcFiles = {--
    "errorhandling45.lua",

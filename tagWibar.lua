@@ -10,49 +10,15 @@
 -- copyright ??
 -------------------------------------------------
 --
--- TAGS/TASK BUTTONS
---
-local taglist_buttons = gears.table.join(
-   awful.button({}, 1,
-      function(t)
-         t:view_only()
-      end
-   ),
-   awful.button({modkey}, 1,
-      function(t)
-	 if client.focus then
-	    client.focus:move_to_tag(t)
-	 end
-      end
-   ),
-   awful.button({}, 3, awful.tag.viewtoggle),
-   -- awful.button({modkey}, 3,
-   --    function(t)
-   --       if client.focus then
-   --          client.focus:toggle_tag(t)
-   --       end
-   --    end
-   -- ),
-   awful.button({}, 4,
-      function(t)
-         awful.tag.viewnext(t.screen)
-      end
-   ),
-   awful.button({}, 5,
-      function(t)
-         awful.tag.viewprev(t.screen)
-      end
-   )
-)
-
 -- {{{ Wiboxes
 -- Configuration de l'écran principal
---local s=screen.primary
 awful.screen.connect_for_each_screen(
    function(s)
       -- attention xrandr dicte sa loi du screen.primary selon
       -- l'interface !!
-      gears.wallpaper.set(beautiful.wallpaperTagPrincipal)
+      --
+      -- ÉCRAN PRINCIPAL
+      --
       if s.index == 1 then
          local layoutterm = ""
          if ordinateur == "desktop" then
@@ -101,36 +67,8 @@ awful.screen.connect_for_each_screen(
 			  screen = s,
                        }
          )
-         -- awful.tag.add("STL-7",
-         --               {
-	 --        	  layout = awful.layout.suit.floating,
-	 --        	  screen = s,
-         --               }
-         -- )
-         -- awful.tag.add("ST2S-8",
-         --               {
-	 --        	  layout = awful.layout.suit.floating,
-	 --        	  screen = s,
-         --               }
-         -- )
-         -- awful.tag.add("NSI-9",
-         --               {
-	 --        	  layout = awful.layout.suit.floating,
-	 --        	  screen = s,
-         --               }
-         -- )
-         --
          --
 	 s.mypromptbox = awful.widget.prompt()
-         --
-	 -- s.mytaglist = awful.widget.taglist(
-         --    {
-         --       screen = s,
-         --       filter = awful.widget.taglist.filter.all,
-         --       buttons = taglist_buttons
-         --    }
-         -- )
-         --
          --
 	 s.mywibar = awful.wibar(
             {
@@ -144,7 +82,7 @@ awful.screen.connect_for_each_screen(
          local heureW = heure({
                justify="left",
                action = function()
-                  calendrier.afficheCalendrier(calendrier())
+                  calendrier()
                   end})
 	 left_layout:add(heureW)
 	 -- left_layout:add(s.mytaglist)
@@ -181,25 +119,12 @@ awful.screen.connect_for_each_screen(
 	 layout:set_left(left_layout)
 	 layout:set_right(right_layout)
 	 s.mywibar:set_widget(layout)
-	 -- s.mywibox:buttons(gears.table.join(
-	 --        	      awful.button({}, 4,
-         --                         function()
-	 --        		    pcall( function() incBtVolume(2) end )
-	 --        		    -- awful.util.spawn( amixerplus )
-         --                         end
-         --                      ),
-	 --        	      awful.button({}, 5,
-         --                         function()
-	 --        		    pcall( function() incBtVolume(-2) end ) 
-	 --        		    -- awful.util.spawn( amixermoins )
-         --                         end
-         --                      )
-	 -- ))
          --
          -- configuration pour DVI ou VGA à gauche de HDMI à la
          -- maison
          -- et HDMI à droite de eDP avec le portable
-         if screen:count() == 2 then
+         -- 
+         if screen:count() == 2 and s.index == 1 then
             -- HDMI ou edP
             largeurPremier = s.geometry.width
             hauteurPremier = s.geometry.height
@@ -207,49 +132,26 @@ awful.screen.connect_for_each_screen(
             largeurSecond = screen[2].geometry.width
             hauteurSecond = screen[2].geometry.height
             --
-            if ordinateur == "laptop" then
-               s.gaucheLaptop = awful.wibar(
-                  {
-                     position = "left",
-                     screen = s,
-                     width = 1,
-                     opacity = 0,
-                     ontop = true,
-                     -- bg      = beautiful.noir,
-                  }
-               )
-               s.gaucheLaptop:connect_signal("mouse::enter",
-                                           function(w)
-                                             mouse.coords({
-                                                   x = largeurPremier + largeurSecond - 2,
-                                                   y = mouse.coords().y
-                                             })
-                                          end
-               )
-            elseif ordinateur == "desktop" then
-               s.myjumpbox = awful.wibar(
-                  {
-                     position = "left",
-                     screen = s,
-                     width = 1,
-                     opacity = 0,
-                     ontop = true,
-                     -- bg      = beautiful.noir,
-                  }
-               )
-               s.myjumpbox:connect_signal("mouse::enter",
-                                          function(w)
-                                             mouse.coords({
-                                                   x = 1200 + 1800,
-                                                   y = mouse.coords().y
-                                             })
-                                          end
-               )
-            end
+            s.gauche = awful.wibar({
+                  position = "left",
+                  screen = s,
+                  width = 1,
+                  opacity = 0,
+                  ontop = true,
+                  -- bg      = beautiful.noir,
+            })
+            s.gauche:connect_signal("mouse::enter",
+                                    function(w)
+                                       mouse.coords({
+                                             x = largeurPremier + largeurSecond - 2,
+                                             y = mouse.coords().y
+                                       })
+                                    end
+            )
          end
       end
       -- -- --
-      -- configuration écran supplémentaire
+      -- ÉCRAN SECONDAIRE
       -- -- --
       if s.index == 2 then
          --
@@ -269,8 +171,7 @@ awful.screen.connect_for_each_screen(
             align = "center",
 	    widget = wibox.widget.textclock("%A %d %B %Y")
          }
-         s.mywibar = awful.wibar(
-            {
+         s.mywibar = awful.wibar({
                screen = s ,
                bg = beautiful.noir,
                widget = clo,
@@ -278,138 +179,33 @@ awful.screen.connect_for_each_screen(
                ontop = false,
                type = "dock",
                opacity = .75
-            }
-         )
+         })
          --
-         s.mywibar:buttons(
-            awful.util.table.join(
-               awful.button({}, 1,
-                  function()
-                     calendrier.afficheCalendrier(calendrier())
-                  end
-               )
-            )
-         )
+         s.mywibar:buttons(gears.table.join(
+                              awful.button({}, 1,
+                                 function()
+                                    calendrier()
+                                 end
+                              )
+         ))
          -- nouvel écran à droite du premier
-         if ordinateur == "laptop" then
-            s.droiteLaptop = awful.wibar(
-               {
-                  position = "right",
-                  screen = s ,
-                  width = 1,
-                  -- bg       = beautiful.noir,
-                  opacity = 0,
-                  ontop = true
-               }
-            )
-            s.droiteLaptop:connect_signal("mouse::enter",
+         s.droiteLaptop = awful.wibar({
+               position = "right",
+               screen = s ,
+               width = 1,
+               -- bg       = beautiful.noir,
+               opacity = 0,
+               ontop = true
+            })
+         s.droiteLaptop:connect_signal("mouse::enter",
                                        function(w)
-                                          if screen:count() == 2 then
-                                             -- à adapter si au lycée
-                                             -- à la résolution de l'écran 
-                                             mouse.coords({
-                                                   x = 2,
-                                                   y = mouse.coords().y
-                                             })
-                                          else
-                                             -- 3 écrans (le dernier est vertical)
-                                             -- on agit proportionnellement
-                                             --
-                                             -- calcul de la distance au bord haut
-                                             dbh = 300
-                                             --
-                                             -- à modifier !!!
-                                             mouse.coords({
-                                                   x = 1440 + 1920 + 900 - 2 ,
-                                                   y =  ( mouse.coords().y - dbh ) * 1440 / 900
-                                             })
-                                          end
+                                          mouse.coords({
+                                                x = 2,
+                                                y = mouse.coords().y
+                                          })
                                        end
-            )
-         -- nouvel écran à gauche du premier
-         elseif ordinateur == "desktop" then
-            s.myjumpbox = awful.wibar(
-               {
-                  position = "right",
-                  screen = s ,
-                  width = 1,
-                  -- bg       = beautiful.noir,
-                  opacity = 0,
-                  ontop = true
-               }
-            )
-            s.myjumpbox:connect_signal("mouse::enter",
-                                       function(w)
-                                          if screen:count() == 2 then
-                                             -- à adapter si au lycée
-                                             -- à la résolution de l'écran 
-                                             mouse.coords({
-                                                   x = 2, -- largeurPremier + largeurSecond - 2,
-                                                   y = mouse.coords().y
-                                             })
-                                          else
-                                             -- 3 écrans (le dernier est vertical)
-                                             -- on agit proportionnellement
-                                             --
-                                             -- calcul de la distance au bord haut
-                                             dbh = 300
-                                             --
-                                             -- à modifier !!!
-                                             mouse.coords({
-                                                   x = 1440 + 1920 + 900 - 2 ,
-                                                   y =  ( mouse.coords().y - dbh ) * 1440 / 900
-                                             })
-                                          end
-                                       end
-            )
-         end
+         )
       end
-
-      
-      -- troisième écran
-      -- Rappel de la commande dans ~/.Xsession
-      -- xrandr --output HDMI-0 --primary --mode 1920x1200 --pos 1440x0
-      -- >> --output DVI-0 --mode 1440x900 --pos 0x300 --rotate normal
-      -- >> --output VGA-0  --mode 1440x900 --pos 3360x0 --rotate left
-      -- if s.index == 3 then
-      --    awful.tag.add("Auxiliaire", {
-      --   		  layout             = awful.layout.suit.floating,
-      --   		  screen             = s,
-      --    })
-      --    local clo=wibox.widget {
-      --       align = "center",
-      --       widget = wibox.widget.textclock(" %A %d %B %Y ")
-      --    }
-      --    s.mywibox = awful.wibar({
-      --          screen = s ,
-      --          bg = beautiful.noir,
-      --          widget=clo,
-      --          position = "top",
-      --          ontop = false,
-      --          type = "dock"
-      --    })
-      --    s.myjumpbox = awful.wibar({
-      --          position = "right",
-      --          screen   = s ,
-      --          width    = 1,
-      --          -- bg       = beautiful.noir,
-      --          opacity  = 0,
-      --          ontop    = true
-      --    })
-      --    s.myjumpbox:connect_signal("mouse::enter", function(w)
-      --                                  if mouse.coords().y > 300 then
-      --                                     mouse.coords {
-      --                                        x = 2 ,
-      --                                        y = mouse.coords().y
-      --                                     }
-      --                                  else
-      --                                     mouse.coords {
-      --                                        x = 2 ,
-      --                                        y = 300
-      --                                     }
-      --                                  end
-      --    end)
-      -- end
    end
 )
 

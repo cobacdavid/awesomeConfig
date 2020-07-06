@@ -1,3 +1,13 @@
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-------------------------------------------------
+-- some parts from awesome wm 
+-- ditribution
+-- copyright ??
+-------------------------------------------------
 local wibox = require("wibox")
 local gears = require("gears")
 local awful = require("awful")
@@ -14,7 +24,7 @@ function ecranFlou.create(s, args)
       ecranFlou.encours = true
       local w = nil
       -- local file = "/tmp/" .. os.date("%Y%m%d-%H%M%S") .. ".png"
-      local file = "/tmp/screen" .. s.index .. ".png"
+      local file = "/tmp/screen" .. s.index .. ".jpg"
       local x = s.geometry.x
       local y = s.geometry.y
       local w = s.geometry.width
@@ -60,6 +70,9 @@ end
 --
 client.connect_signal("mouse::enter",
                       function(c)
+                         if not ecranFlou.isActivated then
+                            return nil
+                         end
                          -- fu.montre("ok")
                          for i, s in ipairs(screen) do
                             if s.actif and s ~= mouse.screen then

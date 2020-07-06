@@ -57,16 +57,6 @@ client.connect_signal("unmanage",
                       end
 )
 
-client.connect_signal("property::size",
-                      function(c)
-                      end
-)
-
-client.connect_signal("property::position",
-                      function(c)
-                      end
-)
-
 client.connect_signal("request::titlebars",function(c)
                          if not c.titre then
                             c.titre = titreClient(c, {
@@ -185,12 +175,6 @@ client.connect_signal("request::titlebars",function(c)
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter",
                       function(c)
-                         c:emit_signal("request::activate", "mouse_enter", {raise = false})
-                         --c:activate { context = "mouse_enter", raise = false }
-                         --if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-                         --and awful.client.focus.filter(c) then
-                         --  client.focus = c
-                         --end
                          --
                          if ordinateur == "desktop" and c.class == editorClass then
                             fu.commande_execute(clavierCmd .. " " .. configEmacs)
@@ -201,9 +185,7 @@ client.connect_signal("mouse::enter",
                          --
                           c.border_color = beautiful.border_focus
                          --
-                         if not c.blocage then
-                            c.opacity = 1
-                         end
+                          c:emit_signal("focus")
                          --
                       end
 )
@@ -214,33 +196,6 @@ client.connect_signal("mouse::leave",
                          if ordinateur == "desktop" and (c.class == editorClass or c.class == terminalClass) then
                             fu.commande_execute(clavierCmd .. " " .. configAwesome)
                          end
-                      end
-)
-
-client.connect_signal("property::sticky",
-                      function(c)
-                         -- montre(screen[2].tags[1].name)
-                         -- montre(c.sticky)
-                         
-                         -- clientsAux = screen[2].tags[1]:clients()
-                         -- if not c.sticky then
-                         --    table.insert(clientsAux, c)
-                         -- elseif contains(clientsAux, c) then
-                         --       for i=1, #clientsAux do
-                         --          if clientsAux[i] == c then 
-                         --             table.remove(clientsAux, i)
-                         --          end
-                         --       end
-                         -- end
-                         -- screen[2].tags[1]:clients(clientsAux)
-                         
-                         -- table_tag = {} 
-                         -- for _, s in ipairs(screen) do
-                         --    for _, t in ipairs(s.tags) do
-                         --       table.insert(table_tag, t)
-                         --    end
-                         -- end
-                         -- c:tags(table_tag)
                       end
 )
 
@@ -279,101 +234,3 @@ tag.connect_signal("property::selected",
                    end
 )
 
--- }}}
--- 			 -- Enable sloppy focus
--- 			 c:connect_signal("mouse::enter", function(c)
--- 					     if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
--- 					     and awful.client.focus.filter(c) then
--- 						client.focus = c
--- 					     end
--- 							  end)
--- 			 -- if not startup then
--- 			 --    -- Set the windows at the slave,
--- 			 --    -- i.e. put it at the end of others instead of setting it master.
--- 			 --    -- awful.client.setslave(c)
-			    
--- 			 --    -- Put windows in a smart way, only if they does not set an initial position.
--- 			 --    if not c.size_hints.user_position and not c.size_hints.program_position then
--- 			 --       awful.placement.no_overlap(c)
--- 			 --       awful.placement.no_offscreen(c)
--- 			 --    end
--- 			 -- end
--- 			 if awesome.startup and
--- 			    not c.size_hints.user_position
--- 			 and not c.size_hints.program_position then
--- 			    -- Prevent clients from being unreachable after screen count changes.
--- 			    awful.placement.no_offscreen(c)
--- 			 end
-			 
--- 			 --if barreFenetre and (c.type == "normal" or c.type == "dialog") then
--- 			    -- buttons for the titlebar
--- 			    local buttons = awful.util.table.join(
--- 			       awful.button({ }, 1, function()
--- 					       client.focus = c
--- 					       c:raise()
--- 					       awful.mouse.client.move(c)
--- 						    end),
--- 			       awful.button({ }, 3, function()
--- 					       client.focus = c
--- 					       c:raise()
--- 					       awful.mouse.client.resize(c)
--- 						    end)
--- 			    )
-			    
--- 			    -- Widgets that are aligned to the left
--- 			    local left_layout = wibox.layout.fixed.horizontal()
--- 			    local title = awful.titlebar.widget.titlewidget(c)
--- 			    title:set_align("center")
--- 			    --title:set_markup("<span fgcolor='white' >" .. c.class .. "  " .. c.name .."</span>")
--- 			    left_layout:add( title )
--- 			    left_layout:buttons(buttons)
-			    
--- 			    -- Widgets that are aligned to the right
--- 			    local right_layout = wibox.layout.fixed.horizontal()
--- 			    right_layout:add(awful.titlebar.widget.maximize(c))
--- 			    right_layout:add(awful.titlebar.widget.ontopbutton(c))
--- 			    right_layout:add(awful.titlebar.widget.closebutton(c))
-			    
--- 			    -- The title goes in the middle
--- 			    --local middle_layout = wibox.layout.flex.horizontal()
--- 			    --local title = awful.titlebar.widget.titlewidget(c)
--- 			    --middle_layout:add(title)
--- 			    --middle_layout:buttons(buttons)
-			    
--- 			    -- Now bring it all together
--- 			    local layout = wibox.layout.align.horizontal()
--- 			    layout:set_left(left_layout)
--- 			    layout:set_right(right_layout)
--- 			    --layout:set_middle(middle_layout)
--- 			    awful.titlebar(c):set_widget(layout)
--- 			    awful.titlebar.hide(c)
--- 			 --end
--- 				end)
-
--- -- Enable sloppy focus, so that focus follows mouse.
--- client.connect_signal("mouse::enter", function(c)
--- 			 if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
--- 			 and awful.client.focus.filter(c) then
--- 			    client.focus = c
--- 			 end
--- end)
-
--- client.connect_signal("focus", function(c)
--- 			      c.border_color = beautiful.border_focus
--- 			      -- c.border_width = "10"
--- 			   end)
--- --client.connect_signal("property::geometry", function(c)
--- --			       local gx = c:geometry()["x"]
--- --			       local gy = c:geometry()["y"]
--- --			       local gh = c:geometry()["height"]
--- --			       if not mywibox[c] then
--- --				  mywibox[c] = awful.wibox({screen = c.screen, width = 20, height = gh, bg ="#FF00FF" })
--- --			       end
--- --			       mywibox[c]:geometry({ x = gx - 20, y = gy })
--- --			    end)
-
--- client.connect_signal("unfocus", function(c)
--- 				c.border_color = beautiful.border_normal
--- 				-- c.border_width = "1"
--- 			     end)
--- -- }}}

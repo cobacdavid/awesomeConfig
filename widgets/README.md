@@ -15,21 +15,31 @@ should consider this command line in your `rc.lua`:
 calendrier = require("widgets.calendrier")
 ```
 
-and now you can just attach this calendar to a `wibar` mouse event, e.g.:
+Now you bind `calendrier()` to a mouse or keyboard event with
+something like this:
 
 ``` lua
-mywibar:buttons(
-    awful.util.table.join(
-        awful.button({}, 1,
-            function()
-                calendrier.afficheCalendrier(calendrier())
-            end
-        )
-    )
-)
+mywibar:buttons(gears.table.join(
+    awful.button({}, 1,
+       function()
+           calendrier()
+       end
+    ),
+    -- other events
+    ...
+    ...
+))
+
 ```
 
-You close the calendar using mouse left-click.
+
+### Bindings
+
+You query year before using mouse left-click.
+
+You close the calendar using mouse middle-click.
+
+You query year afetr using mouse right-click.
 
 ![screenshot](calendrierScreenshot.png "calendrier screenshot")
 

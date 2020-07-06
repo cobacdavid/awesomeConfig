@@ -1,13 +1,27 @@
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-------------------------------------------------
+-- some parts from awesome wm 
+-- ditribution
+-- copyright ??
+-------------------------------------------------
+--
+
+--
 local secretFenetre = {}
 secretFenetre.wiboxList = {}
 --
 function secretFenetre.create(c, args)
+   local args = args or {}
    local w = wibox({
          x = c.x,
          y = c.y,
          width = c.width,
          height = c.height,
-         bg = "#ff0000",
+         bg = args.bg or beautiful.bg_urgent,
          visible = true,
          ontop = true
    })
@@ -37,7 +51,7 @@ function secretFenetre.createButton(c, args)
    --
    local w = wibox.widget({
          widget =  wibox.widget.textbox,
-         text = "NS"
+         text = "🔓"
    })
    --
    w:buttons(gears.table.join(
@@ -45,10 +59,9 @@ function secretFenetre.createButton(c, args)
                    function()
                       c.estSecret = not c.estSecret
                       if c.estSecret then
-                         w:set_text("S")
+                         w:set_text("🔒")
                       else
-                         w:set_text("NS")
-                         
+                         w:set_text("🔓")
                       end
                    end
                 )
@@ -59,6 +72,7 @@ end
 --
 tag.connect_signal("property::selected",
                    function(t)
+                      --
                       for i, c in ipairs(secretFenetre.wiboxList) do
                          if fu.contains(t:clients(), c) or c.visible then
                             c.secretWidget.visible = true
@@ -66,7 +80,7 @@ tag.connect_signal("property::selected",
                             c.secretWidget.visible = false
                          end
                       end
-                      
+                      --
                    end
 )
 
