@@ -39,11 +39,11 @@ if screen:count() == 2 then
    else
       commandeEcran = "xrandr --output VGA-0 --mode "
          .. largeurSecond .. "x" .. hauteurSecond
-         .. " --pos " .. largeurPremier .. "x" .. (largeurPremier - hauteurSecond)
+         .. " --pos " .. hauteurPremier .. "x" .. (largeurPremier - hauteurSecond)
          .. " --output HDMI-0 --mode "
          .. largeurPremier .. "x" .. hauteurPremier .. " --rotate left"
    end
-   awful.spawn.with_shell(commandeEcran)
+   awful.spawn(commandeEcran)
 end
 --
 -- other variables

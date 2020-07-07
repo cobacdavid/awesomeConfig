@@ -28,9 +28,10 @@ local styles = {}
 styles.year = {
    bg_color = beautiful.bg_normal
 }
-styles.focus = {
-   fg_color = beautiful.fg_focus
-}
+-- styles.focus = {
+--    bg_color = beautiful.bg_focus,
+--    fg_color = beautiful.fg_focus
+-- }
 styles.header = {
    bg_color =  beautiful.bg_normal,
    }
@@ -38,9 +39,9 @@ styles.month = {
    padding  = 5,
    bg_color = beautiful.bg_normal
 }
-styles.normal = {
-   shape    = arrondiMoyen
-}
+-- styles.normal = {
+--    shape    = arrondiMoyen
+-- }
 styles.header = {
    fg_color = beautiful.fg_normal
 }
@@ -55,21 +56,32 @@ local function decorate(widget, flag, date)
       flag = "header"
    end
     -- référence à la variable contenant les styles
-   local style = styles[flag]
+   local style = styles[flag] or {}
    -- week-end en couleur différente
    -- attention weekday désigne aussi un flag (les textes des jours)
    local d = {year=date.year, month=(date.month or 1), day=(date.day or 1)}
-
    local weekday = tonumber(os.date('%w', os.time(d)))
-   local default_bg = (flag == "normal" and (weekday == 0 or weekday == 6)) and beautiful.bg_urgent
-      or beautiful.bg_systray
-   local default_fg = (flag == "normal" and (weekday == 0 or weekday == 6)) and beautiful.fg_urgent
-      or (date.month == tonumber(os.date("%m")) and date.day == tonumber(os.date("%d"))
-             and flag == "focus") and beautiful.fg_focus
-      or beautiful.fg_normal
+   --
+   local bg = style.bg_color or beautiful.bg_systray
+   local fg = style.fg_color or beautiful.fg_systray
+   if flag == "normal" and (weekday == 0 or weekday == 6) then
+      bg    = beautiful.bg_urgent
+      fg    = beautiful.fg_urgent
+      shape = arrondiMoyen
+   end
+      -- styles.focus ne semble pas fonctionner à l'affichage par
+      -- défaut donc on le fait ici:
+   if d.month == tonumber(os.date("%m"))
+      and d.day == tonumber(os.date("%d"))
+      and d.year == tonumber(os.date("%Y"))
+      and (flag == "normal" or flag == "focus") then
+         bg = beautiful.bg_normal
+         fg = beautiful.fg_focus
+         style.markup   = function(t) return '<b>' .. t .. '</b>' end
+   end
    --
    if style.markup and widget.get_text and widget.set_markup then
-      widget:set_markup(style['markup'](widget:get_text()))
+       widget:set_markup(style.markup(widget:get_text()))
    end
    --
    local ret = wibox.widget({
@@ -78,21 +90,17 @@ local function decorate(widget, flag, date)
             margins = style.padding or 2,
             widget  = wibox.container.margin
         },
-        shape        = style['shape'],
-        -- border_width = style['border_width'] or beautiful.border_width,
-        -- border_color = style['border_color'] or beautiful.border_color_normal,
-        fg           = style['fg_color'] or default_fg,
-        bg           = style.bg_color or default_bg,
+        shape        = style.shape or shape,
+        fg           = fg,
+        bg           = bg,
         widget       = wibox.container.background
    })
     return ret
 end
 
-local function cal(year)
-   local ladate = os.date('*t')
-   ladate.year = year
+local function cal()
    local w = wibox.widget({
-         date     = ladate,
+         date     = {year=widget.year},
          fn_embed = decorate,
          font     = beautiful.calendar_font,
          widget   = wibox.widget.calendar.year
@@ -102,7 +110,6 @@ end
 
 function widget.createWidget(args)
    local args = args or {}
-   local annee = args.year or 2020
    local widgetCalendrier = wibox({
          width   = 760,
          height  = 670,
@@ -117,7 +124,7 @@ function widget.createWidget(args)
    })
    --
    widgetCalendrier:setup({
-         cal(widget.year),
+         cal(),
          layout = wibox.layout.fixed.horizontal
    })
    --

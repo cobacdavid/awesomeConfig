@@ -60,11 +60,12 @@ theme.bg_focus     = theme.rouge
 theme.bg_urgent    = theme.gris
 -- theme.bg_minimize  = "#444444"
 theme.bg_systray   = theme.noirtrans
--- 
+
 theme.fg_normal    = theme.gris
 theme.fg_focus     = theme.rouge
 theme.fg_urgent    = theme.noir
 theme.fg_minimize  = theme.blanc
+theme.fg_systray   = theme.blanc
 
 theme.useless_gap   = dpi(0)
 -- theme.border_width  = dpi(1)

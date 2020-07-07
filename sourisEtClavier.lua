@@ -138,11 +138,7 @@ globalkeys = gears.table.join(
    end),
    awful.key({modkey, "Shift"}, "F7",
       function()
-         mpdCom.playorpause()
-   end),
-   awful.key({modkey, "Shift"}, "F8",
-      function()
-         mpdCom.next()
+         mpdCom.runorplayorpause()
    end),
    awful.key({modkey, "Shift"}, "F8",
       function()

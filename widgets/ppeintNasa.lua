@@ -6,14 +6,26 @@
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
 --
+local awful     = require("awful")
 local wibox     = require("wibox")
 local gears     = require("gears")
 local beautiful = require("beautiful")
+local io        = require("io")
 local os        = require("os")
+local math      = require("math")
 --
 myhome = os.getenv("HOME") .. "/"
 --
-local fu = require("fonctionsUtiles")
+local function aleaTableau(T)
+   return T[math.random(#T)]
+end
+--
+local function readFile(fichier)
+   local fh = io.open(fichier)
+   local contenu = fh:read("*a")
+   fh:close()
+   return contenu
+end
 --
 local widget = {}
 --
@@ -23,17 +35,18 @@ widget.themeFond = ""
 --
 local function ppeintTelechargement(themeDuFond)
    local rep = widget.wallpaperRepImagesEspace
-   fu.commande_execute( rep .. "/image_hasard_nasa.py" .. " " .. themeDuFond)
+   local commande = rep .. "/image_hasard_nasa.py" .. " " .. themeDuFond
+   awful.spawn.easy_async_with_shell(commande,
+                                     function(stdout, stderr, reason, exit_code)
+                                        
+                                     end
+   )
 end
 --
-
 local function ppeintApplication()
    local rep = widget.wallpaperRepImagesEspace
    if screen.count() >= 2 and ordinateur == "desktop" then
-      -- local listeFichiers = scandir(rep, "jpg")
-      -- local fichier = aleaTableau(listeFichiers)
-      local fichier = rep .. "/" .. "fond" 
-      -- gears.wallpaper.maximized(fichier, screen[2])
+      local fichier = rep .. "/fond" 
       gears.wallpaper.fit(fichier, screen[2], beautiful.wallpaper_color)
    end
 end
@@ -41,16 +54,16 @@ end
 function widget.ppeintDesc(args)
    local args = args or {}
    local widget_description = wibox({
-         width = 400,
-         height = 200,
-         ontop = true,
-         screen = mouse.screen,
-         expand = true,
-         bg = beautiful.noir,
+         width           = 400,
+         height          = 200,
+         ontop           = true,
+         screen          = mouse.screen,
+         expand          = true,
+         bg              = beautiful.noir,
          max_widget_size = 500,
-         border_width = 3,
-         border_color = theme.gris,
-         shape = function(cr, width, height)
+         border_width    = 3,
+         border_color    = theme.gris,
+         shape           = args.shape or function(cr, width, height)
             gears.shape.rounded_rect(cr, width, height, 3)
          end
    })
@@ -72,36 +85,34 @@ function widget.ppeintDesc(args)
 end
 --
 function widget.afficheDescription(w, fichierDescription)
-   local contenu = fu.readFile(fichierDescription)
+   local contenu = readFile(fichierDescription)
    --
    w.conteneur.text.desc:set_text(contenu)
    w.visible = true
-   w:buttons(
-      awful.util.table.join(
-         awful.button({}, 1,
-            function()
-               w.visible = false
-            end
-         )
-      )
-   )
+   w:buttons(gears.table.join(
+                awful.button({}, 1,
+                   function()
+                      w.visible = false
+                   end
+                )
+   ))
    --
 end
 --
 --
 gears.timer ({
-      timeout = 120,
-      call_now = true,
+      timeout   = 120,
+      call_now  = true,
       autostart = true,
-      callback = function()
+      callback  = function()
          -- on récupère le fond sur internet
          ppeintTelechargement(widget.themeFond)
          -- on l'applique 5 secondes plus tard
          -- (le temps qu'il soit téléchargé !)
          gears.timer({
-               timeout = 5,
-               autostart = true,
-               callback =  function()
+               timeout     = 5,
+               autostart   = true,
+               callback    =  function()
                   ppeintApplication()
                end,
                single_shot = true

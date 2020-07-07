@@ -55,6 +55,11 @@ function fonctionsUtiles.montre(t)
    naughty.notify({text = tostring(t)})
 end
 
+function fonctionsUtiles.ok()
+   naughty.notify({text = "OK"})
+end
+
+
 --
 function fonctionsUtiles.contains(tab, val)
    local trouve = false

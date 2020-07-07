@@ -9,21 +9,29 @@
 -- copyright ??
 -------------------------------------------------
 --
-
---
 local secretFenetre = {}
 secretFenetre.wiboxList = {}
+--
+local function contient(T, e)
+   local trouve = false
+   local i = 1
+   while (not trouve) and (i <= #tab) do
+      trouve = tab[i] == val
+      i = i + 1
+   end
+   return trouve
+end
 --
 function secretFenetre.create(c, args)
    local args = args or {}
    local w = wibox({
-         x = c.x,
-         y = c.y,
-         width = c.width,
-         height = c.height,
-         bg = args.bg or beautiful.bg_urgent,
+         x       = c.x,
+         y       = c.y,
+         width   = c.width,
+         height  = c.height,
+         bg      = args.bg or beautiful.bg_urgent,
          visible = true,
-         ontop = true
+         ontop   = true
    })
    table.insert(secretFenetre.wiboxList, c)
    --
@@ -74,7 +82,7 @@ tag.connect_signal("property::selected",
                    function(t)
                       --
                       for i, c in ipairs(secretFenetre.wiboxList) do
-                         if fu.contains(t:clients(), c) or c.visible then
+                         if contient(t:clients(), c) or c.visible then
                             c.secretWidget.visible = true
                          else
                             c.secretWidget.visible = false
