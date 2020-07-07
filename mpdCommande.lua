@@ -44,10 +44,10 @@ function mpd.run()
    -- mpd est lancé via play
    -- pas de démarrage auto avec apponlogin...
    commande = "/usr/bin/mpd " .. myhome .. ".config/mpd/mpd.conf"
-   awful.spawn.with_shell(commande,
-                          function(stdout, stderr, reason, exit_code)
+   awful.spawn.easy_async_with_shell(commande,
+                                     function(stdout, stderr, reason, exit_code)
+                                        notifie("lancement")
    end)
-   notifie("lancement")
 end
 --
 function mpd.connect()
@@ -74,18 +74,20 @@ function mpd.com(ordre)
    local reponse = mpd._socket:receive()
    if reponse == "OK" and mpd.socketNotifies then
       notifie("Serveur MPD : OK")
-   elseif reponse:sub(1, 3) == "ACK"  and mpd.socketNotifies then
+   elseif reponse:sub(1, 3) == "ACK" and mpd.socketNotifies then
       notifie("Erreur serveur MPD : " .. reponse)
-   else
+   elseif reponse ~= "OK" and reponse:sub(1, 3) ~= "ACK" then
       local fin = false
-      while (not fin) do
+      while (not fin) and t<1000 do
          local r = mpd._socket:receive()
+         notifie(r)
          reponse = reponse .. "\n" .. r
          fin = r == "OK"
       end
       if mpd.socketNotifies then
          notifie("Serveur MPD : " .. reponse)
       end
+      t = t + 1
    end
    mpd.close()
 end
