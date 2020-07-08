@@ -260,7 +260,7 @@ It produces a `tempsPasse.jpg` file that looks like this:
 
 ![screenshot](tempsPasseScreenshot2.png "tempsPasse screenshot")
 
-### Bindings
 
+Widget screenshot:
 
 ![screenshot](tempsPasseScreenshot.png "tempsPasse screenshot")
