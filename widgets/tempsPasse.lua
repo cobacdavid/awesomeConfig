@@ -28,6 +28,12 @@ else
    widget.logFile = myhome .. "temp/logFenetreTempsPasse"
 end
 --
+local function appendFile(fileName, line)
+   local fH= io.open(fileName, "a")
+   fH:write(line)
+   fH:close()
+end
+--
 local function normaliseDuree(t)
    local h, m, s = 0, 0, 0
    local t = t
@@ -63,7 +69,7 @@ local function actualiseTemps(w, t1, t2, font, size)
 end
 
 function widget:createWidget(c, args)
-   -- fu.montre(c)
+   --
    local args = args or {}
    local width = args.width or 100
    local font = args.font or beautiful.widget_font_pri
@@ -73,10 +79,10 @@ function widget:createWidget(c, args)
    local color = args.color or beautiful.widget_bg
    --
    local w = wibox.widget({
-            id = 'texte',
-            forced_width = width,
-            align = "center",
-            widget = wibox.widget.textbox
+         id = 'texte',
+         forced_width = width,
+         align = "center",
+         widget = wibox.widget.textbox
    })
    --
    c.heureFocus = nil
@@ -107,7 +113,7 @@ function widget:createWidget(c, args)
                           .. "," .. c.class .. ","
                           .. tostring(t)
                           .. "\n"
-                       fu.appendFile(logFile, ligne)
+                       appendFile(logFile, ligne)
                     end
    )
    c:connect_signal("focus",
@@ -126,7 +132,7 @@ function widget:createWidget(c, args)
    --
    return w
 end
-
+--
 return setmetatable(widget, {
                        __call=function(c, client, args)
                           return widget:createWidget(client, args)

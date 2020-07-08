@@ -213,3 +213,54 @@ end
 ```
 
 ![screenshot](titreClientScreenshot.png "titreClient screenshot")
+
+# tempsPassewidget
+### Installation and usage
+
+If you drop `tempsPasse.lua` file in a `widgets` directory, you
+should consider this command line in your `rc.lua`:
+
+``` lua
+tempsPasse = require("widgets.tempsPasse")
+```
+
+Now you can add this to your windows titlebars using callback
+function in `client.connect_signal("request::titlebars"`
+
+``` lua
+...
+tempsPasse(c)
+...
+```
+
+### Two time indicators
+First (upper) indicates total time on this window (client).
+
+Second (lower) indicates current time on this window (client).
+
+### Options
+
+You can pass a table as argument containing some custom values for
+these keys:
+`width` (default: 100), `font` (default: `beautiful.widget_font_pri`), `size` (actually font size default: 8), `logFile` (default desktop: `${HOME}/.config/awesome/widgets/logFenetreTempsPasse`  and default laptop: `${HOME}/temp/logFenetreTempsPasse`)
+
+### Logs and visualization
+
+This widget comes with a python script
+`tempsPasse_visualisation.py` which can generates a heatmap style graph to visualize log records.
+This script uses following libraries (that should be installed): `pandas` and `matplotlib`.
+
+To use it just invoke the script with `desktop` in argument (or `laptop`):
+
+``` sh
+$ python3 tempsPasse_visualisation.py desktop
+```
+
+It produces a `tempsPasse.jpg` file that looks like this:
+
+![screenshot](tempsPasseScreenshot2.png "tempsPasse screenshot")
+
+### Bindings
+
+
+![screenshot](tempsPasseScreenshot.png "tempsPasse screenshot")
