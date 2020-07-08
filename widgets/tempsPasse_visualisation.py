@@ -5,7 +5,7 @@
 # date: 2020
 # copyright: CC-BY-NC-SA
 #################################################
-
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -14,20 +14,21 @@ import sys
 
 
 # locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
-
-rep_maison = "/home/david/tmp/"
-rep_asus = "/home/david/temp/"
-
+#
+myhome = os.environ['HOME']
+rep_desktop = myhome + "/.config/awesome/widgets/"
+rep_laptop = myhome + "/temp/"
+#
 if len(sys.argv) <= 1:
-    print("Usage: script.py ordinateur (maison ou asus)")
+    print("Usage: script.py ordinateur (desktop ou laptop)")
     quit()
-elif sys.argv[1] == "maison":
-    rep = rep_maison
+elif sys.argv[1] == "desktop":
+    rep = rep_desktop
 else:
-    rep = rep_asus
-
+    rep = rep_laptop
+#
 # les données
-df = pd.read_csv(rep + "logFenetre",
+df = pd.read_csv(rep + "logFenetreTempsPasse",
                  delimiter=",",
                  header=None,
                  names=["date", "class", "time"],

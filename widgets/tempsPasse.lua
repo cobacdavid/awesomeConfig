@@ -7,7 +7,7 @@
 -------------------------------------------------
 -------------------------------------------------
 -- some parts from awesome wm 
--- ditribution
+-- distribution
 -- copyright ??
 -------------------------------------------------
 local wibox = require("wibox")
@@ -20,10 +20,17 @@ local string = require("string")
 local fu = require ("fonctionsUtiles")
 --
 local widget = {}
-
-widget.logFile = nil 
-
+--
+local myhome = os.getenv('HOME') .. "/"
+if ordinateur == "desktop" then
+   widget.logFile = myhome .. ".config/awesome/widgets/logFenetreTempsPasse"
+else
+   widget.logFile = myhome .. "temp/logFenetreTempsPasse"
+end
+--
 local function normaliseDuree(t)
+   local h, m, s = 0, 0, 0
+   local t = t
    if t >= 3600 then
       h = t // 3600
       t = t % 3600
@@ -48,9 +55,11 @@ end
 
 
 local function actualiseTemps(w, t1, t2, font, size)
-   t1 = normaliseDuree(math.floor(t1))
-   t2 = normaliseDuree(math.floor(t2))
-   w:set_markup("<span font='" .. font .. " " .. size .. "'>".. tostring(t1) .. "\n" .. tostring(t2) .. "</span>")
+   local t1 = normaliseDuree(math.floor(t1))
+   local t2 = normaliseDuree(math.floor(t2))
+   w:set_markup("<span font='" .. font .. " " .. size .. "'>"
+                   .. tostring(t1) .. "\n" .. tostring(t2)
+                   .. "</span>")
 end
 
 function widget:createWidget(c, args)
@@ -59,32 +68,21 @@ function widget:createWidget(c, args)
    local width = args.width or 100
    local font = args.font or beautiful.widget_font_pri
    local size = args.size or 8
-   if ordinateur == "maison" then
-      widget.logFile = "/home/david/tmp/logFenetre"
-   else
-      widget.logFile = args.logFile or "/home/david/temp/logFenetre"
-   end
+   local logFile = args.logFile or widget.logFile
    --
    local color = args.color or beautiful.widget_bg
    --
-   local w = wibox.widget(
-      -- {
-         {
+   local w = wibox.widget({
             id = 'texte',
             forced_width = width,
             align = "center",
             widget = wibox.widget.textbox
-         }--,
-         -- bg = color,
-         -- widget =  wibox.container.background
-      -- }
-   )
+   })
    --
    c.heureFocus = nil
    c.tempsPasse = 0
    c.tempsDuFocus = 0
-   c.timer = gears.timer(
-      {
+   c.timer = gears.timer({
          timeout=1,
          autostart=false,
          call_now=false,
@@ -97,8 +95,7 @@ function widget:createWidget(c, args)
                            size)
          end,
          signe_shot=false
-      }
-   )
+   })
    --
    c:connect_signal("unmanage",
                     function(c)
@@ -110,9 +107,9 @@ function widget:createWidget(c, args)
                           .. "," .. c.class .. ","
                           .. tostring(t)
                           .. "\n"
-                       fu.appendFile(widget.logFile, ligne)
+                       fu.appendFile(logFile, ligne)
                     end
-)
+   )
    c:connect_signal("focus",
                     function()
                        c.tempsPasse = c.tempsPasse + c.tempsDuFocus

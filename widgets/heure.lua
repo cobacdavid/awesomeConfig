@@ -8,7 +8,7 @@
 --
 -------------------------------------------------
 -- some parts from awesome wm 
--- ditribution
+-- distribution
 -- copyright ??
 -------------------------------------------------
 local beautiful = require("beautiful")

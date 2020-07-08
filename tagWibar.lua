@@ -6,7 +6,7 @@
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
 -- some parts from awesome wm 
--- ditribution
+-- distribution
 -- copyright ??
 -------------------------------------------------
 --
@@ -110,6 +110,8 @@ awful.screen.connect_for_each_screen(
          end
          left_layout:add(infos())
 	 left_layout:add(separateur())
+         left_layout:add(chrono())
+         left_layout:add(separateur())
 	 left_layout:add(s.mypromptbox)
          if ordinateur == "laptop" then
             -- left_layout:add(car)

@@ -7,7 +7,7 @@
 -------------------------------------------------
 -------------------------------------------------
 -- some parts from awesome wm 
--- ditribution
+-- distribution
 -- copyright ??
 -------------------------------------------------
 --
@@ -79,6 +79,7 @@ luminosite       = require("widgets.luminosite")
 luminosite_ecran = require("widgets.luminosite_ecran")
 calendrier       = require("widgets.calendrier")
 infos            = require("widgets.infos")
+chrono           = require("widgets.chrono")
 --
 ppeintTag        = require("ppeintTag")
 ppeintNasa       = require("widgets.ppeintNasa")

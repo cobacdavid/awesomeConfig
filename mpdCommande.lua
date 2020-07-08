@@ -28,8 +28,9 @@ end
 --
 local function notifie(t)
    naughty.notify({
-         title = "Serveur MPD",
-         text = tostring(t)})
+         title = "♬ mpd",
+         text =  tostring(t)
+   })
 end
 --
 mpd = {}
