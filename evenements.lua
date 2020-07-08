@@ -51,7 +51,7 @@ client.connect_signal("tagged",
 client.connect_signal("unmanage",
                       function(c)
                          local n = mouse.object_under_pointer()
-                         if n ~= nil and n ~= client.focus then
+                         if n and n ~= client.focus then
                             client.focus = n
                          end
                       end
@@ -60,19 +60,20 @@ client.connect_signal("unmanage",
 client.connect_signal("request::titlebars",function(c)
                          if not c.titre then
                             c.titre = titreClient(c, {
-                                                     limit = 10,
+                                                     limit = 30,
                                                      callback = function(titre)
-                                                        if string.match(titre, "emacs") then
-                                                           titre = "emacs, what else?"
-                                                        elseif string.match(titre, "david@") then
-                                                           titre = "Home sweet home"
-                                                        else
-                                                           titre = titreClient.raccourcirTitre(titre)
+                                                        if titre then
+                                                           if string.match(titre, "emacs") then
+                                                              titre = "emacs, what else?"
+                                                           elseif string.match(titre, "david@") then
+                                                              titre = "Home sweet home"
+                                                           else
+                                                              titre = titreClient.raccourcirTitre(titre)
+                                                           end
+                                                           return titre
                                                         end
-                                                        return titre
                                                      end
-                                                     }
-                            )
+                            })
                          end
                          -- pour régler les clients PDF sur l'écran
                          -- auxiliaire

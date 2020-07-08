@@ -5,6 +5,12 @@ I'm trying my widgets to be easily usable in any awesome conf.  For
 the moment, only widgets that are documented below responds to
 this. Others need my `fonctionsUtiles.lua` lib. to work properly.
 
+## widgets for wibars and widgets for titlebars
+
+You'll find `(titlebar)` mention for titlebar widgets i.e. for
+client window's titlebars. Others are wibar widgets.
+
+
 # calendar widget
 ### Installation and usage
 
@@ -40,6 +46,8 @@ You query year before using mouse left-click.
 You close the calendar using mouse middle-click.
 
 You query year afetr using mouse right-click.
+
+### Widget screenshot
 
 ![screenshot](calendrierScreenshot.png "calendrier screenshot")
 
@@ -91,6 +99,7 @@ mylayout:add(luminosite_ecran({
 
 Screens interface can be obtained using `xrandr` command.
 
+### Widget screenshot
 
 ![screenshot](luminosite_ecranScreenshot.png "luminosité écran screenshot")
 
@@ -153,9 +162,11 @@ mylayout:add(infos({fg    = "#ff0000",
 }))
 ```
 
+### Widget screenshot
+
 ![screenshot](infosScreenshot.png "infos screenshot")
 
-# titreClient widget for clients
+# titreClient widget for clients (titlebar)
 
 Just a textbox displaying client's name
 
@@ -212,9 +223,11 @@ if not c.titre then
 end
 ```
 
+### Widget screenshot
+
 ![screenshot](titreClientScreenshot.png "titreClient screenshot")
 
-# tempsPassewidget
+# tempsPasse widget for clients (titlebar)
 ### Installation and usage
 
 If you drop `tempsPasse.lua` file in a `widgets` directory, you
@@ -261,6 +274,7 @@ It produces a `tempsPasse.jpg` file that looks like this:
 ![screenshot](tempsPasseScreenshot2.png "tempsPasse screenshot")
 
 
-Widget screenshot:
+### Widget screenshot
 
 ![screenshot](tempsPasseScreenshot.png "tempsPasse screenshot")
+

@@ -7,7 +7,7 @@
 -------------------------------------------------
 -------------------------------------------------
 -- some parts from awesome wm 
--- ditribution
+-- distribution
 -- copyright ??
 -------------------------------------------------
 ----------------------------------------
@@ -189,7 +189,7 @@ theme.separator_thickness        = 0	-- number 	The separator thickness.
 -- {{{ Misc
 theme.awesome_icone          = myhome .. ".config/awesome/themes/david/awesome-icon_2.png"
 -- }}}
-
+theme.screenshot_icon    =  myhome .. ".config/awesome/themes/david/screenshot-icon.png"
 -- {{{ Layout
 
 theme.titlebar_close_button_normal = myhome .. ".config/awesome/themes/david/titlebar/close_normal.png"

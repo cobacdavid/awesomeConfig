@@ -41,8 +41,7 @@ function widget.createWidget(c, args)
    local color = args.color or beautiful.bg_normal
    local callback = args.callback or widget.raccourcirTitre
    --
-   local titre = wibox.widget(
-      {
+   local titre = wibox.widget({
          {
             id = "texte",
             widget = wibox.widget.textbox,
@@ -50,8 +49,7 @@ function widget.createWidget(c, args)
          },
          bg = color,
          widget = wibox.container.background
-      }
-   )
+      })
    --
    -- c:connect_signal("manage", function(c)
    --                     if not c.titre then

@@ -15,8 +15,8 @@ secretFenetre.wiboxList = {}
 local function contient(T, e)
    local trouve = false
    local i = 1
-   while (not trouve) and (i <= #tab) do
-      trouve = tab[i] == val
+   while (not trouve) and (i <= #T) do
+      trouve = T[i] == e
       i = i + 1
    end
    return trouve
@@ -82,7 +82,7 @@ tag.connect_signal("property::selected",
                    function(t)
                       --
                       for i, c in ipairs(secretFenetre.wiboxList) do
-                         if contient(t:clients(), c) or c.visible then
+                         if contient(t:clients(), c) or c:isvisible() then
                             c.secretWidget.visible = true
                          else
                             c.secretWidget.visible = false

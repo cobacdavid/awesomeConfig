@@ -68,7 +68,7 @@ function widget.createWidget(args)
                id = "texte",
                align = "center",
                fg = beautiful.fg_normal,
-               text = "00s",
+               text = "⏱",
                widget = wibox.widget.textbox
             },
             bg = beautiful.bg_normal,
@@ -113,7 +113,7 @@ function widget.createWidget(args)
                       widget._timer:stop()
                       widget._etime = 0
                       widget._laptime = 0
-                      w.texte:set_text("00s")
+                      w.texte:set_text("⏱")
                 end),
                 awful.button({ }, 3, function()
                       widget._start = os.time()
