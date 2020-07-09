@@ -10,11 +10,10 @@
 -- ditribution
 -- copyright ??
 -------------------------------------------------
-local wibox = require("wibox")
+local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local os = require("os")
+local os        = require("os")
 --
-os.setlocale("fr_FR.UTF-8")
 --
 local arrondiMoyen = function(cr, width, height)
    gears.shape.rounded_rect(cr, width, height, 5)
@@ -162,8 +161,7 @@ function widget.createWidget(args)
    --
    return widget_calendrier
 end
-
-
+--
 return setmetatable(widget, {__call=function(args)
                                 return widget.createWidget(args)
                    end})

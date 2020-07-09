@@ -20,24 +20,6 @@ only).
 
 My `rc.lua` contains some specific lines you'll have to adjust:
 
-``` lua
-myhome = "/home/david/"
-os.setlocale("fr_FR.UTF-8")
-socket = require("socket")
-ordinateur = socket.dns.gethostname()
--- asus is my laptop's hostname
-if ordinateur == "asus" then
-   ordinateur = "laptop"
-else
-   ordinateur = "desktop"
-   commandeEcran = "xrandr --output VGA-0 --mode 1920x1080 --pos 1200x900 --output HDMI-0 --mode 1920x1200 --rotate left"
-   awful.spawn.with_shell(commandeEcran)
-end
-```
-
-* `myhome` intends to point to `HOME` env. variable, maybe I should
-use lua to retrieve this variable...
-
 * some lines of the whole config. test whether you're on "laptop"
 or not ("asus" is my laptop's hostname).
 

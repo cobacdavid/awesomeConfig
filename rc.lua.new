@@ -12,12 +12,15 @@
 -------------------------------------------------
 --
 -- Standard awesome library
-awful             = require("awful")
+os    = require("os")
+awful = require("awful")
+--
 config = awful.util.getdir("config")
+os.setlocale(os.getenv("LANG"))
+myhome = os.getenv("HOME") .. "/"
 --
 -- IMPORTANT VARIABLES
 -- also see variableDefinitions.lua
-os.setlocale("fr_FR.UTF-8")
 socket            = require("socket")
 -- asus is my laptop's hostname
 ordinateur = socket.dns.gethostname() == "asus" and "laptop" or "desktop"
@@ -45,29 +48,21 @@ if screen:count() == 2 then
    end
    awful.spawn(commandeEcran)
 end
---
 -- other variables
-myhome = os.getenv("HOME") .. "/"
 dofile (config ..  "/variableDefinitions.lua")
 --
 --
---
 gears            = require("gears")
-require("awful.autofocus")
 -- Theme handling library
 beautiful        = require("beautiful")
 beautiful.init(config .. "/themes/david/theme.lua")
--- widgets
+--
 wibox            = require("wibox")
--- Notification library
 naughty          = require("naughty")
 menubar          = require("menubar")
 hotkeys_popup    = require("awful.hotkeys_popup").widget
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
--- Load Debian menu entries pose problème pour archlinux
--- debian = require("debian.menu")
+require("awful.autofocus")
 has_fdo, freedesktop = pcall(require, "freedesktop")
 --
 fu               = require("fonctionsUtiles")
@@ -80,9 +75,15 @@ luminosite_ecran = require("widgets.luminosite_ecran")
 calendrier       = require("widgets.calendrier")
 infos            = require("widgets.infos")
 chrono           = require("widgets.chrono")
+if ordinateur == "laptop" then
+   batt          = require("widgets.batterie")
+end
 --
 ppeintTag        = require("ppeintTag")
 ppeintNasa       = require("widgets.ppeintNasa")
+mpdCom           = require("mpdCommande")
+ecranFlou        = require("widgets.ecranFlou")
+ecranFlou.isActivated = false
 -- widgets titlebar fenêtres
 killneuf         = require("widgets.killneuf")
 blocageopacite   = require("widgets.blocageopacite")
@@ -93,15 +94,6 @@ tempsPasse       = require("widgets.tempsPasse")
 titreClient      = require("widgets.titreClient")
 secretFenetre    = require("widgets.secretFenetre")
 -- 
-if ordinateur == "laptop" then
-   batt          = require("widgets.batterie")
-end
---
-mpdCom           = require("mpdCommande")
---
---
-ecranFlou        = require("widgets.ecranFlou")
-ecranFlou.isActivated = false
 --
 listeRcFiles = {--
    "errorhandling45.lua",

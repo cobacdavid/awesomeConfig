@@ -6,9 +6,10 @@
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
 --
-local wibox = require("wibox")
-local awful = require("awful")
+local wibox     = require("wibox")
+local awful     = require("awful")
 local beautiful = require("beautiful")
+local string    = require("string")
 --
 --
 local widget = {}
@@ -28,10 +29,10 @@ widget.commands = {
 widget.indiceInfos = 0
 --
 local function appliqueCommande(args)
-   local args = args or {}
-   local w = args.w
+   local args    = args         or {}
+   local w       = args.w
    local sameCmd = args.sameCmd or false
-   local fg = args.fg or beautiful.fg_normal
+   local fg      = args.fg      or beautiful.fg_normal
    --
    if not sameCmd then
       widget.indiceInfos =  1 + widget.indiceInfos % #widget.commands
@@ -48,17 +49,17 @@ local function appliqueCommande(args)
 end
 --
 function widget.infos(args)
-   local args = args or {}
+   local args  = args       or {}
    local width = args.width or 150
-   local font = args.font or beautiful.font
-   local fg = args.fg or nil
+   local font  = args.font  or beautiful.font
+   local fg    = args.fg    or nil
    --
    local infos = wibox.widget(
       {
-         widget = wibox.widget.textbox,
-         visible = true,
-         align = "center",
-         font = font,
+         widget       = wibox.widget.textbox,
+         visible      = true,
+         align        = "center",
+         font         = font,
          forced_width = width
       }
    )
@@ -67,16 +68,19 @@ function widget.infos(args)
       gears.table.join(
          awful.button({}, 1,
             function()
-               appliqueCommande({w = infos,
-                                 fg = fg
+               appliqueCommande({
+                     w  = infos,
+                     fg = fg
                })
             end
          ),
          awful.button({}, 3,
             function()
-               appliqueCommande({w = infos,
-                                 fg = fg,
-                                 sameCmd = true})
+               appliqueCommande({
+                     w       = infos,
+                     fg      = fg,
+                     sameCmd = true
+               })
             end
          )
       )

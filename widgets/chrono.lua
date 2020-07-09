@@ -16,12 +16,13 @@ local os = require("os")
 local string = require("string")
 local gears = require("gears")
 --
-widget = {}
-widget._timer   = nil
-widget._timerStatus = false
-widget._etime  = 0
-widget._laptime = 0
-widget._start = 0
+widget               = {}
+widget._timer        = nil
+widget._timerStatus  = false
+widget._etime        = 0
+widget._laptime      = 0
+widget._start        = 0
+widget._boolClignote = false
 --
 local function normaliseDuree(t)
    local h, m, s = 0, 0, 0
@@ -65,10 +66,10 @@ function widget.createWidget(args)
    --
    local w = wibox.widget({
             {
-               id = "texte",
-               align = "center",
-               fg = beautiful.fg_normal,
-               text = "⏱",
+               id     = "texte",
+               align  = "center",
+               fg     = beautiful.fg_normal,
+               text   = "⏱",
                widget = wibox.widget.textbox
             },
             bg = beautiful.bg_normal,
@@ -79,7 +80,7 @@ function widget.createWidget(args)
    widget._timer = gears.timer({
          autostart = false,
          timeout   = 1,
-         callback = function()
+         callback  = function()
             widget._laptime = os.difftime(os.time(), widget._start)
             actualise(w, widget._laptime + widget._etime)
          end
@@ -89,8 +90,8 @@ function widget.createWidget(args)
          autostart = false,
          timeout   = .2,
          callback  = function()
-            -- fu.appendFile("/home/david/logChrono", tostring(w.bg) .. beautiful.bg_normal)
-            w.bg = w.bg == beautiful.bg_normal and beautiful.bg_focus or beautiful.bg_normal
+            widget._boolClignote = not widget._boolClignote
+            w.bg = widget._boolClignote and  beautiful.bg_focus or beautiful.bg_normal
             --            w:emit_signal("widget::redraw_needed")
          end
    })
@@ -99,34 +100,38 @@ function widget.createWidget(args)
                 awful.button({ }, 1, function()
                       widget._timerStatus = not widget._timerStatus
                       if widget._timerStatus then
-                         widget._clignote:stop()
+                         w.bg = beautiful.bg_normal
                          widget._timer:start()
                          widget._start = os.time()
                          widget._etime = widget._etime + widget._laptime
+                         widget._clignote:stop()
                       else
                          widget._timer:stop()
                          widget._clignote:start()
                       end
                 end),
                 awful.button({ }, 2, function()
+                      widget._timerStatus = false
                       widget._clignote:stop()
                       widget._timer:stop()
                       widget._etime = 0
                       widget._laptime = 0
+                      w.bg = beautiful.bg_normal
                       w.texte:set_text("⏱")
                 end),
                 awful.button({ }, 3, function()
+                      w.bg = beautiful.bg_normal
                       widget._start = os.time()
                       widget._etime = 0
                       widget._laptime = 0
+                      w.bg = beautiful.bg_normal
                       actualise(w, 0)
                 end)
    ))
    --
    return w
 end
-
-
+--
 return setmetatable(widget, {__call=function(t, args)
                                 return widget.createWidget(args)
                    end})

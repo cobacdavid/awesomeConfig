@@ -1,7 +1,19 @@
-local gears = require("gears")
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2020
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-------------------------------------------------
+-- some parts from awesome wm 
+-- distribution
+-- copyright ??
+-------------------------------------------------
+local gears     = require("gears")
 local beautiful = require("beautiful")
-local wibox = require("wibox")
-local fu = require("fonctionsUtiles")
+local wibox     = require("wibox")
+local fu        = require("fonctionsUtiles")
 --
 local widget = {}
 

@@ -88,7 +88,6 @@ awful.screen.connect_for_each_screen(
                end
          })
 	 left_layout:add(heureW)
-	 -- left_layout:add(s.mytaglist)
          --
 	 if ordinateur == "laptop" then
             left_layout:add(luminosite())

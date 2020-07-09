@@ -6,23 +6,26 @@
 -- copyright: CC-BY-NC-SA + SO question
 -------------------------------------------------
 --
-local wibox = require("wibox")
+local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local gears = require("gears")
-local awful = require("awful")
+local gears     = require("gears")
+local awful     = require("awful")
+local string    = require("string")
+local math      = require("math")
+local io        = require("io")
 --
 -- Some useful functions
 --
 -- https://stackoverflow.com/questions/1426954/split-string-in-lua
 local function splitString (inputstr, sep)
-        if sep == nil then
-                sep = "%s"
-        end
-        local t={}
-        for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-                table.insert(t, str)
-        end
-        return t
+   if sep == nil then
+      sep = "%s"
+   end
+   local t={}
+   for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+      table.insert(t, str)
+   end
+   return t
 end
 -- renvoie une couleur nuance ou gradient (vert au rouge) 
 -- t : theme beautiful
@@ -96,18 +99,18 @@ function widget.applyCommand(iface, stringValue)
    local value = stringValue:gsub(",",".")
    local command="xrandr --output " .. iface .." --brightness " .. value
    awful.spawn.easy_async_with_shell(command,
-                                          function(stdout, stderr, reason, exit_code)
-                                             -- should handle possible error...
-                                          end
+                                     function(stdout, stderr, reason, exit_code)
+                                        -- should handle possible error...
+                                     end
         )
 end
 --
 function widget.sliderBrightnessWidget(args)
    --
-   local args = args or {}
-   local width = args.width or 150
+   local args              = args                   or {}
+   local width             = args.width             or 150
    local handle_color_type = args.handle_color_type or "nuance"
-   local bar_height = args.bar_height or 1
+   local bar_height        = args.bar_height        or 1
    --
    -- complete widget
    local widgetComplet = wibox.widget(
