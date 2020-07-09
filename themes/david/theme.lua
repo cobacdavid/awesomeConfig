@@ -56,13 +56,13 @@ theme.wallpaper_color = theme.noir
 
 -- {{{ Colors
 theme.bg_normal    = theme.noir
-theme.bg_focus     = theme.rouge
+theme.bg_focus     = theme.blanc
 theme.bg_urgent    = theme.gris
 -- theme.bg_minimize  = "#444444"
 theme.bg_systray   = theme.noirtrans
 
 theme.fg_normal    = theme.gris
-theme.fg_focus     = theme.rouge
+theme.fg_focus     = theme.noir
 theme.fg_urgent    = theme.noir
 theme.fg_minimize  = theme.blanc
 theme.fg_systray   = theme.blanc

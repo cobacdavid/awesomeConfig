@@ -17,8 +17,6 @@ local os = require("os")
 local math = require("math")
 local string = require("string")
 --
-local fu = require ("fonctionsUtiles")
---
 local widget = {}
 --
 local myhome = os.getenv('HOME') .. "/"
@@ -84,6 +82,13 @@ function widget:createWidget(c, args)
          align = "center",
          widget = wibox.widget.textbox
    })
+   --
+   local tt = awful.tooltip({})
+   tt:add_to_object(w)
+   w:connect_signal("mouse::enter", function()
+                       tt.text = "total/current"
+   end)
+   --
    --
    c.heureFocus = nil
    c.tempsPasse = 0

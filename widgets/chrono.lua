@@ -12,9 +12,10 @@
 -- copyright ??
 -------------------------------------------------
 local beautiful = require("beautiful")
-local os = require("os")
-local string = require("string")
-local gears = require("gears")
+local wibox     = require("wibox")
+local os        = require("os")
+local string    = require("string")
+local gears     = require("gears")
 --
 widget               = {}
 widget._timer        = nil

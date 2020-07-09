@@ -31,6 +31,12 @@ function widget.screenshot(c, args)
       widget = wibox.widget.imagebox
    }
    --
+   local tt = awful.tooltip({})
+   tt:add_to_object(screenshot)
+   screenshot:connect_signal("mouse::enter", function()
+                              tt.text = "screenshot"
+   end)
+   --
    screenshot:connect_signal("button::press",
                              function()
                                 local filename = os.date("%Y%m%d-%H%M%S")

@@ -49,6 +49,13 @@ function widget.dimFenetre(c, args)
    )
    actualiseContenu(dimFenetre.texte, chaine, args)
    --
+   local tt = awful.tooltip({})
+   tt:add_to_object(dimFenetre)
+   dimFenetre:connect_signal("mouse::enter", function()
+                              tt.text = "width x height ratio"
+   end)
+   --
+   --
    c:connect_signal("property::size",
                     function()
                        local rapport = tonumber(string.format("%.2f", c.width/c.height))

@@ -49,7 +49,13 @@ function widget.createWidget(c, args)
          },
          bg = color,
          widget = wibox.container.background
-      })
+   })
+   --
+   local tt = awful.tooltip({})
+   tt:add_to_object(titre)
+   titre:connect_signal("mouse::enter", function()
+                           tt.text = c.name
+   end)
    --
    -- c:connect_signal("manage", function(c)
    --                     if not c.titre then

@@ -15,6 +15,12 @@ function widget.blocage_opacite(c)
          text = "O"
    })
    --
+   local tt = awful.tooltip({})
+   tt:add_to_object(bouton)
+   bouton:connect_signal("mouse::enter", function()
+                            tt.text = "(un)block opacity"
+   end)
+   --
    c.blocage = false
    --
    bouton:connect_signal("button::press",

@@ -74,7 +74,7 @@ local function decorate(widget, flag, date)
       and d.day == tonumber(os.date("%d"))
       and d.year == tonumber(os.date("%Y"))
       and (flag == "normal" or flag == "focus") then
-         bg = beautiful.bg_normal
+         bg = beautiful.bg_focus
          fg = beautiful.fg_focus
          style.markup   = function(t) return '<b>' .. t .. '</b>' end
    end

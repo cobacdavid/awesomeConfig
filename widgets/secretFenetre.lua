@@ -61,6 +61,12 @@ function secretFenetre.createButton(c, args)
          widget =  wibox.widget.textbox,
          text = "🔓"
    })
+   --  
+   local tt = awful.tooltip({})
+   tt:add_to_object(w)
+   w:connect_signal("mouse::enter", function()
+                              tt.text = "secret"
+   end)
    --
    w:buttons(gears.table.join(
                 awful.button({}, 1,
