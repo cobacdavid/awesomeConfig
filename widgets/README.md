@@ -49,7 +49,7 @@ You query year afetr using mouse right-click.
 
 ### Widget screenshot
 
-![screenshot](calendrierScreenshot.png "calendrier screenshot")
+![screenshot](./calendrier/calendrierScreenshot.png "calendrier screenshot")
 
 # screen brightness widget
 ### Installation and usage
@@ -276,7 +276,7 @@ $ python3 tempsPasse_visualisation.py desktop
 
 It produces a `tempsPasse.jpg` file that looks like this:
 
-![screenshot](tempsPasseScreenshot2.png "tempsPasse screenshot")
+![screenshot](./tempsPasse/tempsPasseScreenshot2.png "tempsPasse screenshot")
 
 
 ### Widget screenshot

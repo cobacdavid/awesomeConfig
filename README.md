@@ -1,7 +1,7 @@
 # Disclaimer
 All this config is perfect for ME.
 
-## Looking for widgets
+## Looking for widgets?
 Go into the `widgets` directory, there's another `README.md` file.
 
 ## my `rc.lua`
@@ -35,4 +35,4 @@ depend on it.
 * `logicielsIndispensables.lua` is not evaluated. It just contains
 a list of software that I use.
 
-![screenshot](awesomeScreenshot.png "awesomeWM screenshot")
+![screenshot](./screenshots/awesomeScreenshot.png "awesomeWM screenshot")
