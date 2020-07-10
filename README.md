@@ -16,6 +16,11 @@ portrait orientation) and the laptop may be connected from time to
 time to a quite low-res interface as a second screen (landscape
 only).
 
+## screen setup
+
+First lines of `rc.lua` explains how to setup screens with GDM and
+`~\.profile`.
+
 ## can it be yours?
 
 My `rc.lua` contains some specific lines you'll have to adjust:

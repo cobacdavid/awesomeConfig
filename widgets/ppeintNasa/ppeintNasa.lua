@@ -10,9 +10,6 @@ local awful     = require("awful")
 local wibox     = require("wibox")
 local gears     = require("gears")
 local beautiful = require("beautiful")
-local io        = require("io")
-local os        = require("os")
-local math      = require("math")
 --
 myhome = os.getenv("HOME") .. "/"
 --
@@ -29,7 +26,7 @@ end
 --
 local widget = {}
 --
-widget.wallpaperRepImagesEspace = myhome .. ".config/awesome/fondEspace"
+widget.wallpaperRepImagesEspace = myhome .. ".config/awesome/widgets/ppeintNasa"
 widget.wallpaperTheme = ""
 widget.themeFond = ""
 --

@@ -83,15 +83,6 @@ globalkeys = gears.table.join(
    ),
    awful.key({modkey}, "F5",
       function()
-   	 affichageAide = not affichageAide
-	 if affichageAide then
-	    gears.wallpaper.centered(myhome .. ".config/awesome/raccourcis/controles-1.png",
-                                     1,
-                                     gears.color(beautiful.wallpaper)
-            )
-	 else
-	    gears.wallpaper.set(gears.color(beautiful.wallpaper))
-	 end
       end
    ),
    awful.key({modkey}, "F6",
@@ -115,7 +106,8 @@ globalkeys = gears.table.join(
    awful.key({modkey}, "F7",
       function()
          -- ppeintDesc est l'instance de wibox créé dans applogin45
-         ppeintNasa.afficheDescription(ppeintDesc, myhome .. ".config/awesome/fondEspace/fondDescription")
+         ppeintNasa.afficheDescription(ppeintDesc,
+                                       myhome .. ".config/awesome/widgets/ppeintNasa/fondDescription")
       end
    ),
    awful.key({modkey}, "F8",           function()  end),
@@ -278,7 +270,7 @@ globalkeys = gears.table.join(
                prompt = "Expression Rpn : ",
                textbox = s.mypromptbox.widget,
                exe_callback = function(expression)
-                  local commande = "python3 " .. myhome .. ".config/awesome/rpnEval/rpnEval.py '" .. expression .. "'"
+                  local commande = "python3 " .. myhome .. ".config/awesome/scripts/rpnEval.py '" .. expression .. "'"
                   awful.spawn.easy_async_with_shell(commande,
                                                     function(stdout, stderr, reason, exit_code)
                                                        s.mypromptbox.widget.font = "Inconsolata 20"
@@ -341,7 +333,7 @@ globalkeys = gears.table.join(
                exe_callback = function(t)
                   ppeintNasa.themeFond = t
                end,
-               history_path = myhome .. ".config/awesome/fondEspace/themeHistory"
+               history_path = myhome .. ".config/awesome/widgets/ppeintNasa/themeHistory"
          })
    end)
    

@@ -14,11 +14,11 @@ client window's titlebars. Others are wibar widgets.
 # calendar widget
 ### Installation and usage
 
-If you drop `calendrier.lua` file in a `widgets` directory, you
-should consider this command line in your `rc.lua`:
+If you drop `calendrier.lua` file inside a `widgets/calendrier`
+directory, you should consider this command line in your `rc.lua`:
 
 ``` lua
-calendrier = require("widgets.calendrier")
+calendrier = require("widgets.calendrier.calendrier")
 ```
 
 Now you bind `calendrier()` to a mouse or keyboard event with
@@ -54,11 +54,11 @@ You query year afetr using mouse right-click.
 # screen brightness widget
 ### Installation and usage
 
-If you drop `luminosite_ecran.lua` file in a `widgets` directory, you
+If you drop `luminositeEcran.lua` file in a `widgets/luminositeEcran` directory, you
 should consider this command line in your `rc.lua`:
 
 ``` lua
-luminosite_ecran = require("widgets.luminosite_ecran")
+luminositEcran = require("widgets.luminositeEcran.luminositeEcran")
 ```
 
 Invoking this line implies that the script tries to retrieve
@@ -67,7 +67,7 @@ all screens interfaces using `xrandr`.
 Now, you just have to use it as a usual widget, e.g.:
 
 ``` lua
-mylayout:add(luminosite_ecran())
+mylayout:add(luminositeEcran())
 ```
 
 
@@ -89,7 +89,7 @@ For example:
 local sLevel = {}
 sLevel["HDMI-0"] = 1
 sLevel["VGA-0"] = .7
-mylayout:add(luminosite_ecran({
+mylayout:add(luminositeEcran({
     width = 200,
     startLevel = sLevel,
     bar_height = 5,
@@ -101,7 +101,9 @@ Screens interface can be obtained using `xrandr` command.
 
 ### Widget screenshot
 
-![screenshot](luminosite_ecranScreenshot.png "luminosité écran screenshot")
+![screenshot](./luminositeEcran/luminositeEcranScreenshot.png "luminosité écran screenshot")
+
+
 
 # infos widget
 
@@ -109,11 +111,11 @@ Just a textbox displaying shell command results (one line).
 
 ### Installation and usage
 
-If you drop `infos.lua` file in a `widgets` directory, you
+If you drop `infos.lua` file in a `widgets/infos` directory, you
 should consider this command line in your `rc.lua`:
 
 ``` lua
-infos = require("widgets.infos")
+infos = require("widgets.infos.infos")
 ```
 
 Now, you just have to use it as a usual widget, e.g.:
@@ -164,7 +166,9 @@ mylayout:add(infos({fg    = "#ff0000",
 
 ### Widget screenshot
 
-![screenshot](infosScreenshot.png "infos screenshot")
+![screenshot](./infos/infosScreenshot.png "infos screenshot")
+
+
 
 # titreClient widget for clients (titlebar)
 
@@ -172,11 +176,11 @@ Just a textbox displaying client's name
 
 ### Installation and usage
 
-If you drop `titreClient.lua` file in a `widgets` directory, you
+If you drop `titreClient.lua` file in a `widgets/titreClient` directory, you
 should consider this command line in your `rc.lua`:
 
 ``` lua
-titreClient = require("widgets.titreClient")
+titreClient = require("widgets.titreClient.titreClient")
 ```
 
 To use this widget, add this at the beginning of your `client.connect_signal("request::titlebars",...` callback function:
@@ -225,16 +229,17 @@ end
 
 ### Widget screenshot
 
-![screenshot](titreClientScreenshot.png "titreClient screenshot")
+![screenshot](./titreClient/titreClientScreenshot.png "titreClient screenshot")
+
 
 # tempsPasse widget for clients (titlebar)
 ### Installation and usage
 
-If you drop `tempsPasse.lua` file in a `widgets` directory, you
+If you drop `tempsPasse.lua` file in a `widgets/tempsPasse` directory, you
 should consider this command line in your `rc.lua`:
 
 ``` lua
-tempsPasse = require("widgets.tempsPasse")
+tempsPasse = require("widgets.tempsPasse.tempsPasse")
 ```
 
 Now you can add this to your windows titlebars using callback
@@ -276,5 +281,5 @@ It produces a `tempsPasse.jpg` file that looks like this:
 
 ### Widget screenshot
 
-![screenshot](tempsPasseScreenshot.png "tempsPasse screenshot")
+![screenshot](./tempsPasse/tempsPasseScreenshot.png "tempsPasse screenshot")
 

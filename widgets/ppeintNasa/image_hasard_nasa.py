@@ -3,6 +3,7 @@ import sys
 import requests
 import random
 import datetime
+import os
 
 
 def analyse_reponse(r, f_log, lien=""):
@@ -19,12 +20,14 @@ def analyse_reponse(r, f_log, lien=""):
         else:
             fh.write(lien + "\n")
 
+
 # récupération des arguments commme mots-clés de recherche
 if len(sys.argv) > 1:
     theme = " ".join(sys.argv[1:])
 else:
     theme = "earth"
 
+myhome = os.environ['HOME']
 fichier_log = "image_hasard_nasa.log"
 
 url = "https://images-api.nasa.gov"
@@ -63,13 +66,14 @@ lien = lien.replace("thumb", "large")
 
 # on met l'image dans le fichier fond sans extension
 # awesome se débrouille après
-with open("/home/david/.config/awesome/fondEspace/fond", "wb") as fh:
+with open(myhome + "/.config/awesome/widgets/ppeintNasa/fond", "wb") as fh:
     f = requests.get(lien)
     analyse_reponse(f, fichier_log, lien=lien)
     fh.write(f.content)
 
 # écriture de la description
-with open("/home/david/.config/awesome/fondEspace/fondDescription", "w") as fh:
+with open(myhome + "/.config/awesome/widgets/ppeintNasa/fondDescription",
+          "w") as fh:
     fh.write(reponseJ['collection']['items'][n]['data'][0]['title'])
     fh.write("\n")
     fh.write(reponseJ['collection']['items'][n]['data'][0]['description'])

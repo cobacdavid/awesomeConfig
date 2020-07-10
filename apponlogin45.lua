@@ -18,11 +18,7 @@ for _, app in ipairs(appsDemarrage) do
    fu.executeUneFois(app)
 end
 --
--- mise en route ppeint nasa
-ppeintDesc = ppeintNasa()
---
--- fond des tags screen1
-ppeintTag.imagesFonds()
+
 --
 --
 fu.montre( "Démarrage terminé")

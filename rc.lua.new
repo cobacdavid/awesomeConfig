@@ -67,32 +67,35 @@ has_fdo, freedesktop = pcall(require, "freedesktop")
 --
 fu               = require("fonctionsUtiles")
 -- widgets 
-separateur       = require("widgets.separateur")
-heure            = require("widgets.heure")
-volumemaster     = require("widgets.volumemaster")
-luminosite       = require("widgets.luminosite")
-luminosite_ecran = require("widgets.luminosite_ecran")
-calendrier       = require("widgets.calendrier")
-infos            = require("widgets.infos")
-chrono           = require("widgets.chrono")
+separateur       = require("widgets.separateur.separateur")
+heure            = require("widgets.heure.heure")
+volumemaster     = require("widgets.volumeMaster.volumeMaster")
+luminosite       = require("widgets.luminosite.luminosite")
+luminositeEcran = require("widgets.luminositeEcran.luminositeEcran")
+calendrier       = require("widgets.calendrier.calendrier")
+infos            = require("widgets.infos.infos")
+chrono           = require("widgets.chrono.chrono")
 if ordinateur == "laptop" then
-   batt          = require("widgets.batterie")
+   batt          = require("widgets.batterie.batterie")
 end
 --
-ppeintTag        = require("ppeintTag")
-ppeintNasa       = require("widgets.ppeintNasa")
+ppeintTag        = require("widgets.ppeintTag.ppeintTag")
+ppeintTag.imagesFonds()
+ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
+ppeintDesc = ppeintNasa()
+--
 mpdCom           = require("mpdCommande")
-ecranFlou        = require("widgets.ecranFlou")
+ecranFlou        = require("widgets.ecranFlou.ecranFlou")
 ecranFlou.isActivated = false
 -- widgets titlebar fenêtres
-killneuf         = require("widgets.killneuf")
-blocageopacite   = require("widgets.blocageopacite")
-opacite          = require("widgets.opacite")
-screenshot       = require("widgets.screenshot")
-dimFenetre       = require("widgets.dimFenetre")
-tempsPasse       = require("widgets.tempsPasse")
-titreClient      = require("widgets.titreClient")
-secretFenetre    = require("widgets.secretFenetre")
+killneuf         = require("widgets.killneuf.killneuf")
+blocageopacite   = require("widgets.opacite.blocageopacite")
+opacite          = require("widgets.opacite.opacite")
+screenshot       = require("widgets.screenshot.screenshot")
+dimFenetre       = require("widgets.dimFenetre.dimFenetre")
+tempsPasse       = require("widgets.tempsPasse.tempsPasse")
+titreClient      = require("widgets.titreClient.titreClient")
+secretFenetre    = require("widgets.secretFenetre.secretFenetre")
 -- 
 --
 listeRcFiles = {--

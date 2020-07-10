@@ -6,7 +6,7 @@
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
 -- some parts from awesome wm 
--- ditribution
+-- distribution
 -- copyright ??
 -------------------------------------------------
 -- {{{ Variable definitions

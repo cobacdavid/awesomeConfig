@@ -95,7 +95,7 @@ awful.screen.connect_for_each_screen(
             local sLevel = {}
             sLevel["HDMI-0"] = 1
             sLevel["VGA-0"] = .7
-            left_layout:add(luminosite_ecran({
+            left_layout:add(luminositeEcran({
                                   startLevel = sLevel,
             }))
          end

@@ -13,11 +13,12 @@
 local wibox = require("wibox")
 local gears = require("gears")
 local awful = require("awful")
-local os    = require("os")
 --
 local ecranFlou = {}
 ecranFlou.isActivated = false
 ecranFlou.encours = false
+--
+local myhome = os.getenv("HOME") .. "/"
 --
 function ecranFlou.create(s, args)
    local a = s.actif and "ACTIF" or "INACTIF"
@@ -33,18 +34,18 @@ function ecranFlou.create(s, args)
       local h = s.geometry.height
       local arguments = file .. " " .. x .. " " .. y .. " " .. w .. " " .. h
       awful.spawn.easy_async_with_shell(
-         "sh /home/david/.config/awesome/widgets/floutage.sh " .. arguments ,
+         "sh " .. myhome .. ".config/awesome/widgets/ecranFlou/floutage.sh " .. arguments ,
          function()
             w = wibox({
-                  x = x,
-                  y = y,
-                  width = w,
-                  height = h,
+                  x            = x,
+                  y            = y,
+                  width        = w,
+                  height       = h,
                   border_width = 0,
-                  screen = s,
-                  bgimage = gears.surface.load_uncached(file),
-                  ontop = true,
-                  visible = true
+                  screen       = s,
+                  bgimage      = gears.surface.load_uncached(file),
+                  ontop        = true,
+                  visible      = true
             })
             --
             w:connect_signal("mouse::enter",
