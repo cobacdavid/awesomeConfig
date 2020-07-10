@@ -9,7 +9,6 @@
 local wibox     = require("wibox")
 local awful     = require("awful")
 local beautiful = require("beautiful")
-local string    = require("string")
 --
 --
 local widget = {}

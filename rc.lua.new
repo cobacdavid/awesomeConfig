@@ -60,8 +60,8 @@ beautiful.init(config .. "/themes/david/theme.lua")
 wibox            = require("wibox")
 naughty          = require("naughty")
 menubar          = require("menubar")
-hotkeys_popup    = require("awful.hotkeys_popup").widget
-require("awful.hotkeys_popup.keys")
+-- hotkeys_popup    = require("awful.hotkeys_popup").widget
+-- require("awful.hotkeys_popup.keys")
 require("awful.autofocus")
 has_fdo, freedesktop = pcall(require, "freedesktop")
 --
@@ -111,3 +111,4 @@ listeRcFiles = {--
 for i, f in ipairs(listeRcFiles) do
    dofile (config ..  "/" .. f)
 end
+

@@ -5,12 +5,19 @@
 -------------------------------------------------
 -------------------------------------------------
 -- some parts from awesome wm 
--- ditribution
+-- distribution
 -- copyright ??
 -------------------------------------------------
 --
+local wibox = require("wibox")
+local awful = require("awful")
+local cairo = require("lgi").cairo
+--
 local secretFenetre = {}
 secretFenetre.wiboxList = {}
+secretFenetre.nb        = false
+secretFenetre.px        = 30
+secretFenetre.challenge = function() return true end
 --
 local function contient(T, e)
    local trouve = false
@@ -22,14 +29,55 @@ local function contient(T, e)
    return trouve
 end
 --
+-- couleur aléatoire
+local function couleurAlea()
+   --
+   if secretFenetre.nb then
+      local nuance = math.floor(math.random() * 256)
+      return string.format("#%02X%02X%02X", nuance, nuance, nuance)
+   else
+      local R = math.floor(math.random() * 256)
+      local G = math.floor(math.random() * 256)
+      local B = math.floor(math.random() * 256)
+      return string.format("#%02X%02X%02X", R, G, B)
+   end
+end
+--
+local function imageAlea(c)
+   --
+   local w = c.width
+   local h = c.height
+   local pixel = secretFenetre.px
+   -- Create a surface
+   -- PNG
+   local img = cairo.ImageSurface.create(cairo.Format.RGB24, w, h)
+   -- Create a context
+   local cr  = cairo.Context(img)
+   --
+   for i=0, w//pixel do
+      for j=0, h//pixel  do
+         cr:set_source(gears.color(couleurAlea()))
+         cr:rectangle(i*pixel, j*pixel, (i+1)*pixel, (j+1)*pixel)
+         cr:fill()
+      end
+   end
+   --
+   return img
+end
+--
+--
 function secretFenetre.create(c, args)
    local args = args or {}
+   --
+   local fond  =  imageAlea(c)
+   --
    local w = wibox({
          x       = c.x,
          y       = c.y,
          width   = c.width,
          height  = c.height,
          bg      = args.bg or beautiful.bg_urgent,
+         bgimage = fond or {},
          visible = true,
          ontop   = true
    })
@@ -38,15 +86,18 @@ function secretFenetre.create(c, args)
    w:buttons(gears.table.join(
                 awful.button({}, 1,
                    function()
-                      w.visible = false
-                      w = nil
-                      table.remove(secretFenetre.wiboxList, fu.tableFind(secretFenetre.wiboxList, c))
-                       -- 
-                      -- get mouse focus the client below
-                      local enDessous = mouse.object_under_pointer()
-                      if type(enDessous) == 'client' then
-                         client.focus = enDessous
-                         enDessous:emit_signal("focus")
+                      if secretFenetre.challenge() then
+                         w.visible = false
+                         w = nil
+                         table.remove(secretFenetre.wiboxList,
+                                      fu.tableFind(secretFenetre.wiboxList, c))
+                         -- 
+                         -- get mouse focus the client below
+                         local enDessous = mouse.object_under_pointer()
+                         if type(enDessous) == 'client' then
+                            client.focus = enDessous
+                            enDessous:emit_signal("focus")
+                         end
                       end
                    end
                 )
@@ -55,6 +106,10 @@ function secretFenetre.create(c, args)
 end
 --
 function secretFenetre.createButton(c, args)
+   local args = args or {}
+   secretFenetre.nb = args.nb or secretFenetre.nb
+   secretFenetre.px = args.px or secretFenetre.px
+   secretFenetre.challenge = args.challenge or secretFenetre.challenge
    c.estSecret = false
    --
    local w = wibox.widget({
@@ -107,6 +162,29 @@ client.connect_signal("unfocus",
                       end
 )
 
-return setmetatable(secretFenetre, {__call=function(t, args)
-                                       return secretFenetre.createButton(args)
+client.connect_signal("unmanage",
+                      function(c)
+                         if c.estSecret then
+                            c.secretWidget.visible = false
+                            c.secretWidget = nil
+                            table.remove(secretFenetre.wiboxList,
+                                         fu.tableFind(secretFenetre.wiboxList, c))
+                         end
+                      end
+)
+
+client.connect_signal("property::size",
+                      function(c)
+                         if c.estSecret and c.secretWidget.visible then
+                            -- to improve 
+                            c.secretWidget.x      = c.x
+                            c.secretWidget.y      = c.y
+                            c.secretWidget.width  = c.width
+                            c.secretWidget.height = c.height
+                         end
+                      end
+)
+--
+return setmetatable(secretFenetre, {__call=function(t, client, args)
+                                       return secretFenetre.createButton(client, args)
                    end})

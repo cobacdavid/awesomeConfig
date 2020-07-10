@@ -21,7 +21,7 @@ myawesomemenu = {
        awful.spawn.with_shell(configSvg)
     end
    },
-   {"hotkeys", function() return false, hotkeys_popup.show_help end},
+   --   {"hotkeys", function() return false, hotkeys_popup.show_help end},
    {"redémarrer", function()
        fu.restartAwesome()
                   end

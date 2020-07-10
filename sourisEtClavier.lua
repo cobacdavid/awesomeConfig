@@ -312,25 +312,25 @@ globalkeys = gears.table.join(
    	 }
    end),
    
-   -- awful.key({modkey}, "q",
-   --    function ()
-   --       local s = screen.primary
-   -- 	 awful.prompt.run {
-   --          prompt = "Recherche Web Qwant : ",
-   -- 	    textbox = s.mypromptbox.widget,
-   -- 	    exe_callback = function (recherche)
-   -- 	       if recherche:len() == 0 then
-   -- 		  url = " '" .. urlQwant .. "'"
-   -- 	       else
-   -- 		  recherche = string.gsub( recherche , " " , "+" )
-   -- 		  url = " '" .. urlQwant .. metaQwant .. "q=" .. recherche .. "'"
-   -- 	       end
-   -- 	       awful.spawn( browser .. url )
-   -- 	    end,
-   --          history_path = "/home/david/.config/awesome/google_search_history"
-   --       }
-   --    end
-   -- ),
+   awful.key({modkey}, "s",
+      function ()
+         local s = screen.primary
+   	 awful.prompt.run {
+            prompt = "Secret : ",
+   	    textbox = s.mypromptbox.widget,
+   	    exe_callback = function (t)
+               local commande = "echo " .. t
+                  .. " |md5sum |cut -d ' ' -f 1"
+               --
+               local fh = io.popen(commande)
+               local somme = fh:read("*a")
+               io.close(fh)
+               --
+               secretFenetre.challengeSuccess = somme:sub(1, -2) == "3259d9db947e5519c37b71c556bc618f"
+   	    end,
+         }
+      end
+   ),
    
    awful.key({modkey}, "t",
       function ()

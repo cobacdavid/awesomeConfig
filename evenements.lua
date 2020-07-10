@@ -11,8 +11,7 @@
 -------------------------------------------------
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
-client.connect_signal("manage",
-                      function (c)
+client.connect_signal("manage", function (c)
                          -- Set the windows at the slave, i.e. put
                          -- it at the end of others instead of
                          -- setting it master.  if not
@@ -31,11 +30,9 @@ client.connect_signal("manage",
                          fu.surTermOuPas(c)
                          --
                          c.shape = fu.pArrondiGros
-                      end
-)
+end)
 
-client.connect_signal("tagged",
-                      function (c)
+client.connect_signal("tagged", function (c)
                          fu.surTermOuPas(c)
                          --
                          -- bloque à 1 l'opacité des PDF sur
@@ -45,18 +42,15 @@ client.connect_signal("tagged",
                             c.bo.text = "B"
                             c.blocage = true
                          end
-                      end
-)
-
-client.connect_signal("unmanage",
-                      function(c)
+end)
+--
+client.connect_signal("unmanage", function(c)
                          local n = mouse.object_under_pointer()
                          if n and n ~= client.focus and type(n) == "client" then
                             client.focus = n
                          end
-                      end
-)
-
+end)
+--
 client.connect_signal("request::titlebars",function(c)
                          if not c.titre then
                             c.titre = titreClient(c, {
@@ -140,7 +134,7 @@ client.connect_signal("request::titlebars",function(c)
                                   separateur(),
                                   c.bo,
                                   separateur(),
-                                  secretFenetre(c),
+                                  secretFenetre(c, {px = 50, nb = true}),
                                   separateur(),
                                   -- wibox.widget {
                                   --    {
@@ -177,6 +171,8 @@ client.connect_signal("request::titlebars",function(c)
 client.connect_signal("mouse::enter",
                       function(c)
                          --
+                         c:emit_signal("focus")
+                         --
                          if ordinateur == "desktop" and c.class == editorClass then
                             fu.commande_execute(clavierCmd .. " " .. configEmacs)
                          end
@@ -186,7 +182,6 @@ client.connect_signal("mouse::enter",
                          --
                           c.border_color = beautiful.border_focus
                          --
-                          c:emit_signal("focus")
                          --
                       end
 )
@@ -201,6 +196,20 @@ client.connect_signal("mouse::leave",
 )
 
 client.connect_signal("focus",
+                      function(c)
+			if not c.blocage then
+                            c.opacity = 1
+                         end
+                      end
+)
+
+client.connect_signal("button::press",
+                      function(c)
+                         c:emit_signal("focus")
+                      end
+)
+
+client.connect_signal("request::activate",
                       function(c)
 			if not c.blocage then
                             c.opacity = 1
