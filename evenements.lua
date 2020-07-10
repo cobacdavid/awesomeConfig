@@ -51,7 +51,7 @@ client.connect_signal("tagged",
 client.connect_signal("unmanage",
                       function(c)
                          local n = mouse.object_under_pointer()
-                         if n and n ~= client.focus then
+                         if n and n ~= client.focus and type(n) == "client" then
                             client.focus = n
                          end
                       end

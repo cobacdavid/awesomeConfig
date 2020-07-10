@@ -11,6 +11,22 @@
 -- copyright ??
 -------------------------------------------------
 --
+-- GDM3 screen configuration:
+-- 1. start with gnome
+-- 2. configure screens with the gnome tool
+-- 3. copy ~/.config/monitors.xml to /var/lib/gdm/.config/monitors.xml
+-- from http://forums.debian.net/viewtopic.php?f=6&t=122320
+--
+-- awesomeWM session screen configuration
+-- 1. install and run arandr
+-- 2. create ~/.screenlayout/xrandr_config.sh
+-- 3. execute this script from ~/.profile
+--
+-- if you want to insert a xrandr command in rc.lua, it will
+-- possibly results in bad screen geometry variables so that you
+-- got to awesome.restart awesomeWM to retrieve proper values
+--
+--
 -- Standard awesome library
 os    = require("os")
 awful = require("awful")
@@ -24,30 +40,14 @@ myhome = os.getenv("HOME") .. "/"
 socket            = require("socket")
 -- asus is my laptop's hostname
 ordinateur = socket.dns.gethostname() == "asus" and "laptop" or "desktop"
--- 2 screens config 
 --
+largeurPremier = screen[1].geometry.width
+hauteurPremier = screen[1].geometry.height
 if screen:count() == 2 then
-   -- HDMI ou edP
-   largeurPremier = screen[1].geometry.width
-   hauteurPremier = screen[1].geometry.height
-   -- DVI ou HDMI
    largeurSecond = screen[2].geometry.width
    hauteurSecond = screen[2].geometry.height
-   --
-   if ordinateur == "laptop" then
-      commandeEcran =  "xrandr --output eDP1 --mode "
-         .. largeurPremier .. "x" .. hauteurPremier
-         .. " --output HDMI1 --right-of eDP1 --mode "
-         .. largeurSecond .. "x" .. hauteurSecond .. " --rotate normal"
-   else
-      commandeEcran = "xrandr --output VGA-0 --mode "
-         .. largeurSecond .. "x" .. hauteurSecond
-         .. " --pos " .. hauteurPremier .. "x" .. (largeurPremier - hauteurSecond)
-         .. " --output HDMI-0 --mode "
-         .. largeurPremier .. "x" .. hauteurPremier .. " --rotate left"
-   end
-   awful.spawn(commandeEcran)
 end
+--
 -- other variables
 dofile (config ..  "/variableDefinitions.lua")
 --
