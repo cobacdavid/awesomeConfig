@@ -80,13 +80,10 @@ if ordinateur == "laptop" then
 end
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
-ppeintTag.imagesFonds()
 ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
-ppeintDesc = ppeintNasa()
 --
 mpdCom           = require("mpdCommande")
 ecranFlou        = require("widgets.ecranFlou.ecranFlou")
-ecranFlou.isActivated = false
 -- widgets titlebar fenêtres
 killneuf         = require("widgets.killneuf.killneuf")
 blocageopacite   = require("widgets.opacite.blocageopacite")
@@ -107,11 +104,20 @@ listeRcFiles = {--
    "tagWibar.lua",
    "sourisEtClavier.lua",
    "rules45.lua",
-   "evenements.lua",
-   "apponlogin45.lua",
+   "evenements.lua"
 }
 --
 for i, f in ipairs(listeRcFiles) do
    dofile (config ..  "/" .. f)
 end
-
+--
+-- appsDemarrage in variableDefinitions
+for _, app in ipairs(appsDemarrage) do
+   fu.executeUneFois(app)
+end
+--
+ecranFlou.isActivated = false
+ppeintTag.imagesFonds()
+ppeintDesc = ppeintNasa()
+--
+fu.montre("Démarrage terminé")
