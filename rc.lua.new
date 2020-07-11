@@ -104,7 +104,7 @@ listeRcFiles = {--
    "tagWibar.lua",
    "sourisEtClavier.lua",
    "rules45.lua",
-   "evenements.lua"
+   "signaux.lua"
 }
 --
 for i, f in ipairs(listeRcFiles) do

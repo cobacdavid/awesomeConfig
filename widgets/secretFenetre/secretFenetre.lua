@@ -17,6 +17,8 @@ local secretFenetre = {}
 secretFenetre.wiboxList = {}
 secretFenetre.nb        = false
 secretFenetre.px        = 30
+secretFenetre.minNuance = 0
+secretFenetre.maxNuance = 255
 secretFenetre.challenge = function() return true end
 --
 local function contient(T, e)
@@ -31,19 +33,20 @@ end
 --
 -- couleur aléatoire
 local function couleurAlea()
+   local ecart = secretFenetre.maxNuance - secretFenetre.minNuance + 1
    --
    if secretFenetre.nb then
-      local nuance = math.floor(math.random() * 256)
+      local nuance = math.floor(math.random() * ecart) + secretFenetre.minNuance
       return string.format("#%02X%02X%02X", nuance, nuance, nuance)
    else
-      local R = math.floor(math.random() * 256)
-      local G = math.floor(math.random() * 256)
-      local B = math.floor(math.random() * 256)
+      local R = math.floor(math.random() * ecart) + minNuance
+      local G = math.floor(math.random() * ecart) + minNuance
+      local B = math.floor(math.random() * ecart) + minNuance
       return string.format("#%02X%02X%02X", R, G, B)
    end
 end
 --
-local function imageAlea(c)
+local function imageAlea(c, mN, MN)
    --
    local w = c.width
    local h = c.height
@@ -69,7 +72,7 @@ end
 function secretFenetre.create(c, args)
    local args = args or {}
    --
-   local fond  =  imageAlea(c)
+   local fond  =  imageAlea(c, mN, MN)
    --
    local w = wibox({
          x       = c.x,
@@ -107,9 +110,12 @@ end
 --
 function secretFenetre.createButton(c, args)
    local args = args or {}
-   secretFenetre.nb = args.nb or secretFenetre.nb
-   secretFenetre.px = args.px or secretFenetre.px
+   secretFenetre.nb        = args.nb        or secretFenetre.nb
+   secretFenetre.px        = args.px        or secretFenetre.px
    secretFenetre.challenge = args.challenge or secretFenetre.challenge
+   secretFenetre.minNuance = args.minNuance or secretFenetre.minNuance
+   secretFenetre.maxNuance = args.maxNuance or secretFenetre.maxNuance
+   --
    c.estSecret = false
    --
    local w = wibox.widget({

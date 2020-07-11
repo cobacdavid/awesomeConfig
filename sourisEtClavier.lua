@@ -19,15 +19,15 @@ root.buttons(
    gears.table.join(
       awful.button({modkey}, 1,
          function()
-            awful.menu.clients(--
-               {width = 800},
+            awful.menu.client_list(--
+               {},
                nil,
                function(c)
-                  if c.screen == awful.screen.focused() then
+                  --if c.screen == awful.screen.focused() then
                      return true
-                  else
-                     return false
-                  end
+                  --else
+                     --return false
+                  --end
                end
             )
          end

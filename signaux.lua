@@ -134,7 +134,10 @@ client.connect_signal("request::titlebars",function(c)
                                   separateur(),
                                   c.bo,
                                   separateur(),
-                                  secretFenetre(c, {px = 50, nb = true}),
+                                  secretFenetre(c, {px        = 100,
+                                                    nb        = true,
+                                                    minNuance = 0,
+                                                    maxNuance = 20}),
                                   separateur(),
                                   -- wibox.widget {
                                   --    {

@@ -9,11 +9,19 @@
 -- distribution
 -- copyright ??
 -------------------------------------------------
--- {{{ Menu
 -- Menubar configuration
--- Set the terminal for applications that require it
-menubar.utils.terminal = terminal 
--- }}}
+menubar.utils.terminal = terminal
+menubar.menu_gen.all_menu_dirs = {
+   "/usr/share/applications",
+   "/usr/local/share/applications",
+   myhome .. "/.local/share/applications"
+}
+menubar.cache_entries = true
+menubar.app_folders = {
+   "/usr/share/applications/"
+}
+menubar.show_categories = true 
+-- 
 myawesomemenu = {
    {"config", editor_cmd .. " " .. awesome.conffile },
    {"sauv. config",
@@ -46,20 +54,12 @@ mymainmenu = awful.menu(
          {"rcfiles", myrcfilesmenu},
          {"editeur",     editor_cmd},
          {"fichiers", fileMgr},
+      },
+      theme = {
+         width = 130,
       }
    }
 )
 
 -- }}}
-menubar.menu_gen.all_menu_dirs = {
-   "/usr/share/applications",
-   "/usr/local/share/applications",
-   myhome .. "/.local/share/applications"
-}
-
-menubar.cache_entries = true
-menubar.app_folders = {
-   "/usr/share/applications/"
-}
-menubar.show_categories = true 
 

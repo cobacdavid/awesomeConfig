@@ -165,13 +165,14 @@ theme.mouse_finder_color = theme.blanc
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_height       = "16"
-theme.menu_width        = "130"
+theme.menu_height       = "18"
+theme.menu_width        = "200"
 theme.menu_bg_normal    = theme.noir
 theme.menu_bg_focus     = theme.blanc
 theme.menu_fg_focus     = theme.noir
 theme.menu_fg_normal    = theme.blanc
 theme.menu_border_width = "0"
+theme.menu_font         = theme.font
 -- }}}
 theme.separator_thickness        = 0	-- number 	The separator thickness.
 --theme.separator_border_color     = 	-- color 	The separator border color.
