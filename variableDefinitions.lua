@@ -130,8 +130,8 @@ rawEditor        = "darktable"
 imageEditor      = "gimp"
 synaptic         = "gksudo synaptic"
 --
--- sur arch : /usr/bin/keepassxc
-keepassCmd       = "/home/david/Téléchargements/KeePassXC-2.5.4-x86_64.AppImage"
+keepassCmd       = "/usr/bin/keepassxc"
+-- keepassCmd       = "/home/david/Téléchargements/KeePassXC-2.5.4-x86_64.AppImage"
 keepass          = keepassCmd .. " /home/david/travail/david/david.kdbx"
 --
 RcFiles          = "/home/david/travail/david/production/info/config/"

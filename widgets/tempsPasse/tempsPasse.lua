@@ -94,29 +94,30 @@ function widget:createWidget(c, args)
    c.tempsPasse = 0
    c.tempsDuFocus = 0
    c.timer = gears.timer({
-         timeout=1,
-         autostart=false,
-         call_now=false,
+         timeout = 1,
+         autostart = false,
+         call_now = false,
          callback=function()
-            c.tempsDuFocus = os.difftime(os.time(), c.heureFocus)
-            actualiseTemps(w,
-                           c.tempsPasse + c.tempsDuFocus,
-                           c.tempsDuFocus,
-                           font,
-                           size)
+             c.tempsDuFocus = os.difftime(os.time(), c.heureFocus)
+             actualiseTemps(w,
+                            c.tempsPasse + c.tempsDuFocus,
+                            c.tempsDuFocus,
+                            font,
+                            size)
          end,
          signe_shot=false
    })
    --
    c:connect_signal("unmanage",
                     function(c)
-                       local classe = c.class or "Inconnu"
-                       local t = math.floor(c.tempsPasse + c.tempsDuFocus)
-                       local ligne = os.date("%Y%m%d-%H%M%S")
-                          .. "," .. classe .. ","
-                          .. tostring(t)
-                          .. "\n"
-                       appendFile(logFile, ligne)
+                        c.timer:stop()
+                        local classe = c.class or "Inconnu"
+                        local t = math.floor(c.tempsPasse + c.tempsDuFocus)
+                        local ligne = os.date("%Y%m%d-%H%M%S")
+                            .. "," .. classe .. ","
+                            .. tostring(t)
+                            .. "\n"
+                        appendFile(logFile, ligne)
                     end
    )
    c:connect_signal("focus",

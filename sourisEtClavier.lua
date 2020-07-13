@@ -83,6 +83,7 @@ globalkeys = gears.table.join(
    ),
    awful.key({modkey}, "F5",
       function()
+         bigC.bigClock({font = "HP15C Simulator Font", fg="#003000", screen=mouse.screen})
       end
    ),
    awful.key({modkey}, "F6",

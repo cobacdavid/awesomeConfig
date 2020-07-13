@@ -69,9 +69,10 @@ fu               = require("fonctionsUtiles")
 -- widgets 
 separateur       = require("widgets.separateur.separateur")
 heure            = require("widgets.heure.heure")
+bigC             = require("widgets.bigClock.bigClock")
 volumemaster     = require("widgets.volumeMaster.volumeMaster")
 luminosite       = require("widgets.luminosite.luminosite")
-luminositeEcran = require("widgets.luminositeEcran.luminositeEcran")
+luminositeEcran  = require("widgets.luminositeEcran.luminositeEcran")
 calendrier       = require("widgets.calendrier.calendrier")
 infos            = require("widgets.infos.infos")
 chrono           = require("widgets.chrono.chrono")
@@ -119,5 +120,10 @@ end
 ecranFlou.isActivated = false
 ppeintTag.imagesFonds()
 ppeintDesc = ppeintNasa()
+--
+-- ppeintTag on first tag of first screen at startup
+screen[1].selected_tag:emit_signal("property::selected")
+--
+myP   = require("widgets.dev.myradial_progressbar")
 --
 fu.montre("Démarrage terminé")
