@@ -124,6 +124,4 @@ ppeintDesc = ppeintNasa()
 -- ppeintTag on first tag of first screen at startup
 screen[1].selected_tag:emit_signal("property::selected")
 --
-myP   = require("widgets.dev.myradial_progressbar")
---
 fu.montre("Démarrage terminé")
