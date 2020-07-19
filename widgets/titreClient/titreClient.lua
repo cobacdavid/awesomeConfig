@@ -6,8 +6,9 @@
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
 --
-local wibox = require("wibox")
---local fu = require("fonctionsUtiles")
+local awful     = require("awful")
+local wibox     = require("wibox")
+local beautiful = require("beautiful")
 --
 local widget = {}
 widget.limit = nil
@@ -15,18 +16,18 @@ widget.limit = nil
 function widget.raccourcirTitre(titre)
    --
    local lenTitre = string.len(titre)
-   if (lenTitre > titreClient.limit) then
-      if titreClient.limit <= 3 then
+   if (lenTitre > widget.limit) then
+      if widget.limit <= 3 then
          titre = "..."
-      elseif titreClient.limit == 4 then
+      elseif widget.limit == 4 then
             titre = string.sub(titre, 1, 1) .. "..."
       else
-         local lenPartage1 = (titreClient.limit - 3) // 2
-         local lenPartage2 = titreClient.limit - 3 - lenPartage1
+         local lenPartage1 = (widget.limit - 3) // 2
+         local lenPartage2 = widget.limit - 3 - lenPartage1
          local gauche = math.max(lenPartage1, lenPartage2)
          local droite = math.min(lenPartage1, lenPartage2)
          local pref = gauche ~= 0 and string.sub(titre, 1, gauche)
-            or titreClient.limit > 3 and string.sub(titre, 1, 1)
+            or widget.limit > 3 and string.sub(titre, 1, 1)
          local suff = droite > 0 and string.sub(titre, -droite) or ""
          titre = pref .. "..." .. suff
       end
@@ -36,7 +37,7 @@ end
 --
 function widget.createWidget(c, args)
    --
-   local args = args or {}
+   args = args or {}
    widget.limit = args.limit or 30
    local color = args.color or beautiful.bg_normal
    local callback = args.callback or widget.raccourcirTitre
@@ -64,13 +65,13 @@ function widget.createWidget(c, args)
    -- end)
    --
    c:connect_signal("property::name",
-                      function(c)
-                         local n = c.name
+                      function(cli)
+                         local n = cli.name
                          local t = callback(n)
                          -- sometimes crashes due to c.titre does
                          -- not exist
-                         if c.titre then
-                            c.titre.texte:set_markup(t)
+                         if cli.titre then
+                            cli.titre.texte:set_markup(t)
                          end
                       end
    )
@@ -83,6 +84,6 @@ function widget.createWidget(c, args)
    return titre
 end
 --
-return setmetatable(widget, {__call=function(t, client, args)
+return setmetatable(widget, {__call=function(_, client, args)
                                 return widget.createWidget(client, args)
                    end})

@@ -5,12 +5,14 @@
 -- date: 2020
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
--- some parts from awesome wm 
+-- some parts from awesome wm
 -- ditribution
 -- copyright ??
 -------------------------------------------------
 --
-local cairo = require("lgi").cairo
+local cairo     = require("lgi").cairo
+local beautiful = require("beautiful")
+local gears     = require("gears")
 --
 local ppeintTag = {}
 --
@@ -38,8 +40,8 @@ function ppeintTag.fondEcran(t)
    cr:set_font_size(font_size)
    local monTexte = t.name
    local T = cr:text_extents(monTexte)
-   texteW = T['width']
-   texteH = T['height']
+   local texteW = T['width']
+   local texteH = T['height']
    -- bandeau
    cr:set_source(gears.color(beautiful.wallpaperBandeau))
    cr:rectangle(0, (h - texteH) / 2, w, texteH + 3)
@@ -64,7 +66,7 @@ function ppeintTag.fondEcran(t)
    T = cr:text_extents(monTexte)
    cr:move_to(w/2 + texteW/2 + hoffset, (h + T['height']) / 2)
    cr:show_text(monTexte)
-   -- 
+   --
    cr:stroke()
    return img
 end
@@ -72,8 +74,8 @@ end
 function ppeintTag.imagesFonds()
    local rep = "/tmp/"
    local s = screen[1]
-   local surface = nil
-   for i, t in ipairs(s.tags) do
+   local surface
+   for _, t in ipairs(s.tags) do
       surface = ppeintTag.fondEcran(t)
       surface:write_to_png(rep .. t.name .. ".png")
    end

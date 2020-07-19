@@ -11,6 +11,7 @@
 -- distribution
 -- copyright ??
 -------------------------------------------------
+--
 local beautiful = require("beautiful")
 local awful     = require("awful")
 local wibox     = require("wibox")
@@ -23,7 +24,7 @@ widget.timer = nil
 --
 local function darkerColor(color)
    local r, g, b, a = gears.color.parse_color(color)
-   local coef = .35
+   local coef = .5
    local R = math.floor(r * coef * 255)
    local G = math.floor(g * coef * 255)
    local B = math.floor(b * coef * 255)
@@ -104,7 +105,8 @@ function widget.bigClock(args)
          color = args.fg,
          min_value = 0,
          max_value = 1,
-         -- radius = 200,
+         hide_left = true,
+         radius = 200,
          widget = wibox.container.radialprogressbar 
    })
    --

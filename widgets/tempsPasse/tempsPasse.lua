@@ -6,17 +6,16 @@
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
 -------------------------------------------------
--- some parts from awesome wm 
+-- some parts from awesome wm
 -- distribution
 -- copyright ??
 -------------------------------------------------
-local wibox = require("wibox")
-local gears = require("gears")
+local awful     = require("awful")
+local wibox     = require("wibox")
+local gears     = require("gears")
 local beautiful = require("beautiful")
-local os = require("os")
-local math = require("math")
-local string = require("string")
 --
+local ordinateur = ordinateur
 local widget = {}
 --
 local myhome = os.getenv('HOME') .. "/"
@@ -33,8 +32,8 @@ local function appendFile(fileName, line)
 end
 --
 local function normaliseDuree(t)
-   local h, m, s = 0, 0, 0
-   local t = t
+   local h, m = 0, 0
+   --
    if t >= 3600 then
       h = t // 3600
       t = t % 3600
@@ -49,26 +48,24 @@ local function normaliseDuree(t)
       m = 0
    end
    --
-   s = t
-   --
    h = string.format("%02d", h)
    m = string.format("%02d", m)
-   s = string.format("%02d", s)
+   local s = string.format("%02d", t)
    return h .. "h " .. m .. "min " .. s .. "s"
 end
 
 
 local function actualiseTemps(w, t1, t2, font, size)
-   local t1 = normaliseDuree(math.floor(t1))
-   local t2 = normaliseDuree(math.floor(t2))
+   t1 = normaliseDuree(math.floor(t1))
+   t2 = normaliseDuree(math.floor(t2))
    w:set_markup("<span font='" .. font .. " " .. size .. "'>"
                    .. tostring(t1) .. "\n" .. tostring(t2)
                    .. "</span>")
 end
 
-function widget:createWidget(c, args)
+function widget.createWidget(c, args)
    --
-   local args = args or {}
+   args = args or {}
    local width = args.width or 100
    local font = args.font or beautiful.widget_font_pri
    local size = args.size or 8
@@ -109,10 +106,10 @@ function widget:createWidget(c, args)
    })
    --
    c:connect_signal("unmanage",
-                    function(c)
-                        c.timer:stop()
+                    function(cli)
+                        cli.timer:stop()
                         local classe = c.class or "Inconnu"
-                        local t = math.floor(c.tempsPasse + c.tempsDuFocus)
+                        local t = math.floor(cli.tempsPasse + cli.tempsDuFocus)
                         local ligne = os.date("%Y%m%d-%H%M%S")
                             .. "," .. classe .. ","
                             .. tostring(t)
@@ -121,16 +118,16 @@ function widget:createWidget(c, args)
                     end
    )
    c:connect_signal("focus",
-                    function()
-                       c.tempsPasse = c.tempsPasse + c.tempsDuFocus
-                       c.heureFocus = os.time()
-                       c.tempsDuFocus = 0
-                       c.timer:start()
+                    function(cli)
+                       cli.tempsPasse = cli.tempsPasse + cli.tempsDuFocus
+                       cli.heureFocus = os.time()
+                       cli.tempsDuFocus = 0
+                       cli.timer:start()
                     end
    )
    c:connect_signal("unfocus",
-                    function()
-                       c.timer:stop()
+                    function(cli)
+                       cli.timer:stop()
                     end
    )
    --
@@ -138,7 +135,7 @@ function widget:createWidget(c, args)
 end
 --
 return setmetatable(widget, {
-                       __call=function(c, client, args)
-                          return widget:createWidget(client, args)
+                       __call=function(_, client, args)
+                          return widget.createWidget(client, args)
                        end}
 )

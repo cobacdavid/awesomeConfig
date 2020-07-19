@@ -11,7 +11,7 @@
 -- copyright ??
 -------------------------------------------------
 --
--- GDM3 screen configuration:
+-- GDM3 screen configuration: 
 -- 1. start with gnome
 -- 2. configure screens with the gnome tool
 -- 3. copy ~/.config/monitors.xml to /var/lib/gdm/.config/monitors.xml
@@ -66,7 +66,11 @@ require("awful.autofocus")
 has_fdo, freedesktop = pcall(require, "freedesktop")
 --
 fu               = require("fonctionsUtiles")
--- widgets 
+-- widgets
+--
+wifi = require("widgets.dev.wifi")
+--
+--
 separateur       = require("widgets.separateur.separateur")
 heure            = require("widgets.heure.heure")
 bigC             = require("widgets.bigClock.bigClock")
@@ -94,7 +98,7 @@ dimFenetre       = require("widgets.dimFenetre.dimFenetre")
 tempsPasse       = require("widgets.tempsPasse.tempsPasse")
 titreClient      = require("widgets.titreClient.titreClient")
 secretFenetre    = require("widgets.secretFenetre.secretFenetre")
--- 
+--
 --
 listeRcFiles = {--
    "errorhandling45.lua",

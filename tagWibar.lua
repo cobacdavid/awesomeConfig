@@ -118,6 +118,7 @@ awful.screen.connect_for_each_screen(
          --
 	 local right_layout = wibox.layout.fixed.horizontal()
 	 right_layout:add(wibox.widget.systray())
+         -- right_layout:add(wifi.new(s, "wlx7ca7b0bf524a", "Freebox-46CAFC_5Ghz"))
 	 --
 	 local layout = wibox.layout.align.horizontal()
 	 layout:set_left(left_layout)
