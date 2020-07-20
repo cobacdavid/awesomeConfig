@@ -75,6 +75,7 @@ volumemaster     = require("widgets.volumeMaster.volumeMaster")
 luminosite       = require("widgets.luminosite.luminosite")
 luminositeEcran  = require("widgets.luminositeEcran.luminositeEcran")
 calendrier       = require("widgets.calendrier.calendrier")
+calendrierMois   = require("widgets.calendrier.calendrierMois")
 infos            = require("widgets.infos.infos")
 chrono           = require("widgets.chrono.chrono")
 if ordinateur == "laptop" then

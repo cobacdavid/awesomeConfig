@@ -73,24 +73,30 @@ local function progressBar(w)
 end
 --
 function widget.bigClock(args)
-    local args   = args         or {}
-    local delay  = args.delay   or .1
-    args.fg        = args.fg        or beautiful.widget_fg_pri
-    args.bg        = args.bg        or beautiful.widget_bg
+    args         = args        or {}
+    local delay  = args.delay  or .1
+    args.fg      = args.fg     or beautiful.widget_fg_pri
+    args.bg      = args.bg     or beautiful.widget_bg
+    args.border_width = args.border_width or
+        beautiful.border_width or 5
     local s      = args.screen or screen[2]
+    args.width   = args.width  or s.geometry.width
+    args.height  = args.height or s.geometry.height
+    args.radius  = args.radius or 200
+    args.x       = args.x      or 0
+    args.y       = args.y      or 0
     --
-    --local width         = args.width        or 150
-    local justify       = args.justify      or "center"
+    args.align       = args.align      or "center"
     local bg            = args.bg           or beautiful.widget_bg
     --
     local huit = wibox.widget({
-            forced_width = s.geometry.width,
-            align        = "center",
+            forced_width = args.width,
+            align        = args.align,
             widget       = wibox.widget.textbox
     })
     local disp =  wibox.widget({
-            forced_width = s.geometry.width,
-            align        = "center",
+            forced_width = args.width,
+            align        = args.align,
             widget       = wibox.widget.textbox
     })
     local stack = wibox.widget({
@@ -100,22 +106,22 @@ function widget.bigClock(args)
     })
     local rp = wibox.widget({
             stack,
-            border_width = 30,
+            forced_width = args.width,
+            border_width = args.border_width,
             border_color = args.bg,
             color = args.fg,
             min_value = 0,
             max_value = 1,
-            hide_left = true,
-            radius = 200,
+            radius = args.radius,
             widget = wibox.container.radialprogressbar
     })
     --
     local w = wibox({
             screen  = s,
-            width   = s.geometry.width,
-            height  = s.geometry.height,
-            x       = 0,
-            y       = 0,
+            width   = args.width,
+            height  = args.height,
+            x       = args.x,
+            y       = args.y,
             ontop   = true,
             visible = true,
             fg      = beautiful.fg_normal,
@@ -125,7 +131,7 @@ function widget.bigClock(args)
     w:setup({
             rp,
             id = "lay",
-            layout = wibox.layout.align.horizontal
+            layout = wibox.layout.fixed.horizontal
     })
     --
     w:buttons(gears.table.join(

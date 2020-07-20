@@ -21,6 +21,22 @@ only).
 First lines of `rc.lua` explains how to setup screens with GDM and
 `~\.profile`.
 
+BUT thanks to [this
+issue](https://github.com/awesomeWM/awesome/issues/3132), I
+discovered xrandr virtual screens features. So I decided to create
+two virtual screens on the 2nd monitor with:
+
+``` bash
+#!/bin/sh
+xrandr --output HDMI-0 --primary --mode 1920x1200 --pos 0x0 --rotate left --output DVI-0 --off --output VGA-0 --mode 1920x1080 --pos 1200x840 --rotate normal
+xrandr --setmonitor VIRT-LEFT 1728/538x1080/336+1200+840 VGA-0
+xrandr --setmonitor VIRT-RIGHT 192/60x1080/336+2928+840 none
+```
+
+Third screen is dedicated to two wibars, in first I display
+widgets, second one is used as a gateway to first monitor
+(cylindric shape move).
+
 ## can it be yours?
 
 My `rc.lua` contains some specific lines you'll have to adjust:
@@ -36,3 +52,5 @@ depend on it.
 a list of software that I use.
 
 ![screenshot](./screenshots/awesomeScreenshot.png "awesomeWM screenshot")
+
+(only 2 screens config screenshot

@@ -126,7 +126,7 @@ awful.screen.connect_for_each_screen(
             -- maison
             -- et HDMI à droite de eDP avec le portable
             --
-            if screen:count() == 2 and s.index == 1 then
+            if screen:count() >= 2 and s.index == 1 then
                 -- HDMI ou edP
                 largeurPremier = s.geometry.width
                 hauteurPremier = s.geometry.height
@@ -153,7 +153,7 @@ awful.screen.connect_for_each_screen(
             end
         end
         -- -- --
-        -- ÉCRAN SECONDAIRE
+        -- ÉCRAN SECONDAIRE (potentiellement virtuel)
         -- -- --
         if s.index == 2 then
             --
@@ -169,36 +169,114 @@ awful.screen.connect_for_each_screen(
                               selected = true
                           }
             )
-            clo = wibox.widget {
-                align = "center",
-                widget = wibox.widget.textclock("%A %d %B %Y")
-            }
-            s.mywibar = awful.wibar({
-                    screen = s ,
-                    bg = beautiful.noir,
-                    widget = clo,
-                    position = "top",
-                    ontop = false,
-                    type = "dock",
-                    opacity = .75
-            })
+            if screen.count() == 2 then
+                clo = wibox.widget {
+                    align = "center",
+                    widget = wibox.widget.textclock("%A %d %B %Y")
+                }
+                s.mywibar = awful.wibar({
+                        screen = s ,
+                        bg = beautiful.noir,
+                        widget = clo,
+                        position = "top",
+                        ontop = false,
+                        type = "dock",
+                        opacity = .75
+                })
+                --
+                s.mywibar:buttons(gears.table.join(
+                                      awful.button({}, 1,
+                                          function()
+                                              calendrier()
+                                          end
+                                      )
+                ))
+                -- nouvel écran à droite du premier
+                s.droiteLaptop = awful.wibar({
+                        position = "right",
+                        screen = s ,
+                        width = 1,
+                        -- bg       = beautiful.noir,
+                        opacity = 0,
+                        ontop = true
+                })
+                s.droiteLaptop:connect_signal("mouse::enter",
+                                              function(w)
+                                                  mouse.coords({
+                                                          x = 2,
+                                                          y = mouse.coords().y
+                                                  })
+                                              end
+                )
+            end
+        end
+        -- -- --
+        -- ÉCRAN 3 (potentiellement sur le secondaire et virtuel)
+        -- -- --
+        if s.index == 3 then
             --
-            s.mywibar:buttons(gears.table.join(
-                                  awful.button({}, 1,
-                                      function()
-                                          calendrier()
-                                      end
-                                  )
-            ))
-            -- nouvel écran à droite du premier
+            largeurPremier = screen[1].geometry.width
+            hauteurPremier = screen[1].geometry.height
+            largeurSecond  = screen[2].geometry.width
+            hauteurSecond  = screen[2].geometry.height
+            largeurTroism  = s.geometry.width
+            hauteurTroism  = s.geometry.height
+            --
+            awful.tag.add("Auxiliaire",
+                          {
+                              layout = awful.layout.suit.floating,
+                              screen = s,
+                              selected = true
+                          }
+            )
             s.droiteLaptop = awful.wibar({
                     position = "right",
-                    screen = s ,
-                    width = 1,
-                    -- bg       = beautiful.noir,
-                    opacity = 0,
-                    ontop = true
+                    screen   = s,
+                    width    = 1,
+                    bg       = beautiful.bg_normal, --"#ffff00",
+                    opacity  = 1,
+                    ontop    = true
             })
+            --
+            s.mywibar = awful.wibar({
+                    screen   = s ,
+                    width    = largeurTroism - 1,
+                    bg       = beautiful.bg_normal,
+                    position = "left",
+                    ontop = false,
+                    type = "dock",
+                    opacity = 1
+            })
+            local layout = wibox.layout.fixed.vertical()
+            layout.spacing = 80
+            layout:add({
+                 bigC.bigClock({
+                         font   = "HP15C Simulator Font",
+                         fg     = beautiful.fg_normal, -- "#909090",
+                         screen = s,
+                         size   = 30,
+                         border_width = 10,
+                         height = 80,
+                         width = largeurTroism - 1
+                 }).rp,
+                 layout =  wibox.layout.fixed.vertical
+                       }
+            )
+            layout:add({
+                    calendrierMois.cal({
+                            --font   = "HP15C Simulator Font",
+                            --fg     = "#909090",
+                            --screen = s,
+                            --size   = 30,
+                            --border_width = 10,
+                            --height = 80,
+                            --width = largeurTroism - 1
+                    }),
+                    layout =  wibox.layout.align.vertical
+                       }
+             )
+            s.mywibar:set_widget(layout)
+            --
             s.droiteLaptop:connect_signal("mouse::enter",
                                           function(w)
                                               mouse.coords({
