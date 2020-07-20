@@ -10,10 +10,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import sys
-# import locale
+import locale
 
 
-# locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+locale.setlocale(locale.LC_ALL, os.environ["LANG"])
 #
 myhome = os.environ['HOME']
 rep_desktop = myhome + "/.config/awesome/widgets/"

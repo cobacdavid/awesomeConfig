@@ -5,12 +5,8 @@
 -- date: 2020
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
-local awful = require("awful")
-local wibox = require("wibox")
-local math = require("math")
-local io = require("io")
-local os = require("os")
-local gears = require("gears")
+local wibox     = require("wibox")
+local gears     = require("gears")
 local beautiful = require("beautiful")
 --
 local fu = require("fonctionsUtiles")
@@ -63,6 +59,6 @@ function widget.batterie(args)
 end
 
 
-return setmetatable(widget, {__call=function(t, args)
+return setmetatable(widget, {__call=function(_, args)
        return widget.batterie(args)
 end})

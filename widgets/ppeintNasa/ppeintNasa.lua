@@ -11,17 +11,17 @@ local wibox     = require("wibox")
 local gears     = require("gears")
 local beautiful = require("beautiful")
 --
-myhome = os.getenv("HOME") .. "/"
+local myhome = os.getenv("HOME") .. "/"
 --
 local function aleaTableau(T)
-   return T[math.random(#T)]
+    return T[math.random(#T)]
 end
 --
 local function readFile(fichier)
-   local fh = io.open(fichier)
-   local contenu = fh:read("*a")
-   fh:close()
-   return contenu
+    local fh = io.open(fichier)
+    local contenu = fh:read("*a")
+    fh:close()
+    return contenu
 end
 --
 local widget = {}
@@ -31,25 +31,24 @@ widget.wallpaperTheme = ""
 widget.themeFond = ""
 --
 local function ppeintTelechargement(themeDuFond)
-   local rep = widget.wallpaperRepImagesEspace
-   local commande = rep .. "/image_hasard_nasa.py" .. " " .. themeDuFond
-   awful.spawn.easy_async_with_shell(commande,
-                                     function(stdout, stderr, reason, exit_code)
-                                        
-                                     end
-   )
+    local rep = widget.wallpaperRepImagesEspace
+    local commande = rep .. "/image_hasard_nasa.py" .. " " .. themeDuFond
+    awful.spawn.easy_async_with_shell(commande,
+                                      function(stdout, stderr, reason, exit_code)
+                                      end
+    )
 end
 --
 local function ppeintApplication()
-   local rep = widget.wallpaperRepImagesEspace
-   if screen.count() >= 2 and ordinateur == "desktop" then
-      local fichier = rep .. "/fond" 
-      gears.wallpaper.fit(fichier, screen[2], beautiful.wallpaper_color)
-   end
+    local rep = widget.wallpaperRepImagesEspace
+    if screen.count() >= 2 and ordinateur == "desktop" then
+        local fichier = rep .. "/fond"
+        gears.wallpaper.fit(fichier, screen[2], beautiful.wallpaper_color)
+    end
 end
 --
 function widget.ppeintDesc(args)
-   local args = args or {}
+   args = args or {}
    local widget_description = wibox({
          width           = 400,
          height          = 200,
@@ -59,7 +58,7 @@ function widget.ppeintDesc(args)
          bg              = beautiful.noir,
          max_widget_size = 500,
          border_width    = 3,
-         border_color    = theme.gris,
+         border_color    = beautiful.gris,
          shape           = args.shape or function(cr, width, height)
             gears.shape.rounded_rect(cr, width, height, 3)
          end
@@ -117,8 +116,8 @@ gears.timer ({
       end
 })
 --
-return setmetatable(widget, {__call=function(t, args)
-                                return widget.ppeintDesc(args)
+return setmetatable(widget, {__call=function(_, args)
+                                 return widget.ppeintDesc(args)
                    end})
 
 

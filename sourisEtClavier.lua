@@ -17,7 +17,6 @@ awful.mouse.snap.client_enabled = false
 -- table_menu = {}
 root.buttons(
     gears.table.join(
-        awful.button({"Mod3"}, 1, function(c) naughty.notification({text="ok"}) end),
       awful.button({modkey}, 1,
          function()
             awful.menu.client_list(--
@@ -57,7 +56,6 @@ root.buttons(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({"Mod3"}, "e", function(c) naughty.notification({text="ok"}) end),
    awful.key({modkey}, "p",
       function()
          menubar.show()
