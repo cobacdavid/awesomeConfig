@@ -37,9 +37,20 @@ function ppeintTag.fondEcran(t)
    -- Create a context
    local cr  = cairo.Context(img)
    --
-   cr:set_font_size(font_size)
-   local monTexte = t.name
+   cr:select_font_face("Comfortaa",
+                       "CAIRO_FONT_SLANT_NORMAL",
+                       "CAIRO_FONT_WEIGHT_NORMAL")
+   --
+   cr:set_font_size(0.75 * t.screen.geometry.height)
+   cr:set_source(gears.color(beautiful.wallpaperBandeau))
+   local monTexte = tostring(j)
    local T = cr:text_extents(monTexte)
+   cr:move_to((w - T['width']) // 2 - 50, (h + T['height']) // 2)
+   cr:show_text(monTexte)
+   -- 
+   cr:set_font_size(font_size)
+   monTexte = t.name
+   T = cr:text_extents(monTexte)
    local texteW = T['width']
    local texteH = T['height']
    -- bandeau
@@ -47,9 +58,6 @@ function ppeintTag.fondEcran(t)
    cr:rectangle(0, (h - texteH) / 2, w, texteH + 3)
    cr:fill()
    -- texte
-   cr:select_font_face("Comfortaa",
-                       "CAIRO_FONT_SLANT_NORMAL",
-                       "CAIRO_FONT_WEIGHT_NORMAL")
    cr:set_source(gears.color(beautiful.wallpaper_color))
    cr:move_to(w/2 - texteW/2, (h + texteH) / 2)
    cr:show_text(monTexte)

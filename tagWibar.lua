@@ -242,39 +242,40 @@ awful.screen.connect_for_each_screen(
                     screen   = s ,
                     width    = largeurTroism - 1,
                     bg       = beautiful.bg_normal,
-                    position = "left",
-                    ontop = false,
+                    position = "top",
+                    height = 300,
+                    ontop = true,
                     type = "dock",
                     opacity = 1
             })
             local layout = wibox.layout.fixed.vertical()
             layout.spacing = 80
+            --
+            local clock = bigC.bigClock({
+                    font   = "HP15C Simulator Font",
+                    fg     = beautiful.fg_normal, -- "#909090",
+                    screen = s,
+                    size   = 30,
+                    border_width = 10,
+                    height = 80,
+                    width = largeurTroism - 1
+            })
+            -- inhibit default behaviour
+            clock:buttons(gears.table.join(
+                              awful.button({ }, 1, function()
+                              end)
+            ))
             layout:add({
-                 bigC.bigClock({
-                         font   = "HP15C Simulator Font",
-                         fg     = beautiful.fg_normal, -- "#909090",
-                         screen = s,
-                         size   = 30,
-                         border_width = 10,
-                         height = 80,
-                         width = largeurTroism - 1
-                 }).rp,
+                 clock.rp,
                  layout =  wibox.layout.fixed.vertical
-                       }
-            )
+            })
+            --
+            local cal = calendrierMois.cal()
             layout:add({
-                    calendrierMois.cal({
-                            --font   = "HP15C Simulator Font",
-                            --fg     = "#909090",
-                            --screen = s,
-                            --size   = 30,
-                            --border_width = 10,
-                            --height = 80,
-                            --width = largeurTroism - 1
-                    }),
+                    cal,
                     layout =  wibox.layout.align.vertical
-                       }
-             )
+            })
+            --
             s.mywibar:set_widget(layout)
             --
             s.droiteLaptop:connect_signal("mouse::enter",
