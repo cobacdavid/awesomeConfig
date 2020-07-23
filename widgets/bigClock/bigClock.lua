@@ -35,10 +35,10 @@ end
 local function fondHuit(w, args)
     args = args or {}
     --
-    args.font      = args.font      or beautiful.widget_font_pri
+    args.font      = args.font      or beautiful.font
     args.size      = args.size      or 350
-    args.fg        = args.fg        or beautiful.widget_fg_pri
-    args.bg        = args.bg        or beautiful.widget_bg
+    args.fg        = args.fg        or beautiful.fg_normal
+    args.bg        = args.bg        or beautiful.bg_normal
     --
     local huitMkup = "<span foreground='" .. darkerColor(args.fg)
         .. "' font_weight='normal' font='" .. args.font .. " " .. args.size .. "' >"
@@ -49,10 +49,10 @@ end
 local function heureText(w, args)
     args = args or {}
     --
-    args.font      = args.font      or beautiful.widget_font_pri
+    args.font      = args.font      or beautiful.font
     args.size      = args.size      or 350
-    args.fg        = args.fg        or beautiful.widget_fg_pri
-    args.bg        = args.bg        or beautiful.widget_bg
+    args.fg        = args.fg        or beautiful.fg_normal
+    args.bg        = args.bg        or beautiful.bg_normal
     args.hr_format = args.hr_format or "%H:%M"
     args.fn_format = args.fn_format or os.date
     --
@@ -75,8 +75,8 @@ end
 function widget.bigClock(args)
     args         = args        or {}
     local delay  = args.delay  or .1
-    args.fg      = args.fg     or beautiful.widget_fg_pri
-    args.bg      = args.bg     or beautiful.widget_bg
+    args.fg      = args.fg     or beautiful.fg_normal
+    args.bg      = args.bg     or beautiful.bg_normal
     args.border_width = args.border_width or
         beautiful.border_width or 5
     local s      = args.screen or screen[2]
@@ -86,8 +86,7 @@ function widget.bigClock(args)
     args.x       = args.x      or 0
     args.y       = args.y      or 0
     --
-    args.align       = args.align      or "center"
-    local bg            = args.bg           or beautiful.widget_bg
+    args.align   = args.align      or "center"
     --
     local huit = wibox.widget({
             forced_width = args.width,
@@ -124,8 +123,8 @@ function widget.bigClock(args)
             y       = args.y,
             ontop   = true,
             visible = true,
-            fg      = beautiful.fg_normal,
-            bg      = beautiful.bg_normal
+            fg      = args.fg,
+            bg      = args.bg
     })
     --
     w:setup({

@@ -388,8 +388,8 @@ clientbuttons = gears.table.join(
 clientkeys = gears.table.join(
     awful.key({modkey}, "b",
         function(c)
-            awful.titlebar.toggle(c, beautiful.titlebar_premiere)
-            -- awful.titlebar.toggle(c, beautiful.titlebar_seconde)
+            awful.titlebar.toggle(c, "bottom")
+            -- awful.titlebar.toggle(c, "left")
         end
     ),
     awful.key({modkey}, "f",

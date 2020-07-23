@@ -83,13 +83,11 @@ end
 -- enlève les barres de fenêtres si on est dans le tag "term", à
 -- modifier pour généraliser à tous les tags gérée avec du tiling
 function fonctionsUtiles.surTermOuPas(c)
-   awful.titlebar.show(c, beautiful.titlebar_premiere)
-   -- awful.titlebar.show(c, beautiful.titlebar_seconde)
+   awful.titlebar.show(c, "bottom")
    for i, t in pairs(c:tags()) do
       if t.name == "term" then
          c.floating = false
-         awful.titlebar.hide(c, beautiful.titlebar_premiere)
-         -- awful.titlebar.hide(c, beautiful.titlebar_seconde)
+         awful.titlebar.hide(c, "bottom")
          break
       end
    end

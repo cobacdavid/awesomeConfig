@@ -43,7 +43,7 @@ local function ppeintApplication()
     local rep = widget.wallpaperRepImagesEspace
     if screen.count() >= 2 and ordinateur == "desktop" then
         local fichier = rep .. "/fond"
-        gears.wallpaper.fit(fichier, screen[2], beautiful.wallpaper_color)
+        gears.wallpaper.fit(fichier, screen[2], beautiful.bg_normal)
     end
 end
 --
@@ -55,10 +55,10 @@ function widget.ppeintDesc(args)
          ontop           = true,
          screen          = mouse.screen,
          expand          = true,
-         bg              = beautiful.noir,
+         bg              = beautiful.bg_normal,
          max_widget_size = 500,
          border_width    = 3,
-         border_color    = beautiful.gris,
+         border_color    = beautiful.border_color_normal,
          shape           = args.shape or function(cr, width, height)
             gears.shape.rounded_rect(cr, width, height, 3)
          end

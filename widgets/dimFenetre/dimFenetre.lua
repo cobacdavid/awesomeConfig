@@ -18,12 +18,8 @@ local widget = {}
 
 
 local function actualiseContenu(w, wi, he, ra, args)
-    args       = args      or {}
-    local font = args.font or beautiful.widget_font_pri
-    local size = args.size or 15
-    --
-    w:set_markup("<span font='" .. font .. " " .. size .. "'>" .. ra .. "</span>"
-                     .. "<span font='" .. font .. " " .. tostring(size-5) .. "'>"
+    w:set_markup("<span font='" .. args.font .. " " .. args.size .. "'>" .. ra .. "</span>"
+                     .. "<span font='" .. args.font .. " " .. tostring(args.size - 5) .. "'>"
                      .. " (" .. wi .. "x" .. he .. ")"
                      .. "</span>")
 end
@@ -32,23 +28,28 @@ end
 function widget.dimFenetre(c, args)
     args        = args       or {}
     --
-    local color = args.color or beautiful.widget_fg
-    local width = args.width or 150
+    -- args.fg    = args.fg    or beautiful.fg_normal
+    -- args.bg    = args.bg    or beautiful.bg_normal
+    args.width = args.width or 150
+    args.font  = args.font  or beautiful.font
+    args.size  = args.size  or 15
     --
-    local rapport = tonumber(string.format("%.2f", c.width / c.height))
     local dimFenetre = wibox.widget(
         {
             {
                 id           = "texte",
                 widget       = wibox.widget.textbox,
-                forced_width = width,
+                forced_width = args.width,
                 align        = "center",
-                valign       = "center"
+                valign       = "center",
+                -- fg           = args.fg
             },
-            bg = color,
+            -- bg = args.bg,
             widget = wibox.container.background
         }
     )
+    --
+    local rapport = tonumber(string.format("%.2f", c.width / c.height))
     actualiseContenu(dimFenetre.texte, tostring(c.width), tostring(c.height), rapport, args)
     --
     local tt = awful.tooltip({})

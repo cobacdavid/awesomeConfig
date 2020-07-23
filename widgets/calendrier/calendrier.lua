@@ -66,8 +66,8 @@ local function decorate(w, flag, date)
     local bg = style.bg_color or beautiful.bg_systray
     local fg = style.fg_color or beautiful.fg_systray
     if flag == "normal" and (weekday == 0 or weekday == 6) then
-        bg    = beautiful.bg_urgent
-        fg    = beautiful.fg_urgent
+        bg    = beautiful.bg_focus
+        fg    = beautiful.fg_focus
         shape = arrondiMoyen
     end
     -- styles.focus ne semble pas fonctionner à l'affichage par
@@ -76,13 +76,19 @@ local function decorate(w, flag, date)
         and d.day == tonumber(os.date("%d"))
         and d.year == tonumber(os.date("%Y"))
     and (flag == "normal" or flag == "focus") then
-        bg = beautiful.bg_focus
-        fg = beautiful.fg_focus
+        bg = beautiful.bg_urgent
+        fg = beautiful.fg_urgent
         style.markup   = function(t) return '<b>' .. t .. '</b>' end
     end
     --
-    if style.markup and widget.get_text and w.markup then
-        w:set_markup(style.markup(widget:get_text()))
+    style.markup = style.markup or function(t) return t end
+    --
+    if w.markup then
+        w:set_markup(
+            "<span font='" .. widget.font .. " " .. widget.font_size .. "'>"
+                .. style.markup(w:get_text())
+                .. "</span>"
+        )
     end
     --
     local ret = wibox.widget({
@@ -99,21 +105,27 @@ local function decorate(w, flag, date)
     return ret
 end
 
-local function cal()
+local function cal(args)
+    args = args or {}
+    widget.font      = args.font or beautiful.calendar_font or beautiful.font
+    widget.font_size = args.font_size or beautiful.font_size
     local w = wibox.widget({
             date     = {year=widget.year},
             fn_embed = decorate,
-            font     = beautiful.calendar_font,
+            font     = widget.font,
             widget   = wibox.widget.calendar.year
     })
     return w
 end
 
-function widget.createWidget(args)
+function widget.calendrier(args)
     args = args or {}
+    args.width  = args.width or 1000
+    args.height = args.height or 800
+    --
     local widgetCalendrier = wibox({
-            width   = 760,
-            height  = 670,
+            width   = args.width,
+            height  = args.height,
             ontop   = true,
             screen  = mouse.screen,
             visible = true,
@@ -125,7 +137,7 @@ function widget.createWidget(args)
     })
     --
     widgetCalendrier:setup({
-            cal(),
+            cal(args),
             layout = wibox.layout.fixed.horizontal
     })
     --
@@ -164,9 +176,7 @@ function widget.createWidget(args)
     return widgetCalendrier
 end
 --
-return setmetatable(widget, {__call=function(args)
-                                 return widget.createWidget(args)
-                   end})
+return widget
 
 
 

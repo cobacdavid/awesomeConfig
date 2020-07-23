@@ -1,19 +1,18 @@
 local beautiful = require("beautiful")
-local wibox = require("wibox")
+local wibox     = require("wibox")
 --
 local widget = {}
 
 function widget.separateur(args)
     args = args or {}
+    -- args.bg = args.bg or beautiful.bg_normal
+    args.width = args.width or 5
     --
-    local color = args.color or beautiful.widget_bg
     local separateur = wibox.widget({
             {
-                forced_width = args.width or 5,
-                color = color,
+                forced_width = args.width,
                 widget = wibox.widget.separator
             },
-            -- bg = color,
             widget = wibox.container.background
     })
     return separateur

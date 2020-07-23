@@ -47,17 +47,17 @@ function widget.createWidget(args)
     local MIN = 0
     local MAX = tonumber(readResult(widget.com_getM))
     --
-    local width = args.width or 150
-    local bshape = args.barshape or gears.shape.rounded_rect
-    local bheight = args.barheight or 1
-    local bcolortype = args.barcolortype or "gradient"
-    local bcolor = args.barcolor or couleurBarre(bcolortype, volumeactuel, MIN, MAX)
+    local width      = args.width         or 150
+    local bshape     = args.barshape      or gears.shape.rounded_rect
+    local bheight    = args.barheight     or 1
+    local bcolortype = args.barcolortype  or "gradient"
+    local bcolor     = args.barcolor      or couleurBarre(bcolortype, volumeactuel, MIN, MAX)
     local hcolortype = args.handcolortype or "gradient"
-    local hcolor = args.handcolor or bcolor
-    local hradius = args.handradius or 5
-    local ttext = args.texttext or "master"
-    local tjustify = args.textjustify or "center"
-    local tvoffset = args.textvoffset or 5
+    local hcolor     = args.handcolor     or bcolor
+    local hradius    = args.handradius    or 5
+    local ttext      = args.texttext      or "master"
+    local tjustify   = args.textjustify   or "center"
+    local tvoffset   = args.textvoffset   or 5
     --
     -- slider
     local volumemasterControle = wibox.widget({
@@ -81,7 +81,7 @@ function widget.createWidget(args)
             widget = wibox.widget.textbox
     })
     -- à afficher
-    local volumemaster = wibox.widget({
+    local volumemaster = wibox.layout({
             volumemasterTexte,
             volumemasterControle,
             vertical_offset = tvoffset,

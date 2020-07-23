@@ -14,6 +14,7 @@
 -- Configuration de l'écran principal
 awful.screen.connect_for_each_screen(
     function(s)
+        gears.wallpaper.set(beautiful.bg_normal)
         -- attention xrandr dicte sa loi du screen.primary selon
         -- l'interface !!
         --
@@ -84,7 +85,10 @@ awful.screen.connect_for_each_screen(
                     justify = "center",
                     hr_format = "%H:%M",
                     actionLeft = function()
-                        calendrier()
+                        calendrier.calendrier({
+                                width = 1100,
+                                height = 900
+                        })
                     end
             })
             left_layout:add(heureW)
@@ -94,7 +98,7 @@ awful.screen.connect_for_each_screen(
             else
                 local sLevel = {}
                 sLevel["HDMI-0"] = 1
-                sLevel["VGA-0"] = .7
+                sLevel["VGA-0"]  = .85
                 left_layout:add(luminositeEcran({
                                         startLevel = sLevel,
                 }))
@@ -176,7 +180,7 @@ awful.screen.connect_for_each_screen(
                 }
                 s.mywibar = awful.wibar({
                         screen = s ,
-                        bg = beautiful.noir,
+                        bg = beautiful.bg_normal,
                         widget = clo,
                         position = "top",
                         ontop = false,
@@ -187,7 +191,10 @@ awful.screen.connect_for_each_screen(
                 s.mywibar:buttons(gears.table.join(
                                       awful.button({}, 1,
                                           function()
-                                              calendrier()
+                                              calendrier.calendrier({
+                                                      width = 1100,
+                                                      height = 900
+                                              })
                                           end
                                       )
                 ))
@@ -233,27 +240,28 @@ awful.screen.connect_for_each_screen(
                     position = "right",
                     screen   = s,
                     width    = 1,
-                    bg       = beautiful.bg_normal, --"#ffff00",
+                    height = hauteurTroism,
+                    bg       = beautiful.bg_normal, -- "#ffff00"
                     opacity  = 1,
                     ontop    = true
             })
             --
             s.mywibar = awful.wibar({
                     screen   = s ,
-                    width    = largeurTroism - 1,
-                    bg       = beautiful.bg_normal,
                     position = "top",
-                    height = 300,
-                    ontop = true,
-                    type = "dock",
+                    width    = largeurTroism - 1,
+                    bg       = beautiful.bg_normal, --"#ff0000"
+                    height   = 270,
                     opacity = 1
             })
+            s.droiteLaptop.y = 840
+            --s.droiteLaptop.height = hauteurTroism
             local layout = wibox.layout.fixed.vertical()
             layout.spacing = 80
             --
             local clock = bigC.bigClock({
-                    font   = "HP15C Simulator Font",
-                    fg     = beautiful.fg_normal, -- "#909090",
+                    -- font   = "DejaVu Sans Mono",
+                    -- fg     = beautiful.fg_normal, -- "#909090",
                     screen = s,
                     size   = 30,
                     border_width = 10,
@@ -266,16 +274,16 @@ awful.screen.connect_for_each_screen(
                               end)
             ))
             layout:add({
-                 clock.rp,
-                 layout =  wibox.layout.fixed.vertical
+                    clock.rp,
+                    layout =  wibox.layout.align.vertical
             })
-            --
-            local cal = calendrierMois.cal()
+            
+            local cal = calendrierMois.cal({font_size =8})
             layout:add({
                     cal,
                     layout =  wibox.layout.align.vertical
             })
-            --
+            
             s.mywibar:set_widget(layout)
             --
             s.droiteLaptop:connect_signal("mouse::enter",

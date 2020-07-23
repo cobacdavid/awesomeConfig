@@ -28,13 +28,13 @@ widget.commands = {
 --
 widget.indiceInfos = 0
 --
-local function appliqueCommande(args)
-    args          = args         or {}
-    local w       = args.w
-    local sameCmd = args.sameCmd or false
-    local fg      = args.fg      or beautiful.fg_normal
+local function appliqueCommande(w, args)
+    args         = args         or {}
+    args.sameCmd = args.sameCmd or false
+    args.markup  = args.markup or function(t) return t end
+    -- args.fg      = args.fg      or beautiful.fg_normal
     --
-    if not sameCmd then
+    if not args.sameCmd then
         widget.indiceInfos =  1 + widget.indiceInfos % #widget.commands
     end
     --
@@ -42,51 +42,43 @@ local function appliqueCommande(args)
     awful.spawn.easy_async_with_shell(c, function(stdout, stderr, reason, exit_code)
                                           local lt = string.len(stdout)
                                           local texte = stdout:sub(1, lt-1)
-                                          w:set_markup("<span foreground='" .. fg .. "'>"
-                                                           .. texte ..
-                                                           "</span>")
+                                          w.texte:set_markup(args.markup(texte))
     end)
 end
 --
 function widget.infos(args)
     args        = args       or {}
-    local width = args.width or 150
-    local font  = args.font  or beautiful.font
-    local fg    = args.fg    or nil
+    args.width = args.width or 150
+    args.font  = args.font  or beautiful.font
     --
-    local infos = wibox.widget(
-        {
-            widget       = wibox.widget.textbox,
-            visible      = true,
-            align        = "center",
-            font         = font,
-            forced_width = width
-        }
-    )
+    local infos = wibox.widget({
+            {
+                id           = "texte",
+                widget       = wibox.widget.textbox,
+                visible      = true,
+                align        = "center",
+                font         = args.font,
+                forced_width = args.width
+            },
+            widget = wibox.container.background
+    })
     --
     infos:buttons(
         gears.table.join(
             awful.button({}, 1,
                 function()
-                    appliqueCommande({
-                            w  = infos,
-                            fg = fg
-                    })
+                    appliqueCommande(infos)
                 end
             ),
             awful.button({}, 3,
                 function()
-                    appliqueCommande({
-                            w       = infos,
-                            fg      = fg,
-                            sameCmd = true
-                    })
+                    appliqueCommande(infos, {sameCmd = true})
                 end
             )
         )
     )
     --
-    appliqueCommande({w=infos})
+    appliqueCommande(infos)
     return infos
 end
 

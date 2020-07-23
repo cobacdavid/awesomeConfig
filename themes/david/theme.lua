@@ -6,7 +6,7 @@
 -- copyright: CC-BY-NC-SA
 -------------------------------------------------
 -------------------------------------------------
--- some parts from awesome wm 
+-- some parts from awesome wm
 -- distribution
 -- copyright ??
 -------------------------------------------------
@@ -14,113 +14,57 @@
 --  "david" awesome theme              --
 -----------------------------------------
 -- {{{ Main
--- local theme_assets = require("beautiful.theme_assets")
-local xresources = require("beautiful.xresources")
-local dpi = xresources.apply_dpi
-
-local gfs = require("gears.filesystem")
-local themes_path = gfs.get_themes_dir()
-local gears = require("gears")
-
+local theme_assets = require("beautiful.theme_assets")
+local xresources   = require("beautiful.xresources")
+local dpi          = xresources.apply_dpi
+local gfs          = require("gears.filesystem")
+local themes_path  = gfs.get_themes_dir()
+local gears        = require("gears")
+--
 theme = {}
 --
 -- POLICES
 --
 --
-theme.police    = "abeatbyKai bold"
-theme.calendar_font = "Inconsolata"
-theme.font      = theme.police .. " 12"
-theme.font2     = theme.police .. " 15"
-theme.font3     = theme.police .. " 25"
-
+local sizes = {12, 15, 25}
+theme.font = "Comfortaa" --abeatbyKai bold"
+theme.font_size = sizes[1]
+-- theme.calendar_font = "Inconsolata"
 --
 -- COULEURS
 --
-theme.noir        = "#000000"
-theme.trans       = "99"
-theme.transparent = theme.noir .. "00"
-theme.noirtrans   = theme.noir .. theme.trans
-theme.blanc       = "#FFFFFF"
-theme.gris        = "#BFBFBF"
-theme.grisSombrePlus  = "#5F5F5F"
-theme.grisSombre  = "#636363"
-theme.rouge       = "#FF0000"
-theme.rougetrans  = theme.rouge .. theme.trans
+local noir        = "#000000"
+local blanc       = "#FFFFFF"
+local gris        = "#BFBFBF"
+local grisSombre  = "#5F5F5F"
+local grisSombre1  = "#636363"
+local rouge       = "#FF0000"
 --
--- WALLPAPER
---
-theme.wallpaperBandeau = theme.grisSombre
-theme.wallpaperTagPrincipal = theme.noir
-theme.wallpaperTagSecondaire = theme.grisSombrePlus
-theme.wallpaper_color = theme.noir
-
 -- {{{ Colors
-theme.bg_normal    = theme.noir
-theme.bg_focus     = theme.blanc
-theme.bg_urgent    = theme.gris
--- theme.bg_minimize  = "#444444"
-theme.bg_systray   = theme.noirtrans
-
-theme.fg_normal    = theme.gris
-theme.fg_focus     = theme.noir
-theme.fg_urgent    = theme.noir
-theme.fg_minimize  = theme.blanc
-theme.fg_systray   = theme.blanc
-
-theme.useless_gap   = dpi(0)
--- theme.border_width  = dpi(1)
-theme.border_width  = "0"
-theme.border_color_normal  = theme.blanc
-theme.border_normal = theme.gris
-theme.border_focus  = theme.blanc
-theme.border_marked = "#A81414"
-
+theme.bg_normal    = noir
+theme.bg_focus     = grisSombre
+theme.bg_urgent    = rouge
+theme.bg_minimize  = grisSombre1
+theme.bg_systray   = noir
 --
-theme.widget_bg     = theme.noirtrans
-theme.widget_fg_pri = theme.blanc
-theme.widget_fg_sec = theme.gris
-theme.widget_fg_ter = theme.blanc
-theme.widget_fg_sel = theme.rougetrans
+theme.fg_normal    = blanc
+theme.fg_focus     = blanc
+theme.fg_urgent    = blanc
+theme.fg_minimize  = gris
 --
-theme.widget_font_pri   = theme.police
-theme.widget_font_sec   = theme.police
---------------------------
---------------------------
---- WIDGETS PERSOS
---------------------------
-theme.widget_luminosite_bar_color           = theme.border_color
-theme.widget_luminosite_handle_border_color = theme.border_color
-theme.widget_luminosite_handle_color        = theme.border_color
-
-theme.widget_killneuf_font_kill = theme.font2
-theme.widget_killneuf_font_neuf = theme.font3
-theme.widget_killneuf_kill      = theme.rouge
-theme.widget_killneuf_neuf      = theme.blanc
-
--- choix entre gradient ou nuance
---theme.widget_volumemaster_handle_color_type         = "gradient"
-theme.widget_volumeBT_handle_color_type             = "gradient" 
-theme.widget_luminosite_handle_color_type           = "nuance"
-theme.widget_opacite_handle_color_type              = "nuance"
-theme.widget_xgamma_handle_color_type               = "nuance"
-theme.widget_sliderBrightness_handle_color_type     = "nuance"
-
-
---theme.widget_font_sec   = "HP15C Simulator Font"
--- }}}
--- theme.opacity_focus = 0.5
 -- {{{ Borders
+theme.useless_gap         = dpi(0)
+theme.border_width        = 0
+theme.border_color_normal = grisSombre
+theme.border_color_active = gris
+theme.border_color_marked = grisSombre1
 -- }}}
 
 -- {{{ Titlebars
-theme.titlebar_epaisseur_premiere = 30
-theme.titlebar_epaisseur_seconde  = 18
-theme.titlebar_premiere           = "bottom"
-theme.titlebar_seconde            = "left"
-theme.titlebar_bg_normal          = theme.noir
-theme.titlebar_bg_focus           = theme.noirtrans
-theme.titlebar_fg_normal          = theme.blanc
-theme.titlebar_fg_focus           = theme.blanc
+theme.titlebar_bg_normal          = blanc
+theme.titlebar_bg_focus           = noir
+theme.titlebar_fg_normal          = grisSombre
+theme.titlebar_fg_focus           = blanc
 -- }}}
 
 -- There are other variable sets
@@ -131,18 +75,18 @@ theme.titlebar_fg_focus           = theme.blanc
 -- tooltip_[font|opacity|fg_color|bg_color|border_width|border_color]
 -- Example:
 --theme.taglist_bg_focus = "#CC9393"
-theme.taglist_fg_focus    = theme.blanc
-theme.taglist_fg_normal   = theme.grisSombre
-theme.taglist_fg_occupied = theme.gris
-theme.taglist_fg_empty    = theme.grisSombre
-theme.taglist_fg_urgent   = theme.gris
+theme.taglist_fg_focus    = blanc
+theme.taglist_fg_normal   = grisSombre
+theme.taglist_fg_occupied = gris
+theme.taglist_fg_empty    = grisSombre
+theme.taglist_fg_urgent   = gris
 --
-theme.taglist_bg_focus    = theme.transparent
-theme.taglist_bg_normal   = theme.transparent
-theme.taglist_bg_occupied = theme.transparent
-theme.taglist_bg_empty    = theme.transparent
-theme.taglist_bg_urgent   = theme.transparent
-theme.taglist_font        = theme.font2
+-- theme.taglist_bg_focus    = theme.transparent
+-- theme.taglist_bg_normal   = theme.transparent
+-- theme.taglist_bg_occupied = theme.transparent
+-- theme.taglist_bg_empty    = theme.transparent
+-- theme.taglist_bg_urgent   = theme.transparent
+-- theme.taglist_font        = theme.font2
 -- }}}
 
 -- {{{ Widgets
@@ -167,12 +111,12 @@ theme.mouse_finder_color = theme.blanc
 -- menu_[border_color|border_width]
 theme.menu_height       = "18"
 theme.menu_width        = "200"
-theme.menu_bg_normal    = theme.noir
-theme.menu_bg_focus     = theme.blanc
-theme.menu_fg_focus     = theme.noir
-theme.menu_fg_normal    = theme.blanc
+theme.menu_bg_normal    = noir
+theme.menu_bg_focus     = blanc
+theme.menu_fg_focus     = noir
+theme.menu_fg_normal    = blanc
 theme.menu_border_width = "0"
-theme.menu_font         = theme.font
+theme.menu_font         = font
 -- }}}
 theme.separator_thickness        = 0	-- number 	The separator thickness.
 --theme.separator_border_color     = 	-- color 	The separator border color.
@@ -218,9 +162,6 @@ theme.titlebar_maximized_button_normal_inactive = myhome .. ".config/awesome/the
 theme.titlebar_maximized_button_focus_inactive  = myhome .. ".config/awesome/themes/david/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_active = myhome .. ".config/awesome/themes/david/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = myhome .. ".config/awesome/themes/david/titlebar/maximized_focus_active.png"
-
-
--- theme.grip = myhome .. ".config/awesome/themes/david/grip.png"
 
 -- Generate Awesome icon:
 --theme.awesome_icon = theme_assets.awesome_icon(

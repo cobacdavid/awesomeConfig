@@ -81,8 +81,9 @@ end
 -- todo: should add some custom args values...
 local function modifieTexte(w, iface, args)
     args = args or {}
-    local fg = args.fg or beautiful.fg_normal
-    w:set_markup("<span foreground='" .. fg .. "'>" .. iface .. "</span>")
+    args.fg = args.fg or beautiful.fg_normal
+    --
+    w:set_markup("<span foreground='" .. args.fg .. "'>" .. iface .. "</span>")
 end
 --
 -- update display of slider value at start or when changing
@@ -104,7 +105,7 @@ end
 --
 function widget.sliderBrightnessWidget(args)
     --
-    args              = args                   or {}
+    args                    = args                   or {}
     local width             = args.width             or 150
     local handle_color_type = args.handle_color_type or "nuance"
     local bar_height        = args.bar_height        or 1
@@ -133,7 +134,7 @@ function widget.sliderBrightnessWidget(args)
                 layout          = wibox.layout.stack
             },
             forced_width = width,
-            bg           = beautiful.bg_normal,
+            -- bg           = beautiful.bg_normal,
             widget       = wibox.container.background
         }
     )

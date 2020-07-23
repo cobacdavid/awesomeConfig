@@ -29,10 +29,10 @@ end
 local function heurew_text(w, args)
     args           = args           or {}
     --
-    args.font      = args.font      or beautiful.widget_font_pri
+    args.font      = args.font      or beautiful.font
     args.size      = args.size      or 20
-    args.fg        = args.fg        or beautiful.widget_fg_pri
-    args.bg        = args.bg        or beautiful.widget_bg
+    args.fg        = args.fg        or beautiful.fg_normal
+    args.bg        = args.bg        or beautiful.bg_normal
     args.hr_format = args.hr_format or "%H:%M.%S"
     args.fn_format = args.fn_format or os.date
     args.fn_out    = args.fn_out    or outFormat
@@ -48,7 +48,7 @@ function widget.heure(args)
     --
     local width         = args.width        or 150
     local justify       = args.justify      or "center"
-    local bg            = args.bg           or beautiful.widget_bg
+    local bg            = args.bg           or beautiful.bg_normal
     local actionLeft    = args.actionLeft   or function() end
     local actionMiddle  = args.actionMiddle or function() end
     local actionRight   = args.actionRight  or function() end
