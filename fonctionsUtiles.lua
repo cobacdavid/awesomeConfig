@@ -313,6 +313,8 @@ fonctionsUtiles.pArrondiGros  = function(cr, width, height)
 end
 --
 
+
+
 --
 -- sortie d'awesome
 function fonctionsUtiles.sortirAwesome()

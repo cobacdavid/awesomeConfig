@@ -97,6 +97,9 @@ tempsPasse       = require("widgets.tempsPasse.tempsPasse")
 titreClient      = require("widgets.titreClient.titreClient")
 secretFenetre    = require("widgets.secretFenetre.secretFenetre")
 --
+analog_clock = require("widgets.dev.aclock")
+wibox_analog_clock = require("widgets.dev.wibox_analog_clock")
+--
 --
 listeRcFiles = {--
    "errorhandling45.lua",

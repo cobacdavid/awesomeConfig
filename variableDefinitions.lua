@@ -95,18 +95,12 @@ cloudMusique     = "google-play-music-desktop-player"
 --mpdClient        = "ario"
 --ncMpdClient      = "ncmpc -cm"
 --ncMpdClient      =  terminal .. ' -e ' .. "ncmpcpp"
---mpdCurrent       =  scriptsPath .. "currentsong.sh &"
 amixerplus       = "amixer set Master 3%+"
 amixermoins      = "amixer set Master 3%-"
 amixerzero       = "amixer set Master 0%"
 amixermax        = "amixer set Master 100%"
---mpctoggle        = "mpc toggle"
---mpcprev          = "mpc prev"
---mpcnext          = "mpc next"
---mpcvolplus       = "mpc volume +2"
---mpcvolmoins      = "mpc volume -2"
---mpcvolzero       = "mpc volume 0"
---mpcvolmax        = "mpc volume 100"
+--
+mpdscribble      = "mpdscribble --conf  /home/david/.config/mpd/mpdscribble.conf"
 coverMPD         = scriptsPath .. "pod_coverMPD.sh"
 --
 -- lumiplus         = "xbacklight -inc 5"
@@ -117,7 +111,7 @@ lumimoins           = "luminosite.sh -"
 lumiplus            = "luminosite.sh +"
 --
 --alterneMode      = scriptsPath .. "alterneMode.sh"
-calculatrice     = "wish8.6 /home/david/travail/david/maths/hp15/hp15simulation/HP-15C.tcl"
+calculatrice     = "wish8.6/maths/hp15/hp15simulation/HP-15C.tcl"
 -- calendrier       = "gsimplecal"
 compositeMgr     = "xcompmgr" --"unagi"-- 
 --
@@ -153,6 +147,7 @@ appsDemarrage = {
    terminalD,
    -- cloudMusique,
    keepass,
+   mpdscribble,
    "wmname LG3D",
    -- radio,
 }

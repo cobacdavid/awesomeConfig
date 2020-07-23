@@ -84,30 +84,42 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "F5",
         function()
             bigC.bigClock({
-                    font   = "HP15C Simulator Font",
-                    fg     = "#003000",
-                    border_width = 100,
-                    screen = mouse.screen,
-                    size = 200
+                    font         = "HP15C Simulator Font",
+                    seg          = true,
+                    seg_dark     = .35,
+                    fg           = "#A0A0A0",
+                    border_width = 20,
+                    screen       = mouse.screen,
+                    size         = 300,
+                    radius       = 1
             })
         end
     ),
     awful.key({modkey}, "F6",
         function()
-            awful.prompt.run(
-                {
-                    prompt = "Couleur : ",
-                    textbox = screen.primary.mypromptbox.widget,
-                    exe_callback = function(couleur)
-                        if couleur == "blanc" then
-                            couleur = "#ffffff"
-                        elseif couleur == "noir" then
-                            couleur = "#000000"
-                        end
-                        gears.wallpaper.set(couleur)
-                    end
-                }
-            )
+            wibox_analog_clock.dev_analog_clock({
+                    inner_radius = 5,
+                    outer_radius = 200,
+                    sector_angle = 20,
+                    step_angle   = 30,
+                    angle_offset = 0,
+                    inter_radius = 60,
+                    line_width   = 5
+            })
+            -- awful.prompt.run(
+            --     {
+            --         prompt = "Couleur : ",
+            --         textbox = screen.primary.mypromptbox.widget,
+            --         exe_callback = function(couleur)
+            --             if couleur == "blanc" then
+            --                 couleur = "#ffffff"
+            --             elseif couleur == "noir" then
+            --                 couleur = "#000000"
+            --             end
+            --             gears.wallpaper.set(couleur)
+            --         end
+            --     }
+            -- )
         end
     ),
     awful.key({modkey}, "F7",

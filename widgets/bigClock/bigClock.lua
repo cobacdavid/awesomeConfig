@@ -22,9 +22,8 @@ widget.timer = nil
 --
 
 --
-local function darkerColor(color)
+local function darkerColor(color, coef)
     local r, g, b, a = gears.color.parse_color(color)
-    local coef = .5
     local R = math.floor(r * coef * 255)
     local G = math.floor(g * coef * 255)
     local B = math.floor(b * coef * 255)
@@ -33,34 +32,19 @@ local function darkerColor(color)
 end
 --
 local function fondHuit(w, args)
-    args = args or {}
-    --
-    args.font      = args.font      or beautiful.font
-    args.size      = args.size      or 350
-    args.fg        = args.fg        or beautiful.fg_normal
-    args.bg        = args.bg        or beautiful.bg_normal
-    --
-    local huitMkup = "<span foreground='" .. darkerColor(args.fg)
+    local huitMkup = "<span foreground='" .. darkerColor(args.fg, args.seg_dark)
         .. "' font_weight='normal' font='" .. args.font .. " " .. args.size .. "' >"
         .. "88:88" .. "</span>"
     w:set_markup(huitMkup)
 end
 --
 local function heureText(w, args)
-    args = args or {}
-    --
-    args.font      = args.font      or beautiful.font
-    args.size      = args.size      or 350
-    args.fg        = args.fg        or beautiful.fg_normal
-    args.bg        = args.bg        or beautiful.bg_normal
-    args.hr_format = args.hr_format or "%H:%M"
-    args.fn_format = args.fn_format or os.date
-    --
-    args._hour = args.fn_format(args.hr_format)
+    args._hour     = args.fn_format(args.hr_format)
     --
     local heureMkup = "<span foreground='" .. args.fg
         .. "' font_weight='normal' font='" .. args.font .. " " .. args.size .. "' >"
         .. args._hour .. "</span>"
+    --
     w:set_markup(heureMkup)
 end
 --
@@ -73,29 +57,40 @@ local function progressBar(w)
 end
 --
 function widget.bigClock(args)
-    args         = args        or {}
-    local delay  = args.delay  or .1
-    args.fg      = args.fg     or beautiful.fg_normal
-    args.bg      = args.bg     or beautiful.bg_normal
-    args.border_width = args.border_width or
-        beautiful.border_width or 5
-    local s      = args.screen or screen[2]
-    args.width   = args.width  or s.geometry.width
-    args.height  = args.height or s.geometry.height
-    args.radius  = args.radius or 200
-    args.x       = args.x      or 0
-    args.y       = args.y      or 0
+    args              = args              or {}
+    local delay       = args.delay        or .1
+    args.fg           = args.fg           or beautiful.fg_normal
+    args.bg           = args.bg           or beautiful.bg_normal
+    args.border_width = args.border_width or beautiful.border_width or 5
+    args.screen       = args.screen       or screen[2] or screen[1]
+    args.width        = args.width        or args.screen.geometry.width
+    args.height       = args.height       or args.screen.geometry.height
+    args.radius       = args.radius       or 200
+    args.x            = args.x            or 0
+    args.y            = args.y            or 0
     --
-    args.align   = args.align      or "center"
+    args.align     = args.align           or "center"
+    args.seg       = args.seg             or false
+    args.seg_dark  = args.seg_dark        or .5
+    --
+    args.font      = args.font            or beautiful.font
+    args.size      = args.size            or 350
+    --
+    args.hr_format = args.hr_format       or "%H:%M"
+    args.fn_format = args.fn_format       or os.date
+    --
+    --
     --
     local huit = wibox.widget({
             forced_width = args.width,
             align        = args.align,
+            valign       = "center",
             widget       = wibox.widget.textbox
     })
     local disp =  wibox.widget({
             forced_width = args.width,
             align        = args.align,
+            valign       = "center",
             widget       = wibox.widget.textbox
     })
     local stack = wibox.widget({
@@ -108,15 +103,15 @@ function widget.bigClock(args)
             forced_width = args.width,
             border_width = args.border_width,
             border_color = args.bg,
-            color = args.fg,
-            min_value = 0,
-            max_value = 1,
-            radius = args.radius,
-            widget = wibox.container.radialprogressbar
+            color        = args.fg,
+            min_value    = 0,
+            max_value    = 1,
+            radius       = args.radius,
+            widget       = wibox.container.radialprogressbar
     })
     --
     local w = wibox({
-            screen  = s,
+            screen  = args.screen,
             width   = args.width,
             height  = args.height,
             x       = args.x,
@@ -147,7 +142,9 @@ function widget.bigClock(args)
             call_now = true,
             autostart = true,
             callback = function()
-                fondHuit(huit, args)
+                if args.seg then
+                    fondHuit(huit, args)
+                end
                 heureText(disp, args)
                 progressBar(rp)
             end

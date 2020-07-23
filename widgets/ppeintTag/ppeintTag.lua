@@ -16,6 +16,15 @@ local gears     = require("gears")
 --
 local ppeintTag = {}
 --
+-- local function darkerColor(color, coef)
+--     local r, g, b, a = gears.color.parse_color(color)
+--     local R = math.floor(r * coef * 255)
+--     local G = math.floor(g * coef * 255)
+--     local B = math.floor(b * coef * 255)
+--     local A = math.floor(a * coef * 255)
+--     return string.format("#%02X%02X%02X%02X", R, G, B, A)
+-- end
+--
 -- https://awesomewm.org/doc/api/documentation/16-using-cairo.md.html
 function ppeintTag.fondEcran(t, args)
     args             = args or {}

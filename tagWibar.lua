@@ -80,18 +80,20 @@ awful.screen.connect_for_each_screen(
             )
             --
             local left_layout = wibox.layout.fixed.horizontal()
-            local heureW = heure({
-                    width = 100,
-                    justify = "center",
-                    hr_format = "%H:%M",
-                    actionLeft = function()
-                        calendrier.calendrier({
-                                width = 1100,
-                                height = 900
-                        })
-                    end
-            })
-            left_layout:add(heureW)
+            if screen.count() <= 2 then 
+                local heureW = heure({
+                        width = 100,
+                        justify = "center",
+                        hr_format = "%H:%M",
+                        actionLeft = function()
+                            calendrier.calendrier({
+                                    width = 1100,
+                                    height = 900
+                            })
+                        end
+                })
+                left_layout:add(heureW)
+            end
             --
             if ordinateur == "laptop" then
                 left_layout:add(luminosite())
@@ -115,6 +117,8 @@ awful.screen.connect_for_each_screen(
             left_layout:add(separateur())
             left_layout:add(chrono())
             left_layout:add(separateur())
+            left_layout:add(analog_clock())
+            left_layout:add(separateur())
             left_layout:add(s.mypromptbox)
             --
             local right_layout = wibox.layout.fixed.horizontal()
@@ -130,7 +134,7 @@ awful.screen.connect_for_each_screen(
             -- maison
             -- et HDMI à droite de eDP avec le portable
             --
-            if screen:count() >= 2 and s.index == 1 then
+            if screen.count() >= 2 and s.index == 1 then
                 -- HDMI ou edP
                 largeurPremier = s.geometry.width
                 hauteurPremier = s.geometry.height
@@ -240,7 +244,7 @@ awful.screen.connect_for_each_screen(
                     position = "right",
                     screen   = s,
                     width    = 1,
-                    height = hauteurTroism,
+                    height   = hauteurTroism,
                     bg       = beautiful.bg_normal, -- "#ffff00"
                     opacity  = 1,
                     ontop    = true
@@ -260,13 +264,12 @@ awful.screen.connect_for_each_screen(
             layout.spacing = 80
             --
             local clock = bigC.bigClock({
-                    -- font   = "DejaVu Sans Mono",
-                    -- fg     = beautiful.fg_normal, -- "#909090",
-                    screen = s,
-                    size   = 30,
-                    border_width = 10,
-                    height = 80,
-                    width = largeurTroism - 1
+                    -- font   = "HP15C Simulator Font",
+                    screen       = s,
+                    size         = 45,
+                    border_width = 2,
+                    height       = 80,
+                    width        = largeurTroism - 1
             })
             -- inhibit default behaviour
             clock:buttons(gears.table.join(

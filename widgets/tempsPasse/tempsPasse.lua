@@ -68,7 +68,7 @@ function widget.createWidget(c, args)
     args = args or {}
     args.width   = args.width   or 100
     args.font    = args.font    or beautiful.font
-    args.size    = args.size    or 5
+    args.size    = args.size    or (beautiful.font_size // 2) or 6
     args.logFile = args.logFile or widget.logFile
     --
     -- args.bg = args.bg or beautiful.bg_normal

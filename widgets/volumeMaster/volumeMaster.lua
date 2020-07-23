@@ -51,9 +51,9 @@ function widget.createWidget(args)
     local bshape     = args.barshape      or gears.shape.rounded_rect
     local bheight    = args.barheight     or 1
     local bcolortype = args.barcolortype  or "gradient"
-    local bcolor     = args.barcolor      or couleurBarre(bcolortype, volumeactuel, MIN, MAX)
+    -- local bcolor     = args.barcolor      or couleurBarre(bcolortype, volumeactuel, MIN, MAX)
     local hcolortype = args.handcolortype or "gradient"
-    local hcolor     = args.handcolor     or bcolor
+    -- local hcolor     = args.handcolor     or bcolor
     local hradius    = args.handradius    or 5
     local ttext      = args.texttext      or "master"
     local tjustify   = args.textjustify   or "center"
@@ -94,7 +94,9 @@ function widget.createWidget(args)
             local v = volumemasterControle.value
             local command='amixer set' .. widget.sortie  .. v
             awful.spawn.with_shell(command)
-            volumemasterControle.handle_color = couleurBarre(hcolortype, v, MIN, MAX)
+            local couleur = couleurBarre(hcolortype, v, MIN, MAX)
+            volumemasterControle.handle_color = couleur
+            volumemasterControle.bar_color    = couleur
         end
     )
     --
