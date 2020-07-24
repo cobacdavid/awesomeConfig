@@ -98,13 +98,15 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "F6",
         function()
             wibox_analog_clock.dev_analog_clock({
-                    inner_radius = 5,
-                    outer_radius = 200,
-                    sector_angle = 20,
-                    step_angle   = 30,
-                    angle_offset = 0,
-                    inter_radius = 60,
-                    line_width   = 5
+                    inner_radius = 350,
+                    outer_radius = 400,
+                    -- sector_angle = 25,
+                    step_angle   = 3.6,
+                    line_width   = 1,
+                    -- angle_offset = 6.7,
+                    -- inter_radius = 50,
+                    -- line_width   = 5,
+                    value        = .75
             })
             -- awful.prompt.run(
             --     {

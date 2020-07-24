@@ -55,16 +55,28 @@ function widget.dev_analog_clock(args)
             bg      = args.bg
     })
     --
+    local ac = analog_clock(args)
     w:setup({
-            analog_clock(args),
+            ac,
             id = "lay",
             layout = wibox.layout.fixed.horizontal
     })
     w:buttons(gears.table.join(
-                       awful.button({ }, 1, function()
-                               w.visible = false
-                               w = nil
-                       end)
+                  awful.button({ }, 1, function()
+                          w.visible = false
+                          w = nil
+                  end),
+                  awful.button({ }, 3, function()
+                          gears.timer({
+                                  timeout   = .1,
+                                  call_now  = true,
+                                  autostart = true,
+                                  callback  = function()
+                                      ac:set_value(math.random())
+                                  end
+
+                          })
+                  end)
     ))
     --
     return w

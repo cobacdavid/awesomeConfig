@@ -51,31 +51,63 @@ end
 function aclock.draw(self, _, cr, width, height)
     cr:set_source(gears.color("#FFFFFF"))
     local rmin         = self._rmin         or (math.min(width, height) // 3)
-    local rmax         = self._rmax         or (math.min(width, height) // 2 -2)
+    local rmax         = self._rmax         or (math.min(width, height) // 2 - 2)
     local arcDebutDeg  = self._arcDebutDeg  or -90
     local angleIncr    = self._angleIncr    or 30
-    local angleDeg     = self._angleDeg     or (angleIncr - 5)
-    local angleRondDeg = self._angleRondDeg or (angleDeg / 10)
-    local offsetRayon  = self._offsetRayon  or .5*(rmax - rmin)
+    local angleDeg     = self._angleDeg     or (.9*angleIncr)
+    local angleRondDeg = self._angleRondDeg or (angleDeg // 3)
+    local offsetRayon  = self._offsetRayon  or .5*(rmax - rmin) - 2
     local epaisseur    = self._epaisseur    or 2
+    --
+    local pct          = self._pct          or 0
     --
     local angle        = math.rad(arcDebutDeg)
     --
-    -- fu.montre(rmax)
-    --
+    local nb_secteurs  = math.floor(360 / angleIncr)
     cr:translate(width // 2 + 1, height // 2 + 1)
-    for i = 0, math.floor((360 / angleIncr)) - 1 do
+    for i = 0, nb_secteurs - 1 do
         angle = math.rad(arcDebutDeg + i * angleIncr)
         cr:rotate(angle)
         cr:save()
         secteur_angulaire_arrondi(cr, rmin, rmax, offsetRayon, angleDeg, angleRondDeg)
         cr:set_line_width(epaisseur)
-        cr:stroke()
+        if pct >= (i + 1)/nb_secteurs  then
+            cr:fill()
+        else
+            cr:stroke()
+        end
         cr:restore()
         cr:rotate(-angle)
     end
     cr:translate(-rmax, -rmax)
 end
+
+function aclock.set_value(self, val)
+    if not val then self._pct = 0; return end
+
+    if val > self._max_value then
+        val = self._max_value
+    elseif val < self._min_value then
+        val = self._min_value
+    end
+
+    local delta = self._max_value - self._min_value
+
+    self._pct = val / delta
+    self:emit_signal("widget::redraw_needed")
+    self:emit_signal("property::value", val)
+end
+
+-- for _, prop in ipairs {"max_value", "min_value"} do
+--     radialprogressbar["set_"..prop] = function(self, value)
+--         self["_"..prop] = value
+--         self:emit_signal("property::"..prop, value)
+--         self:emit_signal("widget::redraw_needed")
+--     end
+--     radialprogressbar["get_"..prop] = function(self)
+--         return self["_"..prop]
+--     end
+-- end
 
 function aclock.new(args)
     args = args or {}
@@ -90,6 +122,10 @@ function aclock.new(args)
     ak._angleIncr    = args.step_angle
     ak._offsetRayon  = args.inter_radius
     ak._epaisseur    = args.line_width
+    --
+    ak._max_value = 1
+    ak._min_value = 0
+    ak._pct          = args.value
     --
     gears.table.crush(ak, aclock)
     --
