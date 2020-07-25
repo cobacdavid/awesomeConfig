@@ -98,30 +98,18 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "F6",
         function()
             wibox_analog_clock.dev_analog_clock({
-                    inner_radius = 350,
+                    inner_radius = 50,
                     outer_radius = 400,
-                    -- sector_angle = 25,
-                    step_angle   = 3.6,
+                    start_angle  = -90,
+                    sectors      = 100,
                     line_width   = 1,
+                    font         = "Inconsolata",
+                    color        = "#ff0000"
                     -- angle_offset = 6.7,
                     -- inter_radius = 50,
                     -- line_width   = 5,
-                    value        = .75
+                    -- value        = .75
             })
-            -- awful.prompt.run(
-            --     {
-            --         prompt = "Couleur : ",
-            --         textbox = screen.primary.mypromptbox.widget,
-            --         exe_callback = function(couleur)
-            --             if couleur == "blanc" then
-            --                 couleur = "#ffffff"
-            --             elseif couleur == "noir" then
-            --                 couleur = "#000000"
-            --             end
-            --             gears.wallpaper.set(couleur)
-            --         end
-            --     }
-            -- )
         end
     ),
     awful.key({modkey}, "F7",

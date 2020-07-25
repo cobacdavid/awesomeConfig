@@ -43,47 +43,108 @@ local function secteur_angulaire_arrondi(cr, rmin, rmax, offsetRayon, angleDeg, 
     --
 end
 --
+local function nuance_couleur(color, coef, coefDesat)
+    local R, G, B, A = gears.color.parse_color(color)
+    R = math.floor(R * 255 * coef)
+    G = math.floor(G * 255 * coef)
+    B = math.floor(B * 255 * coef)
+    A = A or 255
+    A = coefDesat and math.floor(A * 255 * coefDesat) or A
+    return string.format("#%02X%02X%02X%02X", R, G, B, A)
+end
+--
 function aclock.fit(self, _, width, height)
     local m = math.min(width, height)
     return m, m
 end
 --
 function aclock.draw(self, _, cr, width, height)
-    cr:set_source(gears.color("#FFFFFF"))
-    local rmin         = self._rmin         or (math.min(width, height) // 3)
-    local rmax         = self._rmax         or (math.min(width, height) // 2 - 2)
-    local arcDebutDeg  = self._arcDebutDeg  or -90
-    local angleIncr    = self._angleIncr    or 30
-    local angleDeg     = self._angleDeg     or (.9*angleIncr)
-    local angleRondDeg = self._angleRondDeg or (angleDeg // 3)
-    local offsetRayon  = self._offsetRayon  or .5*(rmax - rmin) - 2
-    local epaisseur    = self._epaisseur    or 2
+    local inner_radius = self._inner_radius  or (math.min(width, height) // 3)
+    local outer_radius = self._outer_radius  or (math.min(width, height) // 2 - 2)
+    local start_angle  = self._start_angle   or -90
+    local inter_radius = self._inter_radius  or .5*(outer_radius - inner_radius) - 2
+    local line_width   = self._line_width    or 2
+    local color        = self._color         or beautiful.fg_normal
     --
-    local pct          = self._pct          or 0
+    local value        = self._value         or 0
+    local text         = self._text          or function(v)
+        return (string.format("%02d", math.floor(v * 100)) .. "%")
+                                                end
+    local font         = self._font          or beautiful.font or "Helvetica"
+    local font_slant   = self._font_slant    or "CAIRO_FONT_SLANT_NORMAL"
+    local font_weight  = self._font_weight   or "CAIRO_FONT_WEIGHT_NORMAL"
+    local font_size    = self._font_size     or .9 * inner_radius
+    local fg           = self._fg            or beautiful.fg_normal
     --
-    local angle        = math.rad(arcDebutDeg)
+    local sectors      = self._sectors       or 12
+    local clockwise    = self._clockwise     or false
+    local angleIncr    = clockwise and (360/sectors) or (-360/sectors)
+    local sector_angle = self._sector_angle  or (.9 * math.abs(angleIncr))
+    local angle_offset = self._angle_offset  or (sector_angle // 3)
     --
-    local nb_secteurs  = math.floor(360 / angleIncr)
+    local angle        = math.rad(start_angle)
+    --
     cr:translate(width // 2 + 1, height // 2 + 1)
-    for i = 0, nb_secteurs - 1 do
-        angle = math.rad(arcDebutDeg + i * angleIncr)
+    --
+    local colors = {nuance_couleur(color, .2),
+                    color,
+                    nuance_couleur(color, .5)}
+    local colorsDesat = {nuance_couleur(color, .2, .1),
+                         nuance_couleur(color, 1, .1),
+                         nuance_couleur(color, .5, .1)}
+    --
+    for i = 0, sectors - 1 do
+        angle = math.rad(start_angle + i * angleIncr)
         cr:rotate(angle)
         cr:save()
-        secteur_angulaire_arrondi(cr, rmin, rmax, offsetRayon, angleDeg, angleRondDeg)
-        cr:set_line_width(epaisseur)
-        if pct >= (i + 1)/nb_secteurs  then
+        secteur_angulaire_arrondi(cr, inner_radius, outer_radius, inter_radius,
+                                  sector_angle, angle_offset)
+        cr:set_line_width(line_width)
+        if value >= (i + 1)/sectors  then
+            cr:set_source(gears.color(
+                              {
+                                  type = "radial",
+                                  from = { 0, 0, inner_radius},
+                                  to = { 0, 0, outer_radius },
+                                  stops = { { 0, colors[1] },
+                                      { 0.65, colors[2] },
+                                      { 1, colors[3] } }
+                              } 
+            ))
             cr:fill()
         else
-            cr:stroke()
+            cr:set_source(gears.color(
+                              {
+                                  type = "radial",
+                                  from = { 0, 0, inner_radius},
+                                  to = { 0, 0, outer_radius },
+                                  stops = { { 0, colorsDesat[1] },
+                                      { 0.65, colorsDesat[2] },
+                                      { 1, colorsDesat[3] } }
+                              } 
+            ))
+            cr:fill()
         end
+        cr:set_source(gears.color("#ffffff"))
+        cr:stroke()
         cr:restore()
         cr:rotate(-angle)
     end
-    cr:translate(-rmax, -rmax)
+    --
+    cr:translate(-(width // 2 + 1), -(height // 2 + 1))
+    --
+    cr:set_source(gears.color(fg))
+    cr:select_font_face(font, font_slant, font_weight)
+    cr:set_font_size(font_size)
+    local myText  = text(value)
+    local dimText = cr:text_extents(myText)
+    cr:move_to((width - dimText.width) / 2, height - (height - dimText.height) / 2)
+    cr:show_text(myText)
+    --
 end
 
 function aclock.set_value(self, val)
-    if not val then self._pct = 0; return end
+    if not val then self._value = 0; return end
 
     if val > self._max_value then
         val = self._max_value
@@ -93,7 +154,7 @@ function aclock.set_value(self, val)
 
     local delta = self._max_value - self._min_value
 
-    self._pct = val / delta
+    self._value = val / delta
     self:emit_signal("widget::redraw_needed")
     self:emit_signal("property::value", val)
 end
@@ -114,18 +175,27 @@ function aclock.new(args)
     --
     local ak = wibox.widget.base.make_widget()
     --
-    ak._rmax         = args.outer_radius
-    ak._rmin         = args.inner_radius
-    ak._angleDeg     = args.sector_angle
-    ak._angleRondDeg = args.angle_offset
-    ak._arcDebutDeg  = args.start_angle
-    ak._angleIncr    = args.step_angle
-    ak._offsetRayon  = args.inter_radius
-    ak._epaisseur    = args.line_width
+    ak._outer_radius = args.outer_radius
+    ak._inner_radius = args.inner_radius
+    ak._inter_radius = args.inter_radius
+    ak._sectors      = args.sectors
+    ak._sector_angle = args.sector_angle
+    ak._angle_offset = args.angle_offset
+    ak._start_angle  = args.start_angle
+    ak._line_width   = args.line_width
+    ak._clockwise    = args.clockwise
+    ak._color        = args.color
     --
-    ak._max_value = 1
-    ak._min_value = 0
-    ak._pct          = args.value
+    ak._max_value    = 1
+    ak._min_value    = 0
+    ak._value        = args.value
+    --
+    ak._text         = args.text
+    ak._fg           = args.fg
+    ak._font         = args.font
+    ak._font_slant   = args.font_slant
+    ak._font_weight  = args.font_weight
+    ak._font_size    = args.font_size
     --
     gears.table.crush(ak, aclock)
     --

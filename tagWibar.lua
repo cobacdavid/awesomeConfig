@@ -117,7 +117,32 @@ awful.screen.connect_for_each_screen(
             left_layout:add(separateur())
             left_layout:add(chrono())
             left_layout:add(separateur())
-            left_layout:add(analog_clock())
+            local ak = analog_clock({
+                                    sectors      = 5,
+                                    sector_angle = 60,
+                                    line_width   = 1,
+                                    fg           = "#ff0000",
+                                    font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
+                                    font_size    = 28,
+                                    text         = function(v)
+                                        return tostring(math.floor(v *100))
+                                    end
+            })
+            gears.timer({
+                    timeout   = 10,
+                    call_now  = true,
+                    autostart = true,
+                    callback  = function()
+                        local commande = "free |grep Mem"
+                        awful.spawn.easy_async_with_shell(commande, function(stdout)
+                                                              local total, used, free, shared, buff_cache, available
+                                                                  = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
+                                                              -- fu.montre((total-free)/total)
+                                                              ak:set_value((total - available)/total)
+                        end)
+                    end
+            })
+            left_layout:add(ak)
             left_layout:add(separateur())
             left_layout:add(s.mypromptbox)
             --
