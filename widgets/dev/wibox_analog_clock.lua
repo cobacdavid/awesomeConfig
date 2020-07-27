@@ -95,9 +95,9 @@ function widget.dev_analog_clock(args)
                                                       local total, used, free, shared, buff_cache, available
                                                           = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
                                                       -- fu.montre((total-free)/total)
-                                                      ac:set_value((total - available)/total)
-                                                      -- widget.value = (widget.value + 1) % 101
-                                                      -- ac:set_value(widget.value / 100)
+                                                      -- ac:set_value((total - available)/total)
+                                                      widget.value = (widget.value + 1) % 101
+                                                      ac:set_value(widget.value / 100)
                 end)
             end
     })

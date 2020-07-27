@@ -84,8 +84,8 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "F5",
         function()
             bigC.bigClock({
-                    font         = "HP15C Simulator Font",
-                    seg          = true,
+                    font         = "Northwood High", --"HP15C Simulator Font",
+                    seg          = false,
                     seg_dark     = .35,
                     fg           = "#A0A0A0",
                     border_width = 20,
@@ -101,10 +101,11 @@ globalkeys = gears.table.join(
                     inner_radius = 50,
                     outer_radius = 400,
                     start_angle  = -90,
-                    sectors      = 100,
+                    sectors      = 5,
                     line_width   = 1,
                     font         = "Inconsolata",
-                    color        = "#ff0000"
+                    color        = "#ff0000",
+                    fg           = "#ff0000"
                     -- angle_offset = 6.7,
                     -- inter_radius = 50,
                     -- line_width   = 5,

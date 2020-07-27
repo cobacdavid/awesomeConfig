@@ -67,7 +67,10 @@ function aclock.draw(self, _, cr, width, height)
     local color        = self._color         or beautiful.fg_normal
     --
     local value        = self._value         or 0
-    local text         = self._text          or function(v)
+    local max_value    = self._max_value     or 1
+    local min_value    = self._min_value     or 0
+    local text         = self._text          or function(v, m, M)
+        v = (v - m) / (M - m)  
         return (string.format("%02d", math.floor(v * 100)) .. "%")
                                                 end
     local font         = self._font          or beautiful.font or "Helvetica"
@@ -79,6 +82,7 @@ function aclock.draw(self, _, cr, width, height)
     local sectors      = self._sectors       or 12
     local clockwise    = self._clockwise     or false
     local angleIncr    = clockwise and (360/sectors) or (-360/sectors)
+    local valueIncr    = (max_value - min_value) / sectors
     local sector_angle = self._sector_angle  or (.9 * math.abs(angleIncr))
     local angle_offset = self._angle_offset  or (sector_angle // 3)
     --
@@ -94,49 +98,83 @@ function aclock.draw(self, _, cr, width, height)
                          nuance_couleur(color, .5, .1)}
     --
     for i = 0, sectors - 1 do
+        -- fond
+        cr:save()
         angle = math.rad(start_angle + i * angleIncr)
         cr:rotate(angle)
-        cr:save()
         secteur_angulaire_arrondi(cr, inner_radius, outer_radius, inter_radius,
                                   sector_angle, angle_offset)
-        cr:set_line_width(line_width)
-        if value >= (i + 1)/sectors  then
+        cr:set_source(gears.color(
+                          {
+                              type  = "radial",
+                              from  = {0, 0, inner_radius},
+                              to    = {0, 0, outer_radius},
+                              stops = { {0, colorsDesat[1]},
+                                  {0.65, colorsDesat[2]},
+                                  {1, colorsDesat[3]} }
+                          } 
+        ))
+        cr:fill()
+        cr:restore()
+        -- fin fond
+        if value >=  (i + 1) * valueIncr  then
+            angle = math.rad(start_angle + i * angleIncr)
+            cr:rotate(angle)
+            cr:save()
+            secteur_angulaire_arrondi(cr, inner_radius, outer_radius, inter_radius,
+                                      sector_angle, angle_offset)
+            cr:set_line_width(line_width)
             cr:set_source(gears.color(
                               {
-                                  type = "radial",
-                                  from = { 0, 0, inner_radius},
-                                  to = { 0, 0, outer_radius },
-                                  stops = { { 0, colors[1] },
-                                      { 0.65, colors[2] },
-                                      { 1, colors[3] } }
+                                  type  = "radial",
+                                  from  = {0, 0, inner_radius},
+                                  to    = {0, 0, outer_radius },
+                                  stops = { {0, colors[1]},
+                                      {0.65, colors[2]},
+                                      {1, colors[3]} }
                               } 
             ))
             cr:fill()
+        elseif value > i * valueIncr then
+            angle = math.rad(start_angle + i * angleIncr)
+            cr:rotate(angle)
+            cr:save()
+            local ecart_relatif     = (value - i*valueIncr)/valueIncr
+            local new_sector_angle = ecart_relatif * sector_angle
+            local new_angle_offset = (new_sector_angle // 3)
+            secteur_angulaire_arrondi(cr, inner_radius, outer_radius, inter_radius,
+                                      new_sector_angle, new_angle_offset)
+            cr:set_source(gears.color(
+                              {
+                                  type  = "radial",
+                                  from  = {0, 0, inner_radius},
+                                  to    = {0, 0, outer_radius },
+                                  stops = { {0, colors[1]},
+                                      {0.65, colors[2]},
+                                      {1, colors[3]} }
+                              } 
+            ))
+            cr:fill()
+            --
         else
-            cr:set_source(gears.color(
-                              {
-                                  type = "radial",
-                                  from = { 0, 0, inner_radius},
-                                  to = { 0, 0, outer_radius },
-                                  stops = { { 0, colorsDesat[1] },
-                                      { 0.65, colorsDesat[2] },
-                                      { 1, colorsDesat[3] } }
-                              } 
-            ))
-            cr:fill()
+            angle = math.rad(start_angle + i * angleIncr)
+            cr:rotate(angle)
+            cr:save()
+            
         end
-        cr:set_source(gears.color("#ffffff"))
-        cr:stroke()
+        -- cr:set_source(gears.color("#ffffff"))
+        -- cr:stroke()
         cr:restore()
         cr:rotate(-angle)
     end
     --
     cr:translate(-(width // 2 + 1), -(height // 2 + 1))
     --
+    -- text
     cr:set_source(gears.color(fg))
     cr:select_font_face(font, font_slant, font_weight)
     cr:set_font_size(font_size)
-    local myText  = text(value)
+    local myText  = text(value, min_value, max_value)
     local dimText = cr:text_extents(myText)
     cr:move_to((width - dimText.width) / 2, height - (height - dimText.height) / 2)
     cr:show_text(myText)
@@ -186,8 +224,8 @@ function aclock.new(args)
     ak._clockwise    = args.clockwise
     ak._color        = args.color
     --
-    ak._max_value    = 1
-    ak._min_value    = 0
+    ak._max_value    = args.max_value or 1
+    ak._min_value    = args.min_value or 0
     ak._value        = args.value
     --
     ak._text         = args.text

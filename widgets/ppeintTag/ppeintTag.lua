@@ -45,8 +45,8 @@ function ppeintTag.fondEcran(t, args)
     local h = t.screen.geometry.height
     -- Create a surface
     -- PNG
-    -- local img = cairo.ImageSurface.create(cairo.Format.ARGB32, w, h)
-    local img = cairo.ImageSurface.create(cairo.Format.RGB24, w, h)
+    local img = cairo.ImageSurface.create(cairo.Format.ARGB32, w, h)
+    -- local img = cairo.ImageSurface.create(cairo.Format.RGB24, w, h)
     -- Create a context
     local cr  = cairo.Context(img)
     --
@@ -55,10 +55,8 @@ function ppeintTag.fondEcran(t, args)
                         "CAIRO_FONT_WEIGHT_NORMAL")
     --
     -- fond
-    cr:move_to(0, 0)
-    cr:set_source(gears.color(args.bg))
-    cr:rectangle(0, 0, w, h)
-    cr:fill()
+    -- cr:set_source(gears.color(args.bg))
+    -- cr:paint()
     --
     -- nombre
     cr:set_font_size(0.75 * t.screen.geometry.height)
@@ -100,6 +98,32 @@ function ppeintTag.fondEcran(t, args)
     cr:show_text(monTexte)
     --
     cr:stroke()
+    --
+    --
+    return img
+end
+
+
+function ppeintTag.fondDev(t, args)
+    args             = args or {}
+    args.font        = args.font        or beautiful.font
+    args.font_size   = args.font_size   or 180
+    args.strip_color = args.strip_color or beautiful.bg_focus  or "#BFBFBF"
+    args.bg          = args.bg          or beautiful.bg_normal or "#000000"
+    local w = t.screen.geometry.width
+    local h = t.screen.geometry.height
+    -- Create a surface
+    -- PNG
+    local img = cairo.ImageSurface.create(cairo.Format.ARGB32, w, h)
+    -- local img = cairo.ImageSurface.create(cairo.Format.RGB24, w, h)
+    -- Create a context
+    local cr  = cairo.Context(img)
+    --
+    cr:select_font_face(args.font, --"Comfortaa",
+                        "CAIRO_FONT_SLANT_NORMAL",
+                        "CAIRO_FONT_WEIGHT_NORMAL")
+    --
+    --
     return img
 end
 
@@ -108,8 +132,13 @@ function ppeintTag.imagesFonds(args)
     local s = screen[1]
     local surface
     for _, t in ipairs(s.tags) do
-        surface = ppeintTag.fondEcran(t, args)
-        surface:write_to_png(rep .. t.name .. ".png")
+        if t.name == "dev" then
+            surface = ppeintTag.fondDev(t, args)
+            surface:write_to_png(rep .. t.name .. ".png")
+        else
+            surface = ppeintTag.fondEcran(t, args)
+            surface:write_to_png(rep .. t.name .. ".png")
+        end
     end
 end
 

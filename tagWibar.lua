@@ -68,6 +68,12 @@ awful.screen.connect_for_each_screen(
                               screen = s,
                           }
             )
+            awful.tag.add("dev",
+                          {
+                              layout = awful.layout.suit.floating,
+                              screen = s,
+                          }
+            )
             --
             s.mypromptbox = awful.widget.prompt()
             --
@@ -118,14 +124,15 @@ awful.screen.connect_for_each_screen(
             left_layout:add(chrono())
             left_layout:add(separateur())
             local ak = analog_clock({
-                                    sectors      = 5,
-                                    sector_angle = 60,
+                                    sectors      = 100,
+                                    sector_angle = 1,
+                                    inner_radius = 2, 
                                     line_width   = 1,
-                                    fg           = "#ff0000",
-                                    font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
-                                    font_size    = 28,
-                                    text         = function(v)
-                                        return tostring(math.floor(v *100))
+                                    -- fg           = "#ff0000",
+                                    -- font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
+                                    -- font_size    = 28,
+                                    text         = function(v, m, M)
+                                        return " " --tostring(math.floor(v *100))
                                     end
             })
             gears.timer({
@@ -289,7 +296,7 @@ awful.screen.connect_for_each_screen(
             layout.spacing = 80
             --
             local clock = bigC.bigClock({
-                    -- font   = "HP15C Simulator Font",
+                    font   = "Northwood High",--"HP15C Simulator Font",
                     screen       = s,
                     size         = 45,
                     border_width = 2,
