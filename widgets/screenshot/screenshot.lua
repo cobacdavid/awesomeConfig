@@ -33,7 +33,7 @@ function widget.screenshot(c, args)
                 image  = icon,
                 widget = wibox.widget.imagebox
             },
-            widget = wibox.widget.background
+            widget = wibox.container.background
     })
     --
     local tt = awful.tooltip({})

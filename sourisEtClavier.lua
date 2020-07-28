@@ -95,24 +95,6 @@ globalkeys = gears.table.join(
             })
         end
     ),
-    awful.key({modkey}, "F6",
-        function()
-            wibox_analog_clock.dev_analog_clock({
-                    inner_radius = 50,
-                    outer_radius = 400,
-                    start_angle  = -90,
-                    sectors      = 5,
-                    line_width   = 1,
-                    font         = "Inconsolata",
-                    color        = "#ff0000",
-                    fg           = "#ff0000"
-                    -- angle_offset = 6.7,
-                    -- inter_radius = 50,
-                    -- line_width   = 5,
-                    -- value        = .75
-            })
-        end
-    ),
     awful.key({modkey}, "F7",
         function()
             -- ppeintDesc est l'instance de wibox créé dans applogin45

@@ -66,7 +66,8 @@ require("awful.autofocus")
 has_fdo, freedesktop = pcall(require, "freedesktop")
 --
 fu               = require("fonctionsUtiles")
---
+-- dev generic widgets 
+flower_pbar = require("widgets.dev.flower_pbar")
 -- widgets
 separateur       = require("widgets.separateur.separateur")
 heure            = require("widgets.heure.heure")
@@ -97,8 +98,7 @@ tempsPasse       = require("widgets.tempsPasse.tempsPasse")
 titreClient      = require("widgets.titreClient.titreClient")
 secretFenetre    = require("widgets.secretFenetre.secretFenetre")
 --
-analog_clock = require("widgets.dev.aclock")
-wibox_analog_clock = require("widgets.dev.wibox_analog_clock")
+semi_analog_clock = require("widgets.semi_analog_clock.semi_analog_clock")
 --
 --
 listeRcFiles = {--

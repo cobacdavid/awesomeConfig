@@ -6,40 +6,54 @@ local aclock = {}
 local function secteur_angulaire_arrondi(cr, rmin, rmax, offsetRayon, angleDeg, angleRondDeg)
     if angleRondDeg > angleDeg / 2  then return end
     if offsetRayon > (rmax - rmin) /2 then return end
-    local trapeze = {}
-    local cosinus = math.cos( math.rad ( angleDeg / 2 ) )
-    local sinus   = math.sin( math.rad ( angleDeg / 2 ) )
-    local pAngle  = math.rad( (angleDeg / 2 - angleRondDeg) )
-    local cpAngle = math.cos( pAngle )
-    local spAngle = math.sin( pAngle )
     --
-    trapeze.x0 = rmin * cosinus
-    trapeze.y0 = rmin * sinus
-    trapeze.x1 = trapeze.x0
-    trapeze.y1 = - trapeze.y0
-    trapeze.x2 = rmax * cosinus
-    trapeze.y2 = rmax * sinus * (-1)
-    trapeze.x3 = trapeze.x2
-    trapeze.y3 = - trapeze.y2
+    local cosinus = math.cos(math.rad(angleDeg / 2))
+    local sinus   = math.sin(math.rad(angleDeg / 2))
+    local pAngle  = math.rad((angleDeg/2 - angleRondDeg))
+    local cpAngle = math.cos(pAngle)
+    local spAngle = math.sin(pAngle)
     --
+    -- local trapeze = {}
+    -- trapeze.x0 = rmin * cosinus
+    -- trapeze.y0 = rmin * sinus
+    -- trapeze.x1 = trapeze.x0
+    -- trapeze.y1 = - trapeze.y0
+    -- trapeze.x2 = rmax * cosinus
+    -- trapeze.y2 = rmax * sinus * (-1)
+    -- trapeze.x3 = trapeze.x2
+    -- trapeze.y3 = - trapeze.y2
     --
-    local p1 = {x = rmin * cpAngle , y = rmin * spAngle }
-    --local p2 = {x = rmin * math.cos((angleDeg / 2 - angleRondDeg) * math.pi /180) , y = (-1) * rmin * math.sin ((angleDeg / 2 - angleRondDeg) * math.pi /180) }
-    local p3 = {x = (rmin + offsetRayon) * cosinus , y = (rmin + offsetRayon) * sinus * (-1) }
-    local p4 = {x = (rmax - offsetRayon) * cosinus , y = (rmax - offsetRayon) * sinus * (-1) }
-    local p5 = {x = rmax * cpAngle , y = (-1) * rmax * spAngle }
-    --local p6 = {x = rmax * math.cos((angleDeg / 2 - angleRondDeg) * math.pi /180) , y = rmax * math.sin ((angleDeg / 2 - angleRondDeg) * math.pi /180) }
-    local p7 = {x = p4.x , y = -p4.y }
-    local p8 = {x = p3.x , y = -p3.y }
+    local p1 = {x = rmin * cpAngle,
+                y = rmin * spAngle}
+    local p2 = {x = (rmin + offsetRayon) * cosinus,
+                y = (rmin + offsetRayon) * sinus}
+    local p3 = {x = (rmax - offsetRayon) * cosinus,
+                y = (rmax - offsetRayon) * sinus}
+    local p4 = {x = rmax * cpAngle,
+                y = rmax * spAngle}
     --
-    cr:arc_negative(0 , 0 , rmin , pAngle  , -pAngle )
-    cr:curve_to(trapeze.x1 , trapeze.y1 , trapeze.x1 , trapeze.y1 , p3.x , p3.y )
-    cr:line_to(p4.x , p4.y )
-    cr:curve_to(trapeze.x2 , trapeze.y2 , trapeze.x2 , trapeze.y2 , p5.x , p5.y )
-    cr:arc(0 , 0 , rmax , - pAngle , pAngle )
-    cr:curve_to(trapeze.x3 , trapeze.y3 , trapeze.x3 , trapeze.y3 , p7.x , p7.y )
-    cr:line_to(p8.x , p8.y )
-    cr:curve_to(trapeze.x0 , trapeze.y0 , trapeze.x0 , trapeze.y0 , p1.x , p1.y )
+    local tan = sinus / cosinus
+    local den = math.sqrt(1 + tan^2)
+    local pcmin = {}
+    pcmin.x = rmin / den
+    pcmin.y = pcmin.x * tan
+    local pcmax = {}
+    pcmax.x = rmax / den
+    pcmax.y = pcmax.x * tan
+    --
+    local alpha = 1
+    local beta  = 1 - alpha
+    local barymin = {x = alpha*p2.x + beta*pcmin.x, y = alpha*p2.y + beta*pcmin.y}
+    local barymax = {x = alpha*p3.x + beta*pcmax.x, y = alpha*p3.y + beta*pcmax.y}
+    --
+    cr:arc(0, 0, rmin, -pAngle, pAngle)
+    cr:curve_to(pcmin.x, pcmin.y, barymin.x, barymin.y, p2.x, p2.y)
+    cr:line_to(p3.x, p3.y)
+    cr:curve_to(barymax.x, barymax.y,  pcmax.x, pcmax.y, p4.x , p4.y)
+    cr:arc_negative(0, 0, rmax, pAngle, -pAngle)
+    cr:curve_to(pcmax.x, -pcmax.y, barymax.x, -barymax.y, p3.x , -p3.y)
+    cr:line_to(p2.x, -p2.y)
+    cr:curve_to(barymin.x, -barymin.y, pcmin.x, -pcmin.y, p1.x, -p1.y)
     --
 end
 --
@@ -62,7 +76,7 @@ function aclock.draw(self, _, cr, width, height)
     local inner_radius = self._inner_radius  or (math.min(width, height) // 3)
     local outer_radius = self._outer_radius  or (math.min(width, height) // 2 - 2)
     local start_angle  = self._start_angle   or -90
-    local inter_radius = self._inter_radius  or .5*(outer_radius - inner_radius) - 2
+    local inter_radius = self._inter_radius  or .5*(outer_radius - inner_radius)
     local line_width   = self._line_width    or 2
     local color        = self._color         or beautiful.fg_normal
     --
@@ -84,7 +98,7 @@ function aclock.draw(self, _, cr, width, height)
     local angleIncr    = clockwise and (360/sectors) or (-360/sectors)
     local valueIncr    = (max_value - min_value) / sectors
     local sector_angle = self._sector_angle  or (.9 * math.abs(angleIncr))
-    local angle_offset = self._angle_offset  or (sector_angle // 3)
+    local angle_offset = self._angle_offset  or (.1 * sector_angle)
     --
     local angle        = math.rad(start_angle)
     --
@@ -141,7 +155,7 @@ function aclock.draw(self, _, cr, width, height)
             cr:save()
             local ecart_relatif     = (value - i*valueIncr)/valueIncr
             local new_sector_angle = ecart_relatif * sector_angle
-            local new_angle_offset = (new_sector_angle // 3)
+            local new_angle_offset = (.1 * new_sector_angle)
             secteur_angulaire_arrondi(cr, inner_radius, outer_radius, inter_radius,
                                       new_sector_angle, new_angle_offset)
             cr:set_source(gears.color(

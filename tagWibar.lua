@@ -123,17 +123,17 @@ awful.screen.connect_for_each_screen(
             left_layout:add(separateur())
             left_layout:add(chrono())
             left_layout:add(separateur())
-            local ak = analog_clock({
-                                    sectors      = 100,
-                                    sector_angle = 1,
-                                    inner_radius = 2, 
-                                    line_width   = 1,
-                                    -- fg           = "#ff0000",
-                                    -- font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
-                                    -- font_size    = 28,
-                                    text         = function(v, m, M)
-                                        return " " --tostring(math.floor(v *100))
-                                    end
+            local ak = flower_pbar({
+                    sectors      = 100,
+                    sector_angle = 1,
+                    inner_radius = 2, 
+                    line_width   = 1,
+                    fg           = "#fff",
+                    -- font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
+                    -- font_size    = 28,
+                    text         = function(v, m, M)
+                        return " " --tostring(math.floor(v *100))
+                    end
             })
             gears.timer({
                     timeout   = 10,
@@ -287,17 +287,22 @@ awful.screen.connect_for_each_screen(
                     position = "top",
                     width    = largeurTroism - 1,
                     bg       = beautiful.bg_normal, --"#ff0000"
-                    height   = 270,
+                    height   = 580,
                     opacity = 1
             })
             s.droiteLaptop.y = 840
             --s.droiteLaptop.height = hauteurTroism
             local layout = wibox.layout.fixed.vertical()
-            layout.spacing = 80
+            -- layout.spacing = 80
             --
-            local clock = bigC.bigClock({
+            local anaC = semi_analog_clock({
+                    font         = "Northwood High",
+                    inner_radius = 40
+            })
+            layout:add(anaC)
+            --
+            local clock = bigC({
                     font   = "Northwood High",--"HP15C Simulator Font",
-                    screen       = s,
                     size         = 45,
                     border_width = 2,
                     height       = 80,
@@ -308,17 +313,14 @@ awful.screen.connect_for_each_screen(
                               awful.button({ }, 1, function()
                               end)
             ))
-            layout:add({
-                    clock.rp,
-                    layout =  wibox.layout.align.vertical
-            })
+            -- layout:add(clock)
+            --
+            local cal = calendrierMois.cal({font_size = 8})
+            layout:add(cal)
+
             
-            local cal = calendrierMois.cal({font_size =8})
-            layout:add({
-                    cal,
-                    layout =  wibox.layout.align.vertical
-            })
-            
+            --
+            --
             s.mywibar:set_widget(layout)
             --
             s.droiteLaptop:connect_signal("mouse::enter",
