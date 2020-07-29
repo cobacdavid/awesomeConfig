@@ -83,7 +83,7 @@ globalkeys = gears.table.join(
     ),
     awful.key({modkey}, "F5",
         function()
-            bigC.bigClock({
+            local w = bigC({
                     font         = "Northwood High", --"HP15C Simulator Font",
                     seg          = false,
                     seg_dark     = .35,
@@ -93,6 +93,24 @@ globalkeys = gears.table.join(
                     size         = 300,
                     radius       = 1
             })
+            local s = mouse.screen
+            local ww = wibox({
+                    x       = 0,
+                    y       = 0,
+                    screen  = s,
+                    width   = s.geometry.width,
+                    height  = s.geometry.height,
+                    visible = true,
+                    ontop   = true 
+            })
+            ww:setup({
+                    w,
+                    layout = wibox.layout.fixed.horizontal
+            })
+            ww:connect_signal("button::press", function()
+                                  ww.visible = false
+                                  ww = nil
+            end)
         end
     ),
     awful.key({modkey}, "F7",

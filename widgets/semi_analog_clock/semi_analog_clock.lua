@@ -27,15 +27,12 @@ function widget.analog_clock(args)
     -- 
     args.fg           = args.fg           or beautiful.fg_normal
     args.bg           = args.bg           or beautiful.bg_normal
+    args.sectors      = args.sectors      or 12
+    args.clockwise    = args.clockwise    or true
     -- --
     args.text = function(v, m , M)
         return os.date("%H:%M")
     end
-    -- args.outer_radius = args.outer_radius
-    -- args.inner_radius = 
-    args.sectors      = 10
-    -- args.font_size    = 40
-    args.clockwise    = true
     --
     local ac = flower_pbar(args)
     local w = wibox.widget({

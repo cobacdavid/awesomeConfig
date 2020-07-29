@@ -272,32 +272,38 @@ awful.screen.connect_for_each_screen(
                               selected = true
                           }
             )
-            s.droiteLaptop = awful.wibar({
-                    position = "right",
-                    screen   = s,
+            --
+            s.droiteLaptop = wibox({
+                    x        = largeurPremier + largeurSecond + largeurTroism - 1,
+                    y        = hauteurPremier - hauteurSecond,
                     width    = 1,
                     height   = hauteurTroism,
+                    screen   = s,
                     bg       = beautiful.bg_normal, -- "#ffff00"
                     opacity  = 1,
+                    visible  = true,
                     ontop    = true
             })
             --
-            s.mywibar = awful.wibar({
-                    screen   = s ,
-                    position = "top",
+            s.mywibar = wibox({
+                    x        = largeurPremier + largeurSecond,
+                    y        = hauteurPremier - hauteurSecond,
                     width    = largeurTroism - 1,
+                    height   = 340,
+                    visible  = true,
+                    screen   = s ,
                     bg       = beautiful.bg_normal, --"#ff0000"
-                    height   = 580,
                     opacity = 1
             })
-            s.droiteLaptop.y = 840
-            --s.droiteLaptop.height = hauteurTroism
             local layout = wibox.layout.fixed.vertical()
             -- layout.spacing = 80
             --
             local anaC = semi_analog_clock({
                     font         = "Northwood High",
-                    inner_radius = 40
+                    inner_radius = 80,
+                    --angle_offset = 10,
+                    sectors      = 59,
+                    --color_type   = "solid"
             })
             layout:add(anaC)
             --
@@ -306,7 +312,7 @@ awful.screen.connect_for_each_screen(
                     size         = 45,
                     border_width = 2,
                     height       = 80,
-                    width        = largeurTroism - 1
+                    -- width        = largeurTroism - 1
             })
             -- inhibit default behaviour
             clock:buttons(gears.table.join(

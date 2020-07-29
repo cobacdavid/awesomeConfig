@@ -1,5 +1,6 @@
 local wibox = require("wibox")
 local gears = require("gears")
+local cairo = require("lgi").cairo
 --
 local aclock = {}
 --
@@ -79,6 +80,7 @@ function aclock.draw(self, _, cr, width, height)
     local inter_radius = self._inter_radius  or .5*(outer_radius - inner_radius)
     local line_width   = self._line_width    or 2
     local color        = self._color         or beautiful.fg_normal
+    local color_type   = self._color_type    or "gradient"
     --
     local value        = self._value         or 0
     local max_value    = self._max_value     or 1
@@ -104,12 +106,17 @@ function aclock.draw(self, _, cr, width, height)
     --
     cr:translate(width // 2 + 1, height // 2 + 1)
     --
-    local colors = {nuance_couleur(color, .2),
-                    color,
-                    nuance_couleur(color, .5)}
-    local colorsDesat = {nuance_couleur(color, .2, .1),
-                         nuance_couleur(color, 1, .1),
-                         nuance_couleur(color, .5, .1)}
+    local colors, colorsDesat
+    if color_type == "gradient" then
+        colors = {nuance_couleur(color, .2),
+                        color,
+                        nuance_couleur(color, .5)}
+        colorsDesat = {nuance_couleur(color, .2, .1),
+                             nuance_couleur(color, 1, .1),
+                             nuance_couleur(color, .5, .1)}
+    end
+    --
+    local masque = cairo.ImageSurface.create_from_png("/home/david/.config/awesome/widgets/dev/grunge.png")
     --
     for i = 0, sectors - 1 do
         -- fond
@@ -118,16 +125,23 @@ function aclock.draw(self, _, cr, width, height)
         cr:rotate(angle)
         secteur_angulaire_arrondi(cr, inner_radius, outer_radius, inter_radius,
                                   sector_angle, angle_offset)
-        cr:set_source(gears.color(
-                          {
-                              type  = "radial",
-                              from  = {0, 0, inner_radius},
-                              to    = {0, 0, outer_radius},
-                              stops = { {0, colorsDesat[1]},
-                                  {0.65, colorsDesat[2]},
-                                  {1, colorsDesat[3]} }
-                          } 
-        ))
+        local pat
+        if color_type == "gradient" then
+            pat = gears.color(
+                {
+                    type  = "radial",
+                    from  = {0, 0, inner_radius},
+                    to    = {0, 0, outer_radius},
+                    stops = { {0, colorsDesat[1]},
+                        {0.65, colorsDesat[2]},
+                        {1, colorsDesat[3]} }
+                } 
+            )
+        else
+            pat = gears.color(nuance_couleur(color, 1, .1))
+        end
+        cr:set_source(pat)
+        -- cr:mask_surface(masque, 0, 0)
         cr:fill()
         cr:restore()
         -- fin fond
@@ -138,43 +152,56 @@ function aclock.draw(self, _, cr, width, height)
             secteur_angulaire_arrondi(cr, inner_radius, outer_radius, inter_radius,
                                       sector_angle, angle_offset)
             cr:set_line_width(line_width)
-            cr:set_source(gears.color(
-                              {
-                                  type  = "radial",
-                                  from  = {0, 0, inner_radius},
-                                  to    = {0, 0, outer_radius },
-                                  stops = { {0, colors[1]},
-                                      {0.65, colors[2]},
-                                      {1, colors[3]} }
-                              } 
-            ))
+            if color_type == "gradient" then
+                pat = gears.color(
+                    {
+                        type  = "radial",
+                        from  = {0, 0, inner_radius},
+                        to    = {0, 0, outer_radius },
+                        stops = { {0, colors[1]},
+                            {0.65, colors[2]},
+                            {1, colors[3]} }
+                    } 
+                )
+            else
+                pat = gears.color(color)
+            end
+            cr:set_source(pat)
+            -- cr:mask_surface(masque, 0, 0)
             cr:fill()
         elseif value > i * valueIncr then
             angle = math.rad(start_angle + i * angleIncr)
             cr:rotate(angle)
             cr:save()
-            local ecart_relatif     = (value - i*valueIncr)/valueIncr
+            local ecart_relatif    = (value - i*valueIncr)/valueIncr
             local new_sector_angle = ecart_relatif * sector_angle
-            local new_angle_offset = (.1 * new_sector_angle)
+            local new_angle_offset = ecart_relatif * angle_offset
+            --
             secteur_angulaire_arrondi(cr, inner_radius, outer_radius, inter_radius,
                                       new_sector_angle, new_angle_offset)
-            cr:set_source(gears.color(
-                              {
-                                  type  = "radial",
-                                  from  = {0, 0, inner_radius},
-                                  to    = {0, 0, outer_radius },
-                                  stops = { {0, colors[1]},
-                                      {0.65, colors[2]},
-                                      {1, colors[3]} }
-                              } 
-            ))
+            --
+            if color_type == "gradient" then
+                pat = gears.color(
+                    {
+                        type  = "radial",
+                        from  = {0, 0, inner_radius},
+                        to    = {0, 0, outer_radius },
+                        stops = { {0, colors[1]},
+                            {0.65, colors[2]},
+                            {1, colors[3]} }
+                    } 
+                )
+            else
+                pat = gears.color(color)
+            end
+            cr:set_source(pat)
+            -- cr:mask_surface(masque, 0, 0)
             cr:fill()
             --
         else
             angle = math.rad(start_angle + i * angleIncr)
             cr:rotate(angle)
             cr:save()
-            
         end
         -- cr:set_source(gears.color("#ffffff"))
         -- cr:stroke()
@@ -237,6 +264,7 @@ function aclock.new(args)
     ak._line_width   = args.line_width
     ak._clockwise    = args.clockwise
     ak._color        = args.color
+    ak._color_type   = args.color_type
     --
     ak._max_value    = args.max_value or 1
     ak._min_value    = args.min_value or 0

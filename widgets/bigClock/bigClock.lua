@@ -53,7 +53,7 @@ local function progressBar(w)
     local m = os.date("%M")
     local s = os.date("%S")
     -- w.value = (h + m/60 + s/3600) / 24
-    w.value = s/60
+    w.value = s / 59
 end
 --
 function widget.bigClock(args)
