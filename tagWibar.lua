@@ -166,26 +166,60 @@ awful.screen.connect_for_each_screen(
             -- maison
             -- et HDMI à droite de eDP avec le portable
             --
-            if screen.count() >= 2 and s.index == 1 then
-                -- HDMI ou edP
-                largeurPremier = s.geometry.width
-                hauteurPremier = s.geometry.height
-                -- DVI ou HDMI
-                largeurSecond = screen[2].geometry.width
-                hauteurSecond = screen[2].geometry.height
-                --
-                s.gauche = awful.wibar({
-                        position = "left",
-                        screen = s,
+            if screen.count() >= 2 then
+                s.topGauche = wibox({
+                        x = 0,
+                        y = 0,
                         width = 1,
+                        height = hauteurPremier - hauteurSecond,
+                        screen = s,
                         opacity = 0,
                         ontop = true,
-                        -- bg      = beautiful.noir,
+                        visible = true,
+                        bg      = "#ff0"
                 })
-                s.gauche:connect_signal("mouse::enter",
+                s.topGauche:connect_signal("mouse::enter",
                                         function(w)
                                             mouse.coords({
-                                                    x = largeurPremier + largeurSecond - 2,
+                                                    x = largeurPremier - 2,
+                                                    y = mouse.coords().y
+                                            })
+                                        end
+                )
+                s.topDroit = wibox({
+                        x = largeurPremier - 1,
+                        y = 0,
+                        width = 1,
+                        height = hauteurPremier - hauteurSecond,
+                        screen = s,
+                        opacity = 0,
+                        ontop = true,
+                        visible = true,
+                        bg      = "#ff0"
+                })
+                s.topDroit:connect_signal("mouse::enter",
+                                          function(w)
+                                              mouse.coords({
+                                                      x = 2,
+                                                      y = mouse.coords().y
+                                              })
+                                          end
+                )
+                s.bottomGauche = wibox({
+                        x = 0,
+                        y = hauteurPremier - hauteurSecond,
+                        width = 1,
+                        height = hauteurSecond,
+                        screen = s,
+                        opacity = 0,
+                        ontop = true,
+                        visible = true,
+                        bg      = "#ff0"
+                })
+                s.bottomGauche:connect_signal("mouse::enter",
+                                        function(w)
+                                            mouse.coords({
+                                                    x = largeurPremier + largeurSecond- 2,
                                                     y = mouse.coords().y
                                             })
                                         end
@@ -196,12 +230,6 @@ awful.screen.connect_for_each_screen(
         -- ÉCRAN SECONDAIRE (potentiellement virtuel)
         -- -- --
         if s.index == 2 then
-            --
-            largeurPremier = screen[1].geometry.width
-            hauteurPremier = screen[1].geometry.height
-            largeurSecond = s.geometry.width
-            hauteurSecond = s.geometry.height
-            --
             awful.tag.add("Auxiliaire",
                           {
                               layout = awful.layout.suit.floating,
@@ -258,10 +286,8 @@ awful.screen.connect_for_each_screen(
         -- -- --
         if s.index == 3 then
             --
-            largeurPremier = screen[1].geometry.width
-            hauteurPremier = screen[1].geometry.height
-            largeurSecond  = screen[2].geometry.width
-            hauteurSecond  = screen[2].geometry.height
+            gears.wallpaper.set(gears.color(beautiful.bg_normal))
+            --
             largeurTroism  = s.geometry.width
             hauteurTroism  = s.geometry.height
             --
@@ -280,7 +306,7 @@ awful.screen.connect_for_each_screen(
                     height   = hauteurTroism,
                     screen   = s,
                     bg       = beautiful.bg_normal, -- "#ffff00"
-                    opacity  = 1,
+                    opacity  = 0,
                     visible  = true,
                     ontop    = true
             })
@@ -289,11 +315,11 @@ awful.screen.connect_for_each_screen(
                     x        = largeurPremier + largeurSecond,
                     y        = hauteurPremier - hauteurSecond,
                     width    = largeurTroism - 1,
-                    height   = 340,
+                    height   = 540,
                     visible  = true,
                     screen   = s ,
                     bg       = beautiful.bg_normal, --"#ff0000"
-                    opacity = 1
+                    opacity  = 1
             })
             local layout = wibox.layout.fixed.vertical()
             -- layout.spacing = 80
@@ -305,7 +331,9 @@ awful.screen.connect_for_each_screen(
                     sectors      = 59,
                     --color_type   = "solid"
             })
-            layout:add(anaC)
+            -- layout:add(anaC)
+            local aaC = almost_analog_clock({delay = 1})
+            layout:add(aaC)
             --
             local clock = bigC({
                     font   = "Northwood High",--"HP15C Simulator Font",

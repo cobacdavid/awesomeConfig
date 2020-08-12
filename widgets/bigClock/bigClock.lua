@@ -58,7 +58,7 @@ end
 --
 function widget.bigClock(args)
     args              = args              or {}
-    local delay       = args.delay        or .1
+    local delay       = args.delay        or 1
     args.fg           = args.fg           or beautiful.fg_normal
     args.bg           = args.bg           or beautiful.bg_normal
     args.border_width = args.border_width or beautiful.border_width or 5

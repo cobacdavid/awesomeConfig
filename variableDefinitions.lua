@@ -59,8 +59,8 @@ firefoxCmd       = "firefox"
 firefoxClass     = "Firefox"
 --browser          = "opera-developer"
 --browserClass     = "Opera developer"
-browser          = firefoxCmd -- chromiumCmd -- firefoxCmd
-browserClass     = firefoxClass -- chromiumClass -- firefoxClass
+browser          = chromiumCmd --firefoxCmd -- chromiumCmd
+browserClass     = chromiumClass -- firefoxClass -- firefoxClass
 browser_alt      = operaCmd
 browser_altClass = operaClass
 urlGoogle        = "https://www.google.com/"
@@ -134,8 +134,9 @@ metapostRcFile   = RcFiles .. "texmf/metapost/macros_travail/"
 emacsRcFile      = RcFiles .. "emacs-config/.gnu-emacs-custom"
 emacsElispRcFile = RcFiles .. "emacs-config/elisp/"
 --
-clavierCmd       = "/home/david/travail/david/production/info/scripts/tyrfingcolor -s"
-clavierCfgPath   = "/home/david/travail/david/production/lycee/algorithmique/python/drevo/exemples/"
+-- clavierCmd       = "/home/david/travail/david/production/info/scripts/tyrfingcolor -s"
+clavierCmd       = "/home/david/travail/david/production/lycee/algorithmique/python/drevo/examples/dtv2reader/dtv2reader"
+clavierCfgPath   = "/home/david/travail/david/production/lycee/algorithmique/python/drevo/examples/dtv2reader/"
 configAwesome    = "darkred"
 configUrxvt      = "darkblue"
 configEmacs      = "forestgreen"
@@ -147,13 +148,13 @@ appsDemarrage = {
    terminalD,
    -- cloudMusique,
    keepass,
-   mpdscribble,
+   -- mpdscribble,
    "wmname LG3D",
    -- radio,
 }
 
 -- config1          = clavierCfgPath .. "config_1.json"
--- configAwesome    = clavierCfgPath .. "config_awesome.json"
+configAwesome    = clavierCfgPath .. "config_awesome.json"
 -- configEmacs      = clavierCfgPath .. "config_emacs.json"
 -- configUrxvt      = clavierCfgPath .. "config_urxvt.json"
 --

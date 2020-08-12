@@ -146,12 +146,12 @@ client.connect_signal("mouse::enter",
                           --
                           c:emit_signal("focus")
                           --
-                          if ordinateur == "desktop" and c.class == editorClass then
-                              fu.commande_execute(clavierCmd .. " " .. configEmacs)
-                          end
-                          if ordinateur == "desktop" and c.class == terminalClass then
-                              fu.commande_execute(clavierCmd .. " " .. configUrxvt)
-                          end
+                          -- if ordinateur == "desktop" and c.class == editorClass then
+                          --     fu.commande_execute(clavierCmd .. " " .. configEmacs)
+                          -- end
+                          -- if ordinateur == "desktop" and c.class == terminalClass then
+                          --     fu.commande_execute(clavierCmd .. " " .. configUrxvt)
+                          -- end
                           --
                           c.border_color = beautiful.border_focus
                           --
@@ -162,9 +162,9 @@ client.connect_signal("mouse::enter",
 client.connect_signal("mouse::leave",
                       function(c)
                           c:emit_signal("unfocus")
-                          if ordinateur == "desktop" and (c.class == editorClass or c.class == terminalClass) then
-                              fu.commande_execute(clavierCmd .. " " .. configAwesome)
-                          end
+                          -- if ordinateur == "desktop" and (c.class == editorClass or c.class == terminalClass) then
+                          --     fu.commande_execute(clavierCmd .. " " .. configAwesome)
+                          -- end
                       end
 )
 
@@ -207,6 +207,11 @@ tag.connect_signal("property::selected",
                            chgTag = chgTag + 1
                            table.insert(listeChgTag, t)
                        end
+                       --
+                       -- local indicateur_clavier = "python3 /home/david/travail/david/production/lycee/algorithmique/python/drevo/examples/selectionTag/selectionTag.py " .. tostring(t.index)
+                       -- fu.montre(indicateur_clavier)
+                       -- awful.spawn.easy_async_with_shell()
+                       -- fu.commandeExecute(indicateur_clavier)
                        --
                        -- change screen1 wallpaper according to
                        -- tag.name, one unique tag on screen2 so no

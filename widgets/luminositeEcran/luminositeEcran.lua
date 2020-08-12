@@ -53,6 +53,7 @@ local widget = {}
 --
 widget.interfaces = {}
 widget.activeIndex = 1
+widget.nightMode = false
 widget.levels = {}
 widget.limits = {MAX = 100, maxi = 2,
                  MIN = 0, mini = .5}
@@ -95,7 +96,18 @@ end
 --
 function widget.applyCommand(iface, stringValue)
     local value = stringValue:gsub(",",".")
-    local command="xrandr --output " .. iface .." --brightness " .. value
+    local command = "xrandr --output " .. iface .." --brightness " .. value
+    awful.spawn.easy_async_with_shell(command,
+                                      function(stdout, stderr, reason, exit_code)
+                                          -- should handle possible error...
+                                     end
+    )
+end
+--
+function widget.applyNightMode(iface, value)
+    local value = tostring(value):gsub(",",".")
+    local command = "xrandr --output " .. iface
+        .. " --gamma " .. "1:" .. value .. ":" .. value
     awful.spawn.easy_async_with_shell(command,
                                       function(stdout, stderr, reason, exit_code)
                                           -- should handle possible error...
@@ -109,6 +121,7 @@ function widget.sliderBrightnessWidget(args)
     local width             = args.width             or 150
     local handle_color_type = args.handle_color_type or "nuance"
     local bar_height        = args.bar_height        or 1
+    local night_mode        = args.night_mode        or 0.8
     --
     -- complete widget
     local widgetComplet = wibox.widget(
@@ -147,6 +160,9 @@ function widget.sliderBrightnessWidget(args)
                                                   v = v:gsub(",",".")
                                                   widget.levels[iface] = v
                                                   widget.applyCommand(iface, v)
+                                                  if widget.nightMode then
+                                                      widget.applyNightMode(iface, night_mode)
+                                                  end
                                                   widgetComplet.stack.slider.handle_color =
                                                       couleurBarre(handle_color_type,
                                                                    v,
@@ -160,6 +176,20 @@ function widget.sliderBrightnessWidget(args)
     -- change interface callback
     widgetComplet:buttons(
         gears.table.join(
+            awful.button({}, 2,
+                function()
+                    widget.nightMode = true
+                    local iface = widget.interfaces[widget.activeIndex]
+                    widget.applyNightMode(iface, night_mode)
+                end
+            ),
+            awful.button({modkey}, 2,
+                function()
+                    widget.nightMode = false
+                    local iface = widget.interfaces[widget.activeIndex]
+                    widget.applyNightMode(iface, 1)
+                end
+            ),
             awful.button({}, 3,
                 function()
                     widget.activeIndex = 1 + widget.activeIndex%#widget.interfaces

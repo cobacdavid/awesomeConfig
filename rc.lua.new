@@ -43,7 +43,7 @@ ordinateur = socket.dns.gethostname() == "asus" and "laptop" or "desktop"
 --
 largeurPremier = screen[1].geometry.width
 hauteurPremier = screen[1].geometry.height
-if screen:count() == 2 then
+if screen:count() >= 2 then
    largeurSecond = screen[2].geometry.width
    hauteurSecond = screen[2].geometry.height
 end
@@ -66,8 +66,8 @@ require("awful.autofocus")
 has_fdo, freedesktop = pcall(require, "freedesktop")
 --
 fu               = require("fonctionsUtiles")
--- dev generic widgets 
-flower_pbar = require("widgets.dev.flower_pbar")
+-- generic widget
+flower_pbar = require("widgets.flower_pbar.flower_pbar")
 -- widgets
 separateur       = require("widgets.separateur.separateur")
 heure            = require("widgets.heure.heure")
@@ -85,6 +85,7 @@ end
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
 ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
+ppeintId         = require("widgets.ppeintId.ppeintId")
 --
 mpdCom           = require("mpdCommande")
 ecranFlou        = require("widgets.ecranFlou.ecranFlou")
@@ -99,6 +100,7 @@ titreClient      = require("widgets.titreClient.titreClient")
 secretFenetre    = require("widgets.secretFenetre.secretFenetre")
 --
 semi_analog_clock = require("widgets.semi_analog_clock.semi_analog_clock")
+almost_analog_clock = require("widgets.almost_analog_clock.almost_analog_clock")
 --
 --
 listeRcFiles = {--
@@ -128,5 +130,7 @@ ppeintDesc = ppeintNasa()
 --
 -- ppeintTag on first tag of first screen at startup
 screen[1].selected_tag:emit_signal("property::selected")
+--
+fu.commande_execute(clavierCmd .. " " .. configAwesome)
 --
 fu.montre("Démarrage terminé")

@@ -113,6 +113,7 @@ globalkeys = gears.table.join(
             end)
         end
     ),
+    awful.key({modkey}, "F6", function() ppeintId() end),
     awful.key({modkey}, "F7",
         function()
             -- ppeintDesc est l'instance de wibox créé dans applogin45
