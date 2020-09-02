@@ -68,10 +68,14 @@ function ppeintTag.fondEcran(t, args)
     --
     -- calculs
     cr:set_font_size(args.font_size)
+    local texteH = 0
+    for i=1, #t.screen.tags do
+        T = cr:text_extents(t.screen.tags[i].name)
+        texteH = math.max(texteH, T['height'])
+    end
     monTexte = t.name
     T = cr:text_extents(monTexte)
     local texteW = T['width']
-    local texteH = T['height']
     --
     -- bandeau
     cr:set_source(gears.color(args.strip_color))

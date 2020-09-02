@@ -33,7 +33,7 @@ local function couleurBarre (t, v , m , M , coulDebut, coulFin)
         local r = niveau
         local g = 255 - r
         resultat  = string.format("#%02X%02X00", r, g)
-    elseif t == "nuance" then
+    else
         resultat = string.format("#%02X%02X%02X", niveau, niveau, niveau)
     end
     return resultat .. "DD"

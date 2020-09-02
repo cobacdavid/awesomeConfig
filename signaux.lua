@@ -153,7 +153,7 @@ client.connect_signal("mouse::enter",
                           --     fu.commande_execute(clavierCmd .. " " .. configUrxvt)
                           -- end
                           --
-                          c.border_color = beautiful.border_focus
+                          c.border_color = beautiful.border_color_active
                           --
                           --
                       end
@@ -165,6 +165,7 @@ client.connect_signal("mouse::leave",
                           -- if ordinateur == "desktop" and (c.class == editorClass or c.class == terminalClass) then
                           --     fu.commande_execute(clavierCmd .. " " .. configAwesome)
                           -- end
+                          c.border_color = beautiful.border_color_normal
                       end
 )
 
