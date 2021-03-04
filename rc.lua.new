@@ -39,7 +39,26 @@ myhome = os.getenv("HOME") .. "/"
 -- also see variableDefinitions.lua
 socket            = require("socket")
 -- asus is my laptop's hostname
-ordinateur = socket.dns.gethostname() == "asus" and "laptop" or "desktop"
+local hname = socket.dns.gethostname()
+if hname == "asus" then
+    ordinateur = "laptop"
+elseif hname == "david-coolermaster" then
+    ordinateur = "desktop"
+    -- configuration1
+    -- VGA-0 1920x1080
+    -- DVI-0 1920x1080
+    -- xrandr --output DVI-0 --mode 1920x1080 --output VGA-0 --above DVI-0 --mode 1920x1080
+    ecrans = "configuration1"
+elseif hname == "coolermaster" then
+    ordinateur = "desktop2"
+    -- configuration1
+    -- VGA-0 1920x1080
+    -- DVI-0 1920x1080
+    -- xrandr --output DVI-0 --mode 1920x1080 --output VGA-0 --above DVI-0 --mode 1920x1080
+    ecrans = "configuration1"
+else
+    ordinateur = "inconnu"
+end
 --
 largeurPremier = screen[1].geometry.width
 hauteurPremier = screen[1].geometry.height

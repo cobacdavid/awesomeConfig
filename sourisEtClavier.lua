@@ -379,6 +379,22 @@ clientbuttons = gears.table.join(
         end
     ),
     awful.button({modkey}, 1, awful.mouse.client.move),
+    awful.button({modkey}, 2, function(c)
+            if ecrans == "configuration1" and not c.doubleEcran then
+                c.geometrieAvant = c:geometry()
+                c:move_to_screen(2)
+                c:geometry({
+                        x = 0,
+                        y = 0,
+                        width = largeurPremier,
+                        height = hauteurPremier + hauteurSecond
+                })
+                c.doubleEcran = true
+            elseif c.doubleEcran then
+                c.doubleEcran = false
+                c:geometry(c.geometrieAvant)
+            end
+    end),
     awful.button({modkey}, 3, awful.mouse.client.resize),
     awful.button({modkey, "Control"}, 1,
         function(c)

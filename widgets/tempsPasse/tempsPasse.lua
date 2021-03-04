@@ -19,7 +19,7 @@ local ordinateur = ordinateur
 local widget = {}
 --
 local myhome = os.getenv('HOME') .. "/"
-if ordinateur == "desktop" then
+if ordinateur == "desktop" or ordinateur == "desktop2" then
     widget.logFile = myhome .. ".config/awesome/widgets/logFenetreTempsPasse"
 else
     widget.logFile = myhome .. "temp/logFenetreTempsPasse"

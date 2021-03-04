@@ -91,15 +91,27 @@ function ppeintTag.fondEcran(t, args)
     -- en lua les tableaux commencent à 1 !
     local hoffset = args.font_size // 4
     cr:set_source(gears.color(args.bg))
-    cr:set_font_size(.5 * args.font_size)
-    monTexte = t.screen.tags[((j-1)-1) % #t.screen.tags + 1].name
-    T = cr:text_extents(monTexte)
-    cr:move_to(w/2 - texteW/2 - T['width'] - hoffset, (h + T['height']) / 2)
-    cr:show_text(monTexte)
-    monTexte = t.screen.tags[((j-1)+1) % #t.screen.tags + 1].name
-    T = cr:text_extents(monTexte)
-    cr:move_to(w/2 + texteW/2 + hoffset, (h + T['height']) / 2)
-    cr:show_text(monTexte)
+    --
+    nb_tags = 4 -- 2nb_tags vers l'avant et vers l'arrière
+    --
+    local positionD = w/2 + texteW/2 + hoffset
+    local positionG = w/2 - texteW/2
+    local positionV = (h + T['height']) / 2
+    for i=1, nb_tags do
+        cr:set_font_size(.65^i * args.font_size)
+        monTexte = t.screen.tags[(j+i-1)%#t.screen.tags + 1].name
+        T = cr:text_extents(monTexte)
+        cr:move_to(positionD, positionV)
+        positionD = positionD + T['width'] + hoffset
+        cr:show_text(monTexte)
+        --
+        monTexte = t.screen.tags[(j-i-1)%#t.screen.tags + 1].name
+        T = cr:text_extents(monTexte)
+        positionG = positionG - T['width'] - hoffset
+        cr:move_to(positionG, positionV)
+        cr:show_text(monTexte)
+        -- fu.montre(positionV)
+    end
     --
     cr:stroke()
     --
@@ -136,7 +148,7 @@ function ppeintTag.imagesFonds(args)
     local s = screen[1]
     local surface
     for _, t in ipairs(s.tags) do
-        if t.name == "dev" then
+        if t.name == "rien" then
             surface = ppeintTag.fondDev(t, args)
             surface:write_to_png(rep .. t.name .. ".png")
         else

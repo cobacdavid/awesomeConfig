@@ -160,7 +160,7 @@ function widget.calendrier(args)
                                          widgetCalendrier.visible = false
                                          widgetCalendrier = nil
                                          widget.year = math.floor(widget.year - 1)
-                                         widget.createWidget()
+                                         --widget.createWidget()
                                      end
                                  ),
                                  awful.button({}, 3,
@@ -168,7 +168,7 @@ function widget.calendrier(args)
                                          widgetCalendrier.visible = false
                                          widgetCalendrier = nil
                                          widget.year = math.floor(widget.year + 1)
-                                         widget.createWidget()
+                                         --widget.createWidget()
                                      end
                                  )
     ))

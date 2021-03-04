@@ -21,10 +21,45 @@ awful.screen.connect_for_each_screen(
         -- ÉCRAN PRINCIPAL
         --
         local layoutterm
+        if ordinateur ~= "laptop" then
+            -- nouvel écran à droite du premier
+            s.versDroite = awful.wibar({
+                    position = "right",
+                    screen = s ,
+                    width = 1,
+                    -- bg       = beautiful.noir,
+                    opacity = 0,
+                    ontop = true
+            })
+            s.versDroite:connect_signal("mouse::enter",
+                                        function(w)
+                                            mouse.coords({
+                                                    x = 1,
+                                                    y = mouse.coords().y
+                                            })
+                                        end
+            )
+            s.versGauche = awful.wibar({
+                    position = "left",
+                    screen = s ,
+                    width = 1,
+                    -- bg       = beautiful.noir,
+                    opacity = 0,
+                    ontop = true
+            })
+            s.versGauche:connect_signal("mouse::enter",
+                                        function(w)
+                                            mouse.coords({
+                                                    x = largeurSecond - 2,
+                                                    y = mouse.coords().y
+                                            })
+                                        end
+            )
+        end
         if s.index == 1 then
-            if ordinateur == "desktop" then
+            if ordinateur == "desktop" and ecrans ~= "configuration1" then
                 layoutterm = awful.layout.suit.tile.top
-            else
+            else 
                 layoutterm = awful.layout.suit.tile.left
             end
             awful.tag.add("term",
@@ -36,7 +71,7 @@ awful.screen.connect_for_each_screen(
                               gap_single_client = true
                           }
             )
-            awful.tag.add("www",
+            awful.tag.add("net",
                           {
                               layout = awful.layout.suit.max,
                               screen = s,
@@ -166,7 +201,7 @@ awful.screen.connect_for_each_screen(
             -- maison
             -- et HDMI à droite de eDP avec le portable
             --
-            if screen.count() >= 2 then
+            if (screen.count() >= 2) and (ecrans ~= "configuration1") then
                 s.topGauche = wibox({
                         x = 0,
                         y = 0,
@@ -179,12 +214,12 @@ awful.screen.connect_for_each_screen(
                         bg      = "#ff0"
                 })
                 s.topGauche:connect_signal("mouse::enter",
-                                        function(w)
-                                            mouse.coords({
-                                                    x = largeurPremier - 2,
-                                                    y = mouse.coords().y
-                                            })
-                                        end
+                                           function(w)
+                                               mouse.coords({
+                                                       x = largeurPremier - 2,
+                                                       y = mouse.coords().y
+                                               })
+                                           end
                 )
                 s.topDroit = wibox({
                         x = largeurPremier - 1,
@@ -217,12 +252,12 @@ awful.screen.connect_for_each_screen(
                         bg      = "#ff0"
                 })
                 s.bottomGauche:connect_signal("mouse::enter",
-                                        function(w)
-                                            mouse.coords({
-                                                    x = largeurPremier + largeurSecond- 2,
-                                                    y = mouse.coords().y
-                                            })
-                                        end
+                                              function(w)
+                                                  mouse.coords({
+                                                          x = largeurPremier + largeurSecond- 2,
+                                                          y = mouse.coords().y
+                                                  })
+                                              end
                 )
             end
         end
@@ -262,15 +297,94 @@ awful.screen.connect_for_each_screen(
                                           end
                                       )
                 ))
-                -- nouvel écran à droite du premier
-                s.droiteLaptop = awful.wibar({
-                        position = "right",
-                        screen = s ,
-                        width = 1,
-                        -- bg       = beautiful.noir,
-                        opacity = 0,
-                        ontop = true
+            end
+            -- -- --
+            -- ÉCRAN 3 (potentiellement sur le secondaire et virtuel)
+            -- -- --
+            if s.index == 3 then
+                --
+                gears.wallpaper.set(gears.color(beautiful.bg_normal))
+                --
+                largeurTroism  = s.geometry.width
+                hauteurTroism  = s.geometry.height
+                --
+                awful.tag.add("Auxiliaire",
+                              {
+                                  layout = awful.layout.suit.floating,
+                                  screen = s,
+                                  selected = true
+                              }
+                )
+                --
+                s.droiteLaptop = wibox({
+                        x        = largeurPremier + largeurSecond + largeurTroism - 1,
+                        y        = hauteurPremier - hauteurSecond,
+                        width    = 1,
+                        height   = hauteurTroism,
+                        screen   = s,
+                        bg       = beautiful.bg_normal, -- "#ffff00"
+                        opacity  = 0,
+                        visible  = true,
+                        ontop    = true
                 })
+                --
+                s.anaC = wibox({
+                        x        = largeurPremier + largeurSecond,
+                        y        = hauteurPremier - hauteurSecond,
+                        width    = largeurTroism - 1,
+                        height   = largeurTroism - 1,
+                        visible  = true,
+                        screen   = s ,
+                        bg       = beautiful.bg_normal, --"#ff0000"
+                        opacity  = 1
+                })
+                local layout = wibox.layout.fixed.vertical()
+                --
+                local anaC = semi_analog_clock({
+                        font         = "Northwood High",
+                        inner_radius = 80,
+                        --angle_offset = 10,
+                        sectors      = 59,
+                        --color_type   = "solid"
+                })
+                -- layout:add(anaC)
+                local aaC = almost_analog_clock({delay = 1})
+                layout:add(aaC)
+                s.anaC:set_widget(layout)
+                --
+                
+                -- --
+                -- local clock = bigC({
+                --         font   = "Northwood High",--"HP15C Simulator Font",
+                --         size         = 45,
+                --         border_width = 2,
+                --         height       = 80,
+                --         -- width        = largeurTroism - 1
+                -- })
+                -- -- inhibit default behaviour
+                -- clock:buttons(gears.table.join(
+                --                   awful.button({ }, 1, function()
+                --                   end)
+                -- ))
+                -- layout:add(clock)
+                --
+                --
+                s.cal = wibox({
+                        x        = largeurPremier + largeurSecond,
+                        y        = hauteurPremier - hauteurSecond + largeurTroism - 1,
+                        width    = largeurTroism - 1,
+                        height   = largeurTroism - 1,
+                        visible  = true,
+                        screen   = s ,
+                        bg       = beautiful.bg_normal, --"#ff0000"
+                        opacity  = 1
+                })
+                local layout = wibox.layout.fixed.vertical()
+                local cal = calendrierMois.cal({font_size = 8})
+                layout:add(cal)
+                --
+                s.cal:set_widget(layout)
+                --
                 s.droiteLaptop:connect_signal("mouse::enter",
                                               function(w)
                                                   mouse.coords({
@@ -280,102 +394,6 @@ awful.screen.connect_for_each_screen(
                                               end
                 )
             end
-        end
-        -- -- --
-        -- ÉCRAN 3 (potentiellement sur le secondaire et virtuel)
-        -- -- --
-        if s.index == 3 then
-            --
-            gears.wallpaper.set(gears.color(beautiful.bg_normal))
-            --
-            largeurTroism  = s.geometry.width
-            hauteurTroism  = s.geometry.height
-            --
-            awful.tag.add("Auxiliaire",
-                          {
-                              layout = awful.layout.suit.floating,
-                              screen = s,
-                              selected = true
-                          }
-            )
-            --
-            s.droiteLaptop = wibox({
-                    x        = largeurPremier + largeurSecond + largeurTroism - 1,
-                    y        = hauteurPremier - hauteurSecond,
-                    width    = 1,
-                    height   = hauteurTroism,
-                    screen   = s,
-                    bg       = beautiful.bg_normal, -- "#ffff00"
-                    opacity  = 0,
-                    visible  = true,
-                    ontop    = true
-            })
-            --
-            s.anaC = wibox({
-                    x        = largeurPremier + largeurSecond,
-                    y        = hauteurPremier - hauteurSecond,
-                    width    = largeurTroism - 1,
-                    height   = largeurTroism - 1,
-                    visible  = true,
-                    screen   = s ,
-                    bg       = beautiful.bg_normal, --"#ff0000"
-                    opacity  = 1
-            })
-            local layout = wibox.layout.fixed.vertical()
-            --
-            local anaC = semi_analog_clock({
-                    font         = "Northwood High",
-                    inner_radius = 80,
-                    --angle_offset = 10,
-                    sectors      = 59,
-                    --color_type   = "solid"
-            })
-            -- layout:add(anaC)
-            local aaC = almost_analog_clock({delay = 1})
-            layout:add(aaC)
-            s.anaC:set_widget(layout)
-            --
-            
-            -- --
-            -- local clock = bigC({
-            --         font   = "Northwood High",--"HP15C Simulator Font",
-            --         size         = 45,
-            --         border_width = 2,
-            --         height       = 80,
-            --         -- width        = largeurTroism - 1
-            -- })
-            -- -- inhibit default behaviour
-            -- clock:buttons(gears.table.join(
-            --                   awful.button({ }, 1, function()
-            --                   end)
-            -- ))
-            -- layout:add(clock)
-            --
-            --
-            s.cal = wibox({
-                    x        = largeurPremier + largeurSecond,
-                    y        = hauteurPremier - hauteurSecond + largeurTroism - 1,
-                    width    = largeurTroism - 1,
-                    height   = largeurTroism - 1,
-                    visible  = true,
-                    screen   = s ,
-                    bg       = beautiful.bg_normal, --"#ff0000"
-                    opacity  = 1
-            })
-            local layout = wibox.layout.fixed.vertical()
-            local cal = calendrierMois.cal({font_size = 8})
-            layout:add(cal)
-            --
-            s.cal:set_widget(layout)
-            --
-            s.droiteLaptop:connect_signal("mouse::enter",
-                                          function(w)
-                                              mouse.coords({
-                                                      x = 2,
-                                                      y = mouse.coords().y
-                                              })
-                                          end
-            )
         end
     end
 )
