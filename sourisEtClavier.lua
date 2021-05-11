@@ -61,16 +61,6 @@ globalkeys = gears.table.join(
             menubar.show()
         end
     ),
-    awful.key({modkey}, "F1",
-        function()
-            awful.tag.incmwfact(.05)
-        end
-    ),
-    awful.key({modkey}, "F2",
-        function()
-            awful.tag.incmwfact(-.05)
-        end
-    ),
     awful.key({modkey}, "F3",
         function()
             awful.spawn(browser)
@@ -191,13 +181,22 @@ globalkeys = gears.table.join(
     --
     awful.key({modkey}, "Left",
         function()
-            awful.tag.viewprev(1)
-            -- local t = screen[1].selected_tag
-            -- t.selected = true
+            awful.tag.incmwfact(.05)
+        end
+    ),
+    awful.key({modkey}, "Right",
+        function()
+            awful.tag.incmwfact(-.05)
         end
     ),
     --
-    awful.key({modkey}, "Right",
+    awful.key({modkey, "Shift"}, "<",
+        function()
+            awful.tag.viewprev(1)
+        end
+    ),
+    --
+    awful.key({modkey}, "<",
         function()
             awful.tag.viewnext(1)
         end
@@ -382,16 +381,20 @@ clientbuttons = gears.table.join(
     awful.button({modkey}, 2, function(c)
             if ecrans == "configuration1" and not c.doubleEcran then
                 c.geometrieAvant = c:geometry()
+                c.blocageAvant = c.blocage
                 c:move_to_screen(2)
                 c:geometry({
                         x = 0,
-                        y = 0,
+                        y = 30,
                         width = largeurPremier,
                         height = hauteurPremier + hauteurSecond
                 })
                 c.doubleEcran = true
+                c.blocage = true
+                c.opacity = 1
             elseif c.doubleEcran then
                 c.doubleEcran = false
+                c.blocage = c.blocageAvant
                 c:geometry(c.geometrieAvant)
             end
     end),
@@ -424,6 +427,20 @@ clientkeys = gears.table.join(
     ),
     --   awful.key({ modkey,           }, "o",      function (c) awful.client.movetoscreen(c,c.screen-1) end ),
     --   awful.key({ modkey,           }, "p",      function (c) awful.client.movetoscreen(c,c.screen+1) end ),
+    awful.key({modkey}, "Up",
+        function(c)
+            if c.screen.index == 2 then
+                c:move_to_screen(screen[1])
+            end
+        end
+    ),
+    awful.key({modkey}, "Down",
+        function(c)
+            if c.screen.index == 1 then
+                c:move_to_screen(screen[2])
+            end
+        end
+    ),
     awful.key({modkey}, "o",
         function (c)
             if c.screen.index == 1 then

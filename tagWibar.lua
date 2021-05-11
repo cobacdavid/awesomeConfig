@@ -267,9 +267,11 @@ awful.screen.connect_for_each_screen(
         if s.index == 2 then
             awful.tag.add("Auxiliaire",
                           {
-                              layout = awful.layout.suit.floating,
+                              -- layout = awful.layout.suit.floating,
+                              layout = awful.layout.suit.tile.left,
                               screen = s,
-                              selected = true
+                              selected = true,
+                              gap = 5
                           }
             )
             if screen.count() == 2 then
