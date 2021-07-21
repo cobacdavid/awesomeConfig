@@ -135,15 +135,15 @@ emacsRcFile      = RcFiles .. "emacs-config/.gnu-emacs-custom"
 emacsElispRcFile = RcFiles .. "emacs-config/elisp/"
 --
 -- clavierCmd       = "/home/david/travail/david/production/info/scripts/tyrfingcolor -s"
-clavierCmd       = "/home/david/travail/david/production/lycee/algorithmique/python/drevo/examples/dtv2reader/dtv2reader"
-clavierCfgPath   = "/home/david/travail/david/production/lycee/algorithmique/python/drevo/examples/dtv2reader/"
-configAwesome    = "darkred"
+clavierCmd       = "dtv2reader"
+clavierCfgPath   = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader"
+configAwesome    = "config_awesome.json"
 configUrxvt      = "darkblue"
 configEmacs      = "forestgreen"
 --
 --
 appsDemarrage = {
-   compositeMgr,
+   --compositeMgr,
    editorD,
    terminalD,
    -- cloudMusique,

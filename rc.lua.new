@@ -117,6 +117,8 @@ dimFenetre       = require("widgets.dimFenetre.dimFenetre")
 tempsPasse       = require("widgets.tempsPasse.tempsPasse")
 titreClient      = require("widgets.titreClient.titreClient")
 secretFenetre    = require("widgets.secretFenetre.secretFenetre")
+-- widgets externes
+github_contributions_widget = require("awesome-wm-widgets.github-contributions-widget.github-contributions-widget")
 --
 semi_analog_clock = require("widgets.semi_analog_clock.semi_analog_clock")
 almost_analog_clock = require("widgets.almost_analog_clock.almost_analog_clock")
@@ -145,11 +147,11 @@ end
 --
 ecranFlou.isActivated = false
 ppeintTag.imagesFonds()
-ppeintDesc = ppeintNasa()
+-- ppeintDesc = ppeintNasa()
 --
 -- ppeintTag on first tag of first screen at startup
 screen[1].selected_tag:emit_signal("property::selected")
 --
-fu.commande_execute(clavierCmd .. " " .. configAwesome)
+fu.commande_execute(clavierCmd .. " " .. clavierCfgPath .. "/" .. configAwesome)
 --
 fu.montre("Démarrage terminé")

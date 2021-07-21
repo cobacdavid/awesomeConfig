@@ -140,24 +140,6 @@ client.connect_signal("request::titlebars",function(c)
                                            end
 )
 
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter",
-                      function(c)
-                          --
-                          c:emit_signal("focus")
-                          --
-                          -- if ordinateur == "desktop" and c.class == editorClass then
-                          --     fu.commande_execute(clavierCmd .. " " .. configEmacs)
-                          -- end
-                          -- if ordinateur == "desktop" and c.class == terminalClass then
-                          --     fu.commande_execute(clavierCmd .. " " .. configUrxvt)
-                          -- end
-                          --
-                          c.border_color = beautiful.border_color_active
-                          --
-                          --
-                      end
-)
 
 client.connect_signal("mouse::leave",
                       function(c)
@@ -188,6 +170,30 @@ client.connect_signal("request::activate",
                           if not c.blocage then
                               c.opacity = 1
                           end
+                      end
+)
+
+client.connect_signal("mouse::enter",
+                      function(c)
+                          c:emit_signal("request::activate", "mouse_enter", {raise = false})
+                          --
+                          --c:activate {
+                          --    context = "mouse_enter",
+                          --    raise = true
+                          --}
+                          --
+                          c:emit_signal("focus")
+                          --
+                          -- if ordinateur == "desktop" and c.class == editorClass then
+                          --     fu.commande_execute(clavierCmd .. " " .. configEmacs)
+                          -- end
+                          -- if ordinateur == "desktop" and c.class == terminalClass then
+                          --     fu.commande_execute(clavierCmd .. " " .. configUrxvt)
+                          -- end
+                          --
+                          c.border_color = beautiful.border_color_active
+                          --
+                          --
                       end
 )
 

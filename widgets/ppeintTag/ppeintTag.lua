@@ -29,7 +29,7 @@ local ppeintTag = {}
 function ppeintTag.fondEcran(t, args)
     args             = args or {}
     args.font        = args.font        or beautiful.font
-    args.font_size   = args.font_size   or 180
+    args.font_size   = args.font_size   or 200
     args.strip_color = args.strip_color or beautiful.bg_focus  or "#BFBFBF"
     args.bg          = args.bg          or beautiful.bg_normal or "#000000"
     --
@@ -59,7 +59,7 @@ function ppeintTag.fondEcran(t, args)
     -- cr:paint()
     --
     -- nombre
-    cr:set_font_size(0.75 * t.screen.geometry.height)
+    cr:set_font_size(0.95 * t.screen.geometry.height)
     cr:set_source(gears.color(args.strip_color))
     local monTexte = tostring(j)
     local T = cr:text_extents(monTexte)
@@ -76,15 +76,17 @@ function ppeintTag.fondEcran(t, args)
     monTexte = t.name
     T = cr:text_extents(monTexte)
     local texteW = T['width']
+    local positionBandeauDebut = h - texteH -- (h - texteH) / 2
+    local hauteurBandeau = texteH + 3
     --
     -- bandeau
     cr:set_source(gears.color(args.strip_color))
-    cr:rectangle(0, (h - texteH) / 2, w, texteH + 3)
+    cr:rectangle(0, positionBandeauDebut, w, hauteurBandeau)
     cr:fill()
     --
     -- texte
     cr:set_source(gears.color(args.bg))
-    cr:move_to(w/2 - texteW/2, (h + texteH) / 2)
+    cr:move_to(w/2 - texteW/2, positionBandeauDebut + texteH) -- (h + texteH) / 2
     cr:show_text(monTexte)
     --
     -- les tags adjacents
@@ -96,7 +98,7 @@ function ppeintTag.fondEcran(t, args)
     --
     local positionD = w/2 + texteW/2 + hoffset
     local positionG = w/2 - texteW/2
-    local positionV = (h + T['height']) / 2
+    local positionV = positionBandeauDebut + T['height'] -- (h - T['height']) / 2
     for i=1, nb_tags do
         cr:set_font_size(.65^i * args.font_size)
         monTexte = t.screen.tags[(j+i-1)%#t.screen.tags + 1].name
