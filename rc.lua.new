@@ -101,6 +101,7 @@ chrono           = require("widgets.chrono.chrono")
 if ordinateur == "laptop" then
    batt          = require("widgets.batterie.batterie")
 end
+lastfm           = require("widgets.lastfm-scrobbles.lastfm-scrobbles")
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
 ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
