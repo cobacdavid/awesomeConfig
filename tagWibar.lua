@@ -142,13 +142,13 @@ for s in screen do
         left_layout:add(chrono())
         left_layout:add(separateur())
         local ak = flower_pbar({
-                sectors      = 8,
-                sector_angle = 45,
+                sectors      = 5,
+                sector_angle = 68,
                 inner_radius = 7, 
                 line_width   = 1,
                 fg           = "#fff",
                 color        = "#fff",
-                color_type  = "solid",
+                color_type   = "solid",
                 font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
                 font_size    = 9,
                 text         = function(v, m, M)
@@ -172,21 +172,39 @@ for s in screen do
         })
         left_layout:add(ak)
         left_layout:add(separateur())
-        gcw = github_contributions_widget({
-                username = "cobacdavid",
-                theme = "grey",
-                with_border = false,
-                square_size = 4,
-                color_of_empty_cells = "#f000",
-                days = 500
+        local gcw = github_contributions_widget({
+                username             = "cobacdavid",
+                theme                = "standard",
+                with_border          = true,
+                square_size          = 4,
+                color_of_empty_cells = "#fff2",
+                days                 = 500
         })
         left_layout:add(gcw)
+        left_layout:add(separateur())
+        local aujourdhui = os.date("*t")
+        local unanavant  = os.date("%Y%m%d", os.time({
+                year  = aujourdhui.year-1,
+                month = aujourdhui.month,
+                day   = aujourdhui.day
+        }))
+        local identifiants = require("widgets.lastfm-scrobbles.private_api_key")
+        local lfm = lastfm({
+                username             = identifiants.username,
+                api_key              = identifiants.api_key,
+                theme                = "dracula",
+                square_size          = 4,
+                with_border          = true,
+                square_size          = 4,
+                color_of_empty_cells = "#fff2",
+                from_date            = tostring(unanavant)
+        })
+        left_layout:add(lfm)
         left_layout:add(separateur())
         left_layout:add(s.mypromptbox)
         --
         local right_layout = wibox.layout.fixed.horizontal()
         right_layout:add(wibox.widget.systray())
-        -- right_layout:add(wifi.new(s, "wlx7ca7b0bf524a", "Freebox-46CAFC_5Ghz"))
         --
         local layout = wibox.layout.align.horizontal()
         layout:set_left(left_layout)
