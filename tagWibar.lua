@@ -174,7 +174,7 @@ for s in screen do
         left_layout:add(separateur())
         local gcw = github_contributions_widget({
                 username             = "cobacdavid",
-                theme                = "standard",
+                theme                = "grey",
                 with_border          = true,
                 square_size          = 4,
                 color_of_empty_cells = "#fff2",
@@ -182,22 +182,16 @@ for s in screen do
         })
         left_layout:add(gcw)
         left_layout:add(separateur())
-        local aujourdhui = os.date("*t")
-        local unanavant  = os.date("%Y%m%d", os.time({
-                year  = aujourdhui.year-1,
-                month = aujourdhui.month,
-                day   = aujourdhui.day
-        }))
+        
         local identifiants = require("widgets.lastfm-scrobbles.private_api_key")
         local lfm = lastfm({
                 username             = identifiants.username,
                 api_key              = identifiants.api_key,
-                theme                = "dracula",
+                theme                = "grey",
                 square_size          = 4,
                 with_border          = true,
-                square_size          = 4,
                 color_of_empty_cells = "#fff2",
-                from_date            = tostring(unanavant)
+                -- from_date            = "20210101"
         })
         left_layout:add(lfm)
         left_layout:add(separateur())

@@ -30,27 +30,33 @@ done"
 ]]
 local number_of_max_downloaded_pages = 10
 
-
-local function niveau(effectif)
-    if effectif == 0 then
-        return 0
-    elseif effectif <= 4 then
-        return 1
-    elseif effectif <= 10 then
-        return 2
-    elseif effectif <= 20 then
-        return 3
-    else
-        return 4
-    end
-end
-
 local function hier(date)
     -- date est de la forme YYYYMMDD
     local y, m, d = string.match(date, "(%d%d%d%d)(%d%d)(%d%d)")
     d = d - 1
     local j = os.time({year=y, month=m, day=d})
     return os.date("%Y%m%d", j)
+end
+
+local function ilyaunan()
+    local aujourdhui = os.date("*t")
+    local unanavant  = os.date("%Y%m%d",
+                               os.time({
+                                       year  = aujourdhui.year-1,
+                                       month = aujourdhui.month,
+                                       day   = aujourdhui.day
+                               })
+    )
+    return unanavant
+end
+
+local function niveau(effectif)
+    local limits = {0, 1, 8, 20}
+    local i = 1
+    while i <= 4 and limits[i] < effectif do
+        i = i + 1
+    end
+    return i-1
 end
 
 local ecoute_widget = wibox.widget{
@@ -87,9 +93,9 @@ local lastfm_widget = wibox.widget {
 local function leWidget(args)
 
     args = args or {}
-    args.username             = args.username    or 'AmI2Blame4'
+    args.username             = args.username
     args.api_key              = args.api_key
-    args.from_date            = args.from_date   or "20190101"
+    args.from_date            = args.from_date   or ilyaunan()
     args.square_size          = args.square_size or 4
     args.color_of_empty_cells = args.color_of_empty_cells
     args.with_border          = args.with_border
