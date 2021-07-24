@@ -41,7 +41,7 @@ end
 --
 local function ppeintApplication()
     local rep = widget.wallpaperRepImagesEspace
-    if screen.count() >= 2 and ordinateur == "desktop" then
+    if screen.count() >= 2 and ordinateur == "desktop2" then
         local fichier = rep .. "/fond"
         gears.wallpaper.fit(fichier, screen[2], beautiful.bg_normal)
     end
