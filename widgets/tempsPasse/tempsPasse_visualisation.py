@@ -49,19 +49,19 @@ s[s > 3600] = 3600
 df = s.unstack('date', fill_value=0)
 
 plt.style.use("dark_background")
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(20, 20))
 
 # couleur spéciale pour 0 : le noir
-mes_couleurs = cm.get_cmap('cool')
+mes_couleurs = cm.get_cmap('cool').copy()
 mes_couleurs.set_under('black')
 
 # le tracé
-trace = plt.imshow(df, cmap=mes_couleurs, interpolation='none', vmin=0.1)
+trace = plt.imshow(df, cmap=mes_couleurs, interpolation='none', vmin=0.1, aspect=10)
 
 # formatage axe des dates
 dates = df.columns.to_pydatetime()
 dates = [d.strftime("%d %b") for d in dates]
-plt.xticks(range(len(dates)), labels=dates, rotation=90)
+# plt.xticks(range(len(dates)), labels=dates, rotation=90)
 # formatage axe des applications
 plt.yticks(range(df.shape[0]), labels=df.index)
 

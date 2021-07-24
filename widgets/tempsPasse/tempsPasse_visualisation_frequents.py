@@ -53,7 +53,7 @@ plt.style.use("dark_background")
 fig, ax = plt.subplots()
 
 # couleur spéciale pour 0 : le noir
-mes_couleurs = cm.get_cmap('cool')
+mes_couleurs = cm.get_cmap('cool').copy()
 mes_couleurs.set_under('black')
 
 # le tracé
@@ -67,10 +67,10 @@ plt.xticks(range(len(dates)), labels=dates, rotation=90)
 plt.yticks(range(df.shape[0]), labels=df.index)
 
 # customisation de la colorbar
-cbar_ticks = range(0, 60 * 60 * 24+1, 60 * 60 +1)
-cbar_labels = [f'{i}' for i in range(25)] #['0', '1/4 h', '1/2 h', '3/4 h', '>1 h']
-cbar = plt.colorbar(trace, ticks=cbar_ticks)
-cbar.ax.set_yticklabels(cbar_labels)
+# cbar_ticks = range(0, 60 * 60 * 24+1, 60 * 60 +1)
+# cbar_labels = [f'{i}' for i in range(25)] #['0', '1/4 h', '1/2 h', '3/4 h', '>1 h']
+# cbar = plt.colorbar(trace, ticks=cbar_ticks)
+# cbar.ax.set_yticklabels(cbar_labels)
 
 # sauvegarde
 plt.savefig("tempsPasse.jpg", bbox_inches='tight', dpi=300)
