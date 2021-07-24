@@ -106,7 +106,7 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "F6", function() ppeintId() end),
     awful.key({modkey}, "F7",
         function()
-            -- ppeintDesc est l'instance de wibox créé dans applogin45
+            -- ppeintDesc est l'instance de wibox créé dans rc.lua
             ppeintNasa.afficheDescription(ppeintDesc,
                                           myhome .. ".config/awesome/widgets/ppeintNasa/fondDescription")
         end

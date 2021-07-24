@@ -182,7 +182,6 @@ for s in screen do
         })
         left_layout:add(gcw)
         left_layout:add(separateur())
-        
         local identifiants = require("widgets.lastfm-scrobbles.private_api_key")
         local lfm = lastfm({
                 username             = identifiants.username,

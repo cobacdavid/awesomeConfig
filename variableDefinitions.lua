@@ -143,7 +143,7 @@ configEmacs      = "forestgreen"
 --
 --
 appsDemarrage = {
-   --compositeMgr,
+   compositeMgr,
    editorD,
    terminalD,
    -- cloudMusique,
