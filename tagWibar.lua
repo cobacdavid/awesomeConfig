@@ -174,7 +174,7 @@ for s in screen do
         left_layout:add(separateur())
         local gcw = github_contributions_widget({
                 username             = "cobacdavid",
-                theme                = "grey",
+                theme                = "standard",
                 with_border          = true,
                 square_size          = 4,
                 color_of_empty_cells = "#fff2",
@@ -194,10 +194,32 @@ for s in screen do
         })
         left_layout:add(lfm)
         left_layout:add(separateur())
+        --left_layout:add(btg)
+        --left_layout:add(separateur())
+        local cvd = covid({
+                departement          = "Maine-et-Loire",
+                theme                = "gradient",
+                square_size          = 4,
+                with_border          = true,
+                color_of_empty_cells = "#fff2",
+                n_colors             = 15
+                                -- from_date            = "20210101"))
+        })
+        left_layout:add(cvd)
+        left_layout:add(separateur())
+        local mto = meteo({
+                max_value = 35,
+                color = "#fff"
+        })
+        left_layout:add(mto)
+        left_layout:add(separateur())
         left_layout:add(s.mypromptbox)
         --
         local right_layout = wibox.layout.fixed.horizontal()
-        right_layout:add(wibox.widget.systray())
+        -- from https://pavelmakhov.com/2018/01/hide-systray-in-awesome/
+        my_systray = wibox.widget.systray()
+        my_systray.visible = false
+        right_layout:add(my_systray)
         --
         local layout = wibox.layout.align.horizontal()
         layout:set_left(left_layout)

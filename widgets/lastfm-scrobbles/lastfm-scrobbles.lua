@@ -110,6 +110,8 @@ local function leWidget(args)
     local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
     args.from_date = os.time({year=y, month=m, day=d})
 
+    if args.with_border == nil then args.with_border = true end
+
     local function get_square(date, color)
         if args.color_of_empty_cells ~= nil and
             color == widget_themes[args.theme][0] then

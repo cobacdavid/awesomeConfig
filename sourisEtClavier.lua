@@ -114,10 +114,14 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "F8",           function()  end),
     awful.key({modkey}, "F9",           function()  end),
     awful.key({modkey}, "F10",          function()  end),
-    awful.key({modkey}, "F11",          function()  end),
-    awful.key({modkey}, "F12",
+    awful.key({modkey}, "F11",
         function()
             awful.spawn( "i3lock" )
+        end
+    ),
+    awful.key({modkey}, "F12",
+        function()
+            my_systray.visible = not my_systray.visible
         end
     ),
     --
@@ -383,11 +387,12 @@ clientbuttons = gears.table.join(
                 c.geometrieAvant = c:geometry()
                 c.blocageAvant = c.blocage
                 c:move_to_screen(2)
+                c.floating = true
                 c:geometry({
                         x = 0,
                         y = 30,
                         width = largeurPremier,
-                        height = hauteurPremier + hauteurSecond
+                        height = hauteurPremier + hauteurSecond - 30
                 })
                 c.doubleEcran = true
                 c.blocage = true

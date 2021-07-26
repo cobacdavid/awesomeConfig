@@ -43,6 +43,10 @@ local function heurew_text(w, args)
 end
 
 function widget.heure(args)
+    if args == nil then
+        return wibox.container.background
+    end
+    
     args                = args              or {}
     local delay         = args.delay        or 1
     --
