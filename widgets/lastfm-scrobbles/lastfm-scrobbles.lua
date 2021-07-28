@@ -30,6 +30,15 @@ done"
 ]]
 local number_of_max_downloaded_pages = 10
 
+
+local function niveau(effectif, limites)
+    local i = 1
+    while i <= #limites and limites[i] < effectif do
+        i = i + 1
+    end
+    return i-1
+end
+
 local function hier(date)
     -- date est de la forme YYYYMMDD
     local y, m, d = string.match(date, "(%d%d%d%d)(%d%d)(%d%d)")
@@ -48,15 +57,6 @@ local function ilyaunan()
                                })
     )
     return unanavant
-end
-
-local function niveau(effectif)
-    local limits = {0, 1, 8, 20}
-    local i = 1
-    while i <= 4 and limits[i] < effectif do
-        i = i + 1
-    end
-    return i-1
 end
 
 local ecoute_widget = wibox.widget{
@@ -101,20 +101,28 @@ local function leWidget(args)
     args.with_border          = args.with_border
     args.margin_top           = args.margin_top  or 1
     args.theme                = args.theme       or 'standard'
+    args.n_colors             = args.n_colors    or 4
+    args.from_color           = args.from_color  or "#0000ff55"
+    args.to_color             = args.to_color    or "#88ff00"
 
-    if widget_themes[args.theme] == nil then
-        show_warning('Theme ' .. args.theme .. ' does not exist')
-        args.theme = 'standard'
+    local tabTheme
+    if args.theme == "gradient" then
+        tabTheme = widget_themes.gradtheme(args.n_colors,
+                                           args.from_color,
+                                           args.to_color)
+    else
+        tabTheme = widget_themes.gtheme(args.n_colors)
     end
+    
 
     local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
     args.from_date = os.time({year=y, month=m, day=d})
 
     if args.with_border == nil then args.with_border = true end
 
-    local function get_square(date, color)
+    local function get_square(date, count, color)
         if args.color_of_empty_cells ~= nil and
-            color == widget_themes[args.theme][0] then
+            color == tabTheme[0] then
             color = args.color_of_empty_cells
         end
 
@@ -136,8 +144,11 @@ local function leWidget(args)
         }
 
         if date ~= nil then
+            local year, month, day = tostring(date):match("(%d%d%d%d)(%d%d)(%d%d)")
+            date = os.date("%a %d %b %Y",
+                           os.time({year=year, month=month, day=day}))
             awful.tooltip {
-                text = string.format("%s", tostring(date)),
+                text = string.format("%s : %s", tostring(date), tostring(count)),
                 mode = "mouse"
             }:add_to_object(square)
         end
@@ -149,7 +160,7 @@ local function leWidget(args)
     local row = {layout = wibox.layout.fixed.horizontal}
     local day_idx = 6 - os.date('%w')
     for _ = 1, day_idx do
-        table.insert(col, get_square(nil, args.color_of_empty_cells))
+        table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
     end
 
     local update_widget = function(_, sortie, _, _, _)
@@ -158,6 +169,7 @@ local function leWidget(args)
         local max = tonumber(os.date("%Y%m%d"))
         local min = max
         local total = 0
+        local effectifMax = 0
 
         for ecoute in sortie:gmatch("[^\r\n]+") do
             -- on supprime la potentielle chanson en cours d'écoute
@@ -169,8 +181,20 @@ local function leWidget(args)
                     min = date
                 end
                 tab[date] = tab[date] == nil and 1 or tab[date] + 1
+                if tab[date] > effectifMax then
+                    effectifMax = tab[date]
+                end
                 total = total + 1
             end
+        end
+
+        -- détermination des limites de valeurs : de 0 puis 1 à effectifMax
+        -- par crroissance exponentielle en k valeurs (variables user)
+        -- 0 1 k k² ... k^(n-2)=effectifMax
+        local k = effectifMax ^ (1 / (args.n_colors - 2))
+        local limits = {0, 1}
+        for i = 1, args.n_colors-2 do
+            table.insert(limits, math.floor(k ^ i))
         end
 
         local jour = max
@@ -181,8 +205,8 @@ local function leWidget(args)
                 col = {layout = wibox.layout.fixed.vertical}
             end
             --
-            local couleur = widget_themes[args.theme][niveau(tab[jour])]
-            table.insert(col, get_square(jour, couleur))
+            local couleur = tabTheme[niveau(tab[jour], limits)]
+            table.insert(col, get_square(jour, tab[jour], couleur))
             day_idx = day_idx + 1
             jour = tonumber(hier(jour))
         end

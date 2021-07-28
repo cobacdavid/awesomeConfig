@@ -7,8 +7,9 @@ local widget_themes = require("widgets.covid.themes")
 local HOME_DIR = os.getenv("HOME")
 local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
 
-local COMMAND = [[bash -c "curl -s https://coronavirusapi-france.vercel.app/AllDataByDepartement\?Departement\=%s ]]
-    .. [[ | jq -r '.allDataByDepartement[] | .date + \" \" +(.reanimation|tostring)'" ]]
+local COMMAND = [[bash -c "curl -s ]]
+    .. [[ https://coronavirusapi-france.vercel.app/AllDataByDepartement\?Departement\=%s ]]
+    .. [[ | jq -r '.allDataByDepartement[] | .date + \" \" +(.%s|tostring)'" ]]
 
 local function hier(date)
     -- date est de la forme YYYYMMDD
@@ -47,6 +48,7 @@ local covid_imagewidget = wibox.widget {
     resize  = true,
     opacity = .75,
     halign  = "center",
+    valign  = "center",
     widget  = wibox.widget.imagebox
 }
 
@@ -72,16 +74,18 @@ local function worker(args)
 
     args = args or {}
     args.departement          = args.departement or "Maine-et-Loire"
+    args.indicateur           = args.indicateur  or "reanimation"
     args.from_date            = args.from_date   or "20200228"
     args.square_size          = args.square_size or 4
+    args.fg                   = args.fg          or "#ffffff"
     args.color_of_empty_cells = args.color_of_empty_cells
     args.with_border          = args.with_border
     args.margin_top           = args.margin_top  or 1
     -- two themes : grey or gradient
     args.theme                = args.theme       or 'gradient'
     args.n_colors             = args.n_colors    or 4
-    args.from_color           = args.from_color  or "#c7cf00"
-    args.to_color             = args.to_color    or "#db1702"
+    args.from_color           = args.from_color  or "#0000ff55"
+    args.to_color             = args.to_color    or "#88ff00"
     
     local tabTheme
     if args.theme == "gradient" then
@@ -130,7 +134,7 @@ local function worker(args)
             date = os.date("%a %d %b %Y",
                            os.time({year=year, month=month, day=day}))
             awful.tooltip {
-                text = string.format("%s : %s en réa", date, count),
+                text = string.format("%s %s : %s", args.indicateur, date, count),
                 mode = "mouse"
             }:add_to_object(square)
         end
@@ -181,7 +185,7 @@ local function worker(args)
             table.insert(limits, math.floor(k ^ i))
         end
         
-        local nb = 0        
+        -- local nb = 0        
         local jour = max
         while jour >= min do
             -- show_warning(tostring(jour))
@@ -197,7 +201,7 @@ local function worker(args)
             day_idx = day_idx + 1
             -- show_warning(tostring(day_idx))
             jour = tonumber(hier(jour))
-            nb = nb + 1
+            -- nb = nb + 1
         end
 
         miroir:setup({
@@ -207,10 +211,11 @@ local function worker(args)
         })
     end
     
-    covid_textwidget:set_markup("<span foreground='#000'>Covid-19 " .. args.departement .. "</span>")
-    awful.spawn.easy_async(string.format(COMMAND, args.departement),
-                           function(stdout)
-                               -- show_warning(stdout)
+    covid_textwidget:set_markup("<span foreground='" .. args.fg .. "'>Covid-19 "
+                                .. args.departement .. "</span>")
+    awful.spawn.easy_async(string.format(COMMAND, args.departement, args.indicateur),
+                           function(stdout,stderr,reason,exit_code)
+                               -- show_warning(stderr)
                                update_widget(covid_widget, stdout)
                            end
     )
@@ -218,4 +223,8 @@ local function worker(args)
     return covid_widget
 end
 
-return setmetatable(covid_widget, { __call = function(_, args) return worker(args) end })
+return setmetatable(covid_widget, {
+                        __call = function(_, args)
+                            return worker(args)
+                        end
+})

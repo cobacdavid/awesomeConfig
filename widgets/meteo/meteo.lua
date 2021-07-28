@@ -61,6 +61,7 @@ local function leWidget(args)
     args.color        = args.color        or "#aaa"
     args.max_value    = args.max_value    or 35
     args.min_value    = args.min_value    or 0
+    args.indicateur   = args.indicateur or "reanimation"
 
     local graph_widget = wibox.widget{
         forced_width = 48,

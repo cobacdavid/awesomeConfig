@@ -141,6 +141,12 @@ for s in screen do
         left_layout:add(separateur())
         left_layout:add(chrono())
         left_layout:add(separateur())
+        local mto = meteo({
+                max_value = 35,
+                color = "#fff"
+        })
+        left_layout:add(mto)
+        left_layout:add(separateur())
         local ak = flower_pbar({
                 sectors      = 5,
                 sector_angle = 68,
@@ -186,36 +192,37 @@ for s in screen do
         local lfm = lastfm({
                 username             = identifiants.username,
                 api_key              = identifiants.api_key,
-                theme                = "grey",
-                square_size          = 4,
-                with_border          = true,
-                color_of_empty_cells = "#fff2",
-                -- from_date            = "20210101"
-        })
-        left_layout:add(lfm)
-        left_layout:add(separateur())
-        --left_layout:add(btg)
-        --left_layout:add(separateur())
-        local cvd = covid({
-                departement          = "Maine-et-Loire",
                 theme                = "gradient",
                 square_size          = 4,
                 with_border          = true,
                 color_of_empty_cells = "#fff2",
-                n_colors             = 15
-                                -- from_date            = "20210101"))
+                n_colors             = 10
+                -- from_date            = "20210101"
         })
-        left_layout:add(cvd)
+        left_layout:add(lfm)
         left_layout:add(separateur())
-        local mto = meteo({
-                max_value = 35,
-                color = "#fff"
-        })
-        left_layout:add(mto)
+        --left_layout:add(matrice({
+        --                        color_of_empty_cells = "#fff2",
+        --                        width = 100
+        --}))
         left_layout:add(separateur())
         left_layout:add(s.mypromptbox)
         --
         local right_layout = wibox.layout.fixed.horizontal()
+        local cvd = covid({
+                 departement          = "Maine-et-Loire",
+                 -- "hospitalises", "reanimation", "nouvellesReanimations",
+                 -- "deces", "gueris", "nouvellesHospitalisations"
+                 indicateur           = "nouvellesHospitalisations",
+                 theme                = "gradient",
+                 square_size          = 4,
+                 with_border          = true,
+                 color_of_empty_cells = "#fff2",
+                 n_colors             = 10
+                                -- from_date            = "20210101"))
+        })
+        right_layout:add(cvd)
+        right_layout:add(separateur())
         -- from https://pavelmakhov.com/2018/01/hide-systray-in-awesome/
         my_systray = wibox.widget.systray()
         my_systray.visible = false

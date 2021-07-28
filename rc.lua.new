@@ -105,6 +105,7 @@ lastfm           = require("widgets.lastfm-scrobbles.lastfm-scrobbles")
 btg              = require("widgets.batterieGraph.batterieGraph")
 meteo            = require("widgets.meteo.meteo")
 covid            = require("widgets.covid.covid")
+matrice          = require("widgets.matrice.matrice")
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
 ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
