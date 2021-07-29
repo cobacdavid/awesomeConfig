@@ -6,10 +6,9 @@ local widget_themes = require("widgets.covid.themes")
 
 local HOME_DIR = os.getenv("HOME")
 local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
+local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/fichiers/'
 
-local COMMAND = [[bash -c "curl -s ]]
-    .. [[ https://coronavirusapi-france.vercel.app/AllDataByDepartement\?Departement\=%s ]]
-    .. [[ | jq -r '.allDataByDepartement[] | .date + \" \" +(.%s|tostring)'" ]]
+local COMMANDE = 'bash -c "' .. WIDGET_DIR .. 'fichiers.sh %s %s"'
 
 local function hier(date)
     -- date est de la forme YYYYMMDD
@@ -35,7 +34,7 @@ local miroir = wibox.widget{
     widget = wibox.container.mirror
 }
 
-local covid_textwidget = wibox.widget {
+local fichiers_textwidget = wibox.widget {
     align   = 'center',
     valign  = 'center',
     opacity = .75,
@@ -43,8 +42,8 @@ local covid_textwidget = wibox.widget {
     widget  = wibox.widget.textbox
 }
 
-local covid_imagewidget = wibox.widget {
-    image   = ICONS_DIR .. "logo-covid.png",
+local fichiers_imagewidget = wibox.widget {
+    -- image   = ICONS_DIR .. "logo-covid.png",
     resize  = true,
     opacity = .75,
     halign  = "center",
@@ -52,30 +51,30 @@ local covid_imagewidget = wibox.widget {
     widget  = wibox.widget.imagebox
 }
 
-local covid_widget = wibox.widget {
+local fichiers_widget = wibox.widget {
     miroir,
-    -- covid_imagewidget,
-    covid_textwidget,
+    -- fichiers_imagewidget,
+    fichiers_textwidget,
     layout = wibox.layout.stack
 }
 
 local function show_warning(message)
     naughty.notify{
         preset = naughty.config.presets.critical,
-        title = 'Covid Widget',
+        title = 'Fichiers Widget',
         text = message}
 end
 
 local function worker(args)
 
     if args == nil then
-        return covid_widget
+        return fichiers_widget
     end
 
+    -- show_warning("OK")
     args = args or {}
-    args.departement          = args.departement or "Maine-et-Loire"
-    args.indicateur           = args.indicateur  or "reanimation"
-    args.from_date            = args.from_date   or "20200228"
+
+    args.from_date            = args.from_date   or "20210701"
     args.square_size          = args.square_size or 4
     args.fg                   = args.fg          or "#ffffff"
     args.color_of_empty_cells = args.color_of_empty_cells
@@ -83,10 +82,10 @@ local function worker(args)
     args.margin_top           = args.margin_top  or 1
     -- two themes : grey or gradient
     args.theme                = args.theme       or 'gradient'
-    args.n_colors             = args.n_colors    or 15
+    args.n_colors             = args.n_colors    or 4
     args.from_color           = args.from_color  or "#0000ff55"
     args.to_color             = args.to_color    or "#88ff00"
-    
+
     local tabTheme
     if args.theme == "gradient" then
         tabTheme = widget_themes.gradtheme(args.n_colors,
@@ -98,7 +97,7 @@ local function worker(args)
     
     if widget_themes[args.theme] == nil then
         -- show_warning('Theme ' .. args.theme .. ' does not exist')
-        args.theme = 'standard'
+        -- args.theme = 'standard'
     end
 
     local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
@@ -134,7 +133,7 @@ local function worker(args)
             date = os.date("%a %d %b %Y",
                            os.time({year=year, month=month, day=day}))
             awful.tooltip {
-                text = string.format("%s %s : %s", args.indicateur, date, count),
+                text = string.format("%s : %s", date, count),
                 mode = "mouse"
             }:add_to_object(square)
         end
@@ -158,13 +157,12 @@ local function worker(args)
 
         -- parcours date par date, détermination des dates limites
         -- et de l'effectif maximal -> blanc sur la grille
-        for resultatDuJour in sortie:gmatch("[^\r\n]+") do
-            local date, effectif = resultatDuJour:match("(.*)%s+(.*)")
-            if effectif ~= "null" then
+        for resultats in sortie:gmatch("[^\r\n]+") do
+            local date, effectif = resultats:match("(.*),(.*)")
+            -- show_warning(tostring(date) .. tostring(effectif))
+            if effectif ~= nil then
                 effectif = tonumber(effectif)
                 local y, m, d = date:match("(%d%d%d%d)-(%d%d)-(%d%d)")
-                --date = os.time({year=y, month=m, day=d})
-                --date = tonumber(os.date("%Y%m%d", ecoute))
                 date = tonumber(y .. m .. d)
                 if date < min then
                     min = date
@@ -184,8 +182,8 @@ local function worker(args)
         for i = 1, args.n_colors-2 do
             table.insert(limits, math.floor(k ^ i))
         end
-        
-        -- local nb = 0        
+
+        -- show_warning(tostring(effectifMax))
         local jour = max
         while jour >= min do
             -- show_warning(tostring(jour))
@@ -210,20 +208,24 @@ local function worker(args)
                 layout = wibox.container.margin
         })
     end
-    
-    covid_textwidget:set_markup("<span foreground='" .. args.fg .. "'>Covid-19 "
-                                .. args.departement .. "</span>")
-    awful.spawn.easy_async(string.format(COMMAND, args.departement, args.indicateur),
+
+    local d = os.date("%Y-%m-%d", args.from_date)
+    local CMD1 = string.format(COMMANDE, d, "2021-07-29")
+    awful.spawn.easy_async(CMD1,
                            function(stdout,stderr,reason,exit_code)
-                               -- show_warning(stderr)
-                               update_widget(covid_widget, stdout)
+                               local CMD2 = 'bash -c "cat ' .. WIDGET_DIR .. 'sortie_commande.csv"'
+                               awful.spawn.easy_async(CMD2,
+                                                      function(stdout)
+                                                          update_widget(fichiers_widget, stdout)
+                                                      end
+                               )
                            end
     )
 
-    return covid_widget
+    return fichiers_widget
 end
 
-return setmetatable(covid_widget, {
+return setmetatable(fichiers_widget, {
                         __call = function(_, args)
                             return worker(args)
                         end

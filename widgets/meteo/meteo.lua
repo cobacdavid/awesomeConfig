@@ -21,9 +21,11 @@ local HOME_DIR = os.getenv('HOME')
 local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
 --
 --
-local COMMAND1 = [[ bash -c "curl -s 'api.openweathermap.org/data/2.5/weather?q=%s,%s&units=metric&appid=%s' | jq -r '.main.temp, .weather[].icon'" ]]
+local COMMANDE_MAINTENANT = [[ bash -c "curl -s 'api.openweathermap.org/data/2.5/weather?q=%s,%s&units=metric&appid=%s' | jq -r '.main.temp, .weather[].icon'" ]]
+-- local COMMANDE_ = [[ bash -c "wget http://openweathermap.org/img/wn/%s@2x.png -O /tmp/meteo.png" ]]
+local COMMANDE_MAINTENANT = [[ bash -c "curl -s 'api.openweathermap.org/data/2.5/weather?q=%s,%s&units=metric&appid=%s' | jq -r '.main.temp, .weather[].icon'" ]]
+local COMMANDE_PREVISIONS = [[ bash -c "curl -s 'api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s&appid=%s' ]]
 
-local COMMAND2 = [[ bash -c "wget http://openweathermap.org/img/wn/%s@2x.png -O /tmp/meteo.png" ]]
 --
 local miroir = wibox.widget{
     reflection = {
@@ -83,6 +85,12 @@ local function leWidget(args)
             layout = wibox.container.margin
         }
     )
+
+    local tt =  awful.tooltip {
+        text = "",
+        mode = "mouse"
+    }
+    tt:add_to_object(widget_final)
     
     gears.timer ({
             timeout = 600,
@@ -97,11 +105,8 @@ local function leWidget(args)
                                            --        text = tostring(temp).." " .. weather
                                            -- })
                                            graph_widget:add_value(temp)
-                                           awful.tooltip {
-                                               text = string.format("%s : %s °C", args.location, tostring(math.floor(0.5 +temp))),
-                                               mode = "mouse"
-                                           }:add_to_object(widget_final)
-
+                                           
+                                           tt:set_text(string.format("%s : %s °C", args.location, tostring(math.floor(0.5 +temp))))
                                            awful.spawn.easy_async(string.format(COMMAND2, weather_icon),
                                                                   function(_)
                                                                       meteo_imagewidget:set_image("/tmp/meteo.png")
@@ -111,11 +116,6 @@ local function leWidget(args)
                 )
             end
     })
-    -- naughty.notify({
-    --         preset = naughty.config.presets.critical,
-    --         text = string.format(COMMAND, "Angers", "FR", "847323bc26f4c4ee255aae9d32d6a3cf")
-    -- })
-    
     return widget_final
 end
 

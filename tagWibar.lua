@@ -141,9 +141,24 @@ for s in screen do
         left_layout:add(separateur())
         left_layout:add(chrono())
         left_layout:add(separateur())
-        local mto = meteo({
-                max_value = 35,
-                color = "#fff"
+        -- local mto = meteo({
+        --         max_value = 35,
+        --         color = "#fff",
+        --         lat = 47.4667,
+        --         lon = -0.55
+        -- })
+        -- left_layout:add(mto)
+        local mto = weather_widget({
+            api_key     = idMeteo.api_key,
+            coordinates = {47.4667, -0.55},
+            time_format_12h = false,
+            units = 'metric',
+            both_units_widget = false,
+            font_name = 'Carter One',
+            icons = 'VitalyGorbachev',
+            icons_extension = '.svg',
+            show_hourly_forecast = true,
+            show_daily_forecast = true,
         })
         left_layout:add(mto)
         left_layout:add(separateur())
@@ -201,6 +216,9 @@ for s in screen do
         })
         left_layout:add(lfm)
         left_layout:add(separateur())
+        left_layout:add(fichiers({
+                                from_date = "20200901"
+        }))
         --left_layout:add(matrice({
         --                        color_of_empty_cells = "#fff2",
         --                        width = 100

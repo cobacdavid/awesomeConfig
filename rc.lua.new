@@ -106,6 +106,7 @@ btg              = require("widgets.batterieGraph.batterieGraph")
 meteo            = require("widgets.meteo.meteo")
 covid            = require("widgets.covid.covid")
 matrice          = require("widgets.matrice.matrice")
+fichiers         = require("widgets.fichiers.fichiers")
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
 ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
@@ -124,6 +125,8 @@ titreClient      = require("widgets.titreClient.titreClient")
 secretFenetre    = require("widgets.secretFenetre.secretFenetre")
 -- widgets externes
 github_contributions_widget = require("awesome-wm-widgets.github-contributions-widget.github-contributions-widget")
+idMeteo = require("widgets.meteo.private_openweather_api_key")
+weather_widget = require("awesome-wm-widgets.weather-widget.weather")
 --
 semi_analog_clock = require("widgets.semi_analog_clock.semi_analog_clock")
 almost_analog_clock = require("widgets.almost_analog_clock.almost_analog_clock")
