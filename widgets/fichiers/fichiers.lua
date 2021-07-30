@@ -2,21 +2,13 @@ local awful         = require("awful")
 local naughty       = require("naughty")
 local wibox         = require("wibox")
 local gears         = require("gears")
-local widget_themes = require("widgets.covid.themes")
+local widget_themes = require("widgets.themes_matrice.themes")
 
 local HOME_DIR = os.getenv("HOME")
 local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
 local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/fichiers/'
 
-local COMMANDE = 'bash -c "' .. WIDGET_DIR .. 'fichiers.sh %s %s"'
-
-local function hier(date)
-    -- date est de la forme YYYYMMDD
-    local y, m, d = string.match(date, "(%d%d%d%d)(%d%d)(%d%d)")
-    d = d - 1
-    local j = os.time({year=y, month=m, day=d})
-    return os.date("%Y%m%d", j)
-end
+local COMMANDE = 'bash -c "' .. WIDGET_DIR .. 'fichiers.sh %s %s %s"'
 
 local function niveau(effectif, limites)
     local i = 1
@@ -26,10 +18,17 @@ local function niveau(effectif, limites)
     return i-1
 end
 
+local function date2timestamp(date)
+    -- date au format YYYY-MM-DD
+    local year, month, day = tostring(date):match("(%d%d%d%d)-(%d%d)-(%d%d)")
+    return os.time({year=year, month=month, day=day})
+end
+
+
 local miroir = wibox.widget{
     reflection = {
-        horizontal = true,
-        vertical = true,
+        horizontal = false,
+        vertical = false,
     },
     widget = wibox.container.mirror
 }
@@ -74,6 +73,7 @@ local function worker(args)
     -- show_warning("OK")
     args = args or {}
 
+    args.path                 = args.path        or HOME_DIR
     args.from_date            = args.from_date   or "20210101"
     args.square_size          = args.square_size or 4
     args.fg                   = args.fg          or "#ffffff"
@@ -86,6 +86,9 @@ local function worker(args)
     args.from_color           = args.from_color  or "#ffff00"
     args.to_color             = args.to_color    or "#ff0000"
 
+    local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
+    args.from_date = y .. "-" .. m .. "-" .. d
+        
     local tabTheme
     if args.theme == "gradient" then
         tabTheme = widget_themes.gradtheme(args.n_colors,
@@ -94,14 +97,6 @@ local function worker(args)
     else
         tabTheme = widget_themes.gtheme(args.n_colors)
     end
-    
-    if widget_themes[args.theme] == nil then
-        -- show_warning('Theme ' .. args.theme .. ' does not exist')
-        -- args.theme = 'standard'
-    end
-
-    local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
-    args.from_date = os.time({year=y, month=m, day=d})
 
     if args.with_border == nil then args.with_border = true end
 
@@ -129,9 +124,7 @@ local function worker(args)
         }
 
         if date ~= nil then
-            local year, month, day = tostring(date):match("(%d%d%d%d)(%d%d)(%d%d)")
-            date = os.date("%a %d %b %Y",
-                           os.time({year=year, month=month, day=day}))
+            date = os.date("%a %d %b %Y", date2timestamp(date))
             awful.tooltip {
                 text = string.format("%s : %s", date, count),
                 mode = "mouse"
@@ -149,56 +142,33 @@ local function worker(args)
     end
 
     local update_widget = function(_, sortie, _, _, _)
-
         local tab = {}
-        local max = tonumber(os.date("%Y%m%d"))
-        local min = max
-        local effectifMax = 0
-
-        -- parcours date par date, détermination des dates limites
-        -- et de l'effectif maximal -> blanc sur la grille
-        for resultats in sortie:gmatch("[^\r\n]+") do
-            local date, effectif = resultats:match("(.*),(.*)")
-            -- show_warning(tostring(date) .. tostring(effectif))
-            if effectif ~= nil then
-                effectif = tonumber(effectif)
-                local y, m, d = date:match("(%d%d%d%d)-(%d%d)-(%d%d)")
-                date = tonumber(y .. m .. d)
-                if date < min then
-                    min = date
-                end
-                if effectifMax < effectif then
-                    effectifMax = effectif
-                end
-                tab[date] = effectif -- tab[date] == nil and 1 or tab[date] + 1
-            end
-        end
-        
-        -- 
-        local k = math.min(effectifMax, 100) / (args.n_colors - 2)
+        --
+        local k = 100 / (args.n_colors - 2)
         local limits = {0}
         for i = 1, args.n_colors-2 do
             table.insert(limits, math.floor(i * k))
         end
-        -- show_warning(tostring(limits[10]))
-
-        -- show_warning(tostring(effectifMax))
-        local jour = max
-        while jour >= min do
-            -- show_warning(tostring(jour))
-            tab[jour] = tab[jour] == nil and 0 or tab[jour]
-
-            if day_idx %7 == 0 then
-                table.insert(row, col)
-                col = {layout = wibox.layout.fixed.vertical}
+        --
+        -- les dates arrivent dans l'ordre 
+        -- (voir script fichiers.sh)
+        for resultats in sortie:gmatch("[^\r\n]+") do
+            local date, effectif = resultats:match("(.*),(.*)")
+            if date2timestamp(date) >= date2timestamp(args.from_date) then
+                -- show_warning(tostring(date) .. tostring(effectif))
+                if effectif ~= nil then
+                    effectif = tonumber(effectif)
+                    tab[date] = effectif
+                    --
+                    if day_idx %7 == 0 then
+                        table.insert(row, col)
+                        col = {layout = wibox.layout.fixed.vertical}
+                    end
+                    local couleur = tabTheme[niveau(effectif, limits)]
+                    table.insert(col, get_square(date, effectif, couleur))
+                    day_idx = day_idx + 1
+                end
             end
-            --
-            local couleur = tabTheme[niveau(tab[jour], limits)]
-            table.insert(col, get_square(jour, tab[jour], couleur))
-            day_idx = day_idx + 1
-            -- show_warning(tostring(day_idx))
-            jour = tonumber(hier(jour))
-            -- nb = nb + 1
         end
 
         miroir:setup({
@@ -208,11 +178,12 @@ local function worker(args)
         })
     end
 
-    local d = os.date("%Y-%m-%d", args.from_date)
-    local CMD1 = string.format(COMMANDE, d, "2021-07-29")
+    local aujourdhui = os.date("%Y-%m-%d", os.time())
+    local CMD1 = string.format(COMMANDE, args.from_date, aujourdhui, args.path)
     awful.spawn.easy_async(CMD1,
-                           function(stdout,stderr,reason,exit_code)
-                               local CMD2 = 'bash -c "cat ' .. WIDGET_DIR .. 'sortie_commande.csv"'
+                           function(stdout, stderr, reason, exit_code)
+                               local name_of_file = stdout
+                               local CMD2 = 'bash -c "cat ' .. name_of_file .. '"'
                                awful.spawn.easy_async(CMD2,
                                                       function(stdout)
                                                           update_widget(fichiers_widget, stdout)

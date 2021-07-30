@@ -219,9 +219,10 @@ for s in screen do
         left_layout:add(lfm)
         left_layout:add(separateur())
         left_layout:add(fichiers({
-                                color_of_empty_cells = "#0000ff55",
-                                from_date = "20200901",
-                                n_colors = 50
+                            path ="/home/david/travail/david/production/lycee/informatique/nsi",
+                            color_of_empty_cells = "#0000ff55",
+                            from_date = "20200901",
+                            n_colors = 50
         }))
         --left_layout:add(matrice({
         --                        color_of_empty_cells = "#fff2",

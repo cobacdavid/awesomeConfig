@@ -13,7 +13,7 @@
 local awful     = require("awful")
 local wibox     = require("wibox")
 local gears     = require("gears")
-local widget_themes = require("widgets.lastfm-scrobbles.themes")
+local widget_themes = require("widgets.themes_matrice.themes")
 --
 --
 local HOME_DIR = os.getenv('HOME')
@@ -71,7 +71,7 @@ local lastfm_textwidget = wibox.widget {
     align  = 'right',
     valign = 'bottom',
     opacity = .75,
-    font = "Arial 10",
+    font = "Arial 8",
     widget = wibox.widget.textbox
 }
 

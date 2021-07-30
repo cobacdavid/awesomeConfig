@@ -2,7 +2,7 @@ local awful         = require("awful")
 local naughty       = require("naughty")
 local wibox         = require("wibox")
 local gears         = require("gears")
-local widget_themes = require("widgets.covid.themes")
+local widget_themes = require("widgets.themes_matrice.themes")
 
 local HOME_DIR = os.getenv("HOME")
 local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
@@ -36,10 +36,10 @@ local miroir = wibox.widget{
 }
 
 local covid_textwidget = wibox.widget {
-    align   = 'center',
-    valign  = 'center',
+    align   = 'right',
+    valign  = 'bottom',
     opacity = .75,
-    font    = "Arial 18",
+    font    = "Arial 8",
     widget  = wibox.widget.textbox
 }
 
