@@ -74,7 +74,7 @@ local function worker(args)
     -- show_warning("OK")
     args = args or {}
 
-    args.from_date            = args.from_date   or "20210701"
+    args.from_date            = args.from_date   or "20210101"
     args.square_size          = args.square_size or 4
     args.fg                   = args.fg          or "#ffffff"
     args.color_of_empty_cells = args.color_of_empty_cells
@@ -83,8 +83,8 @@ local function worker(args)
     -- two themes : grey or gradient
     args.theme                = args.theme       or 'gradient'
     args.n_colors             = args.n_colors    or 4
-    args.from_color           = args.from_color  or "#0000ff55"
-    args.to_color             = args.to_color    or "#88ff00"
+    args.from_color           = args.from_color  or "#ffff00"
+    args.to_color             = args.to_color    or "#ff0000"
 
     local tabTheme
     if args.theme == "gradient" then
@@ -174,14 +174,13 @@ local function worker(args)
             end
         end
         
-        -- détermination des limites de valeurs : de 0 puis 1 à effectifMax
-        -- par crroissance exponentielle en k valeurs (variables user)
-        -- 0 1 k k² ... k^(n-2)=effectifMax
-        local k = effectifMax ^ (1 / (args.n_colors - 2))
-        local limits = {0, 1}
+        -- 
+        local k = math.min(effectifMax, 100) / (args.n_colors - 2)
+        local limits = {0}
         for i = 1, args.n_colors-2 do
-            table.insert(limits, math.floor(k ^ i))
+            table.insert(limits, math.floor(i * k))
         end
+        -- show_warning(tostring(limits[10]))
 
         -- show_warning(tostring(effectifMax))
         local jour = max

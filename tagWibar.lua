@@ -211,13 +211,17 @@ for s in screen do
                 square_size          = 4,
                 with_border          = true,
                 color_of_empty_cells = "#fff2",
-                n_colors             = 10
+                n_colors             = 10,
+                from_color           = "#00ffff",
+                to_color             = "#0000ff"
                 -- from_date            = "20210101"
         })
         left_layout:add(lfm)
         left_layout:add(separateur())
         left_layout:add(fichiers({
-                                from_date = "20200901"
+                                color_of_empty_cells = "#0000ff55",
+                                from_date = "20200901",
+                                n_colors = 50
         }))
         --left_layout:add(matrice({
         --                        color_of_empty_cells = "#fff2",
