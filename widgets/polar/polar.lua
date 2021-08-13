@@ -186,7 +186,15 @@ local function worker(args)
                                update_widget(polar_widget, stdout)
                            end
     )
-
+    -- polar_widget:buttons({
+    --         gears.table.join(
+    --             awful.button({}, 1,
+    --                 function()
+    --                     awful.spawn(browser .. " " .. URL)
+    --                 end
+    --             )
+    --         )
+    -- })
     return polar_widget
 end
 

@@ -202,6 +202,13 @@ for s in screen do
                 color_of_empty_cells = "#fff2",
                 days                 = 500
         })
+        gcw:add_button(
+                awful.button({}, 1,
+                     function()
+                         awful.spawn(browser .. " " .. "https://github.com/" .. "cobacdavid")
+                     end
+                )
+        )
         left_layout:add(gcw)
         left_layout:add(separateur())
         local identifiants = require("widgets.lastfm-scrobbles.private_api_key")
@@ -217,23 +224,46 @@ for s in screen do
                 to_color             = "#0000ff"
                 -- from_date            = "20210101"
         })
+        lfm:add_button(
+                awful.button({}, 1,
+                     function()
+                         awful.spawn(browser .. " " .. "https://last.fm/user/" ..  identifiants.username)
+                     end
+                )
+        )
         left_layout:add(lfm)
         left_layout:add(separateur())
-        left_layout:add(fichiers({
+        local fic = fichiers({
                             path ="/home/david/travail/david/production/lycee/informatique/nsi",
                             color_of_empty_cells = "#0000ff55",
                             from_date            = "20200901",
                             n_colors             = 10
-        }))
+        })
+        left_layout:add(fic)
+        fic:add_button(
+            awful.button({}, 1,
+                     function()
+                         awful.spawn(fileMgr .. " " .. "/home/david/travail/david/production/lycee/informatique/nsi")
+                     end
+                )
+        )
         left_layout:add(separateur())
         local polar_id = require("widgets.polar.polar_id")
-        left_layout:add(polar({
+        local plr = polar({
                                 polar_id             = polar_id,
                                 color_of_empty_cells = "#0f02",
                                 from_color           = "#0f08",
                                 from_date            = "20201014",
                                 n_colors             = 15
-        }))
+        })
+        plr:add_button(
+            awful.button({}, 1,
+                     function()
+                         awful.spawn(fileMgr .. " " .. "/home/david/Polar/" .. polar_id .. "/U/0")
+                     end
+                )
+        )
+        left_layout:add(plr)
         left_layout:add(separateur())
         --
         local right_layout = wibox.layout.fixed.horizontal()
@@ -250,6 +280,13 @@ for s in screen do
                  n_colors             = 10
                                 -- from_date            = "20210101"))
         })
+        cvd:add_button(
+                awful.button({}, 1,
+                     function()
+                         awful.spawn(browser .. " " .. "https://covidtracker.fr/")
+                     end
+                )
+        )
         right_layout:add(cvd)
         right_layout:add(separateur())
         -- from https://pavelmakhov.com/2018/01/hide-systray-in-awesome/

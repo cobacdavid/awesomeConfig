@@ -1,3 +1,15 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2021
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-- most parts from awesome wm
+-- distribution
+-- copyright ??
+-------------------------------------------------
+--
 local awful         = require("awful")
 local naughty       = require("naughty")
 local wibox         = require("wibox")
@@ -243,31 +255,23 @@ function widget.worker(args)
                                update_widget(covid_widget, stdout)
                            end
     )
-
-    covid_widget:buttons(
-        gears.table.join(
+    covid_widget:buttons({
             awful.button({}, 3,
                          function()
                              widget.indexIndicateur = 1 + widget.indexIndicateur  % #widget.indicateurs
                              indicateur = widget.indicateurs[widget.indexIndicateur]
-    awful.spawn.easy_async(string.format(widget.commande, args.departement, indicateur),
-                           function(stdout,stderr,reason,exit_code)
-                               update_widget(covid_widget, stdout)
-                           end
-    )
+                             awful.spawn.easy_async(string.format(widget.commande, args.departement, indicateur),
+                                                    function(stdout,stderr,reason,exit_code)
+                                                        update_widget(covid_widget, stdout)
+                                                    end
+                             )
                          end
             )
-        )
-    )
+    })
+
 
     return covid_widget
 end
 
 
 return widget
-
--- return setmetatable(widget, {
---                         __call = function(_, args)
---                             return widget.worker(args)
---                         end
--- })
