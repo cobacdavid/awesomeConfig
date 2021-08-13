@@ -237,12 +237,12 @@ for s in screen do
         left_layout:add(separateur())
         --
         local right_layout = wibox.layout.fixed.horizontal()
-        local cvd = covid({
+        local cvd = covid.worker({
                  departement          = "Maine-et-Loire",
                  -- "hospitalises", "reanimation", "nouvellesReanimations",
                  -- "deces", "gueris", "nouvellesHospitalisations"
                  -- indicateur           = "nouvellesHospitalisations",
-                 indicateur           = "nouvellesHospitalisations",
+                 -- indicateur           = "nouvellesHospitalisations",
                  theme                = "gradient",
                  square_size          = 4,
                  with_border          = true,

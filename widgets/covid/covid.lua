@@ -6,10 +6,17 @@ local widget_themes = require("widgets.themes_matrice.themes")
 
 local HOME_DIR = os.getenv("HOME")
 local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
-
-local COMMAND = [[bash -c "curl -s ]]
-    .. [[ https://coronavirusapi-france.vercel.app/AllDataByDepartement\?Departement\=%s ]]
-    .. [[ | jq -r '.allDataByDepartement[] | .date + \" \" +(.%s|tostring)'" ]]
+--
+--
+local function indexInTable(element, t)
+    for i, v in ipairs(t) do
+        if v == element then
+            return i
+        end
+        -- return nil si pas trouvé
+        return nil
+    end
+end
 
 local function hier(date)
     -- date est de la forme YYYYMMDD
@@ -27,54 +34,69 @@ local function niveau(effectif, limites)
     return i-1
 end
 
-local miroir = wibox.widget{
-    reflection = {
-        horizontal = true,
-        vertical = true,
-    },
-    widget = wibox.container.mirror
-}
-
-local covid_textwidget = wibox.widget {
-    align   = 'right',
-    valign  = 'bottom',
-    opacity = .75,
-    font    = "Arial 8",
-    widget  = wibox.widget.textbox
-}
-
-local covid_imagewidget = wibox.widget {
-    image   = ICONS_DIR .. "logo-covid.png",
-    resize  = true,
-    opacity = .75,
-    halign  = "center",
-    valign  = "center",
-    widget  = wibox.widget.imagebox
-}
-
-local covid_widget = wibox.widget {
-    miroir,
-    -- covid_imagewidget,
-    covid_textwidget,
-    layout = wibox.layout.stack
-}
-
 local function show_warning(message)
     naughty.notify{
         preset = naughty.config.presets.critical,
         title = 'Covid Widget',
         text = message}
 end
+--
+--
+widget = {}
+widget.indicateurs = {
+    "nouvellesHospitalisations",
+    "hospitalises",
+    "reanimation",
+    "nouvellesReanimations",
+    "deces",
+    "gueris"
+}
+widget.indexIndicateur = 1
+widget.commande = [[bash -c "curl -s ]]
+    .. [[ https://coronavirusapi-france.vercel.app/AllDataByDepartement\?Departement\=%s ]]
+    .. [[ | jq -r '.allDataByDepartement[] | .date + \" \" +(.%s|tostring)'" ]]
 
-local function worker(args)
+
+function widget.worker(args)
+    -- show_warning(args)
+    local miroir = wibox.widget{
+        reflection = {
+            horizontal = true,
+            vertical = true,
+        },
+        widget = wibox.container.mirror
+    }
+
+    local covid_textwidget = wibox.widget {
+        align   = 'right',
+        valign  = 'bottom',
+        opacity = .75,
+        font    = "Arial 8",
+        widget  = wibox.widget.textbox
+    }
+    
+    local covid_imagewidget = wibox.widget {
+        image   = ICONS_DIR .. "logo-covid.png",
+        resize  = true,
+        opacity = .75,
+        halign  = "center",
+        valign  = "center",
+        widget  = wibox.widget.imagebox
+    }
+
+    local covid_widget = wibox.widget {
+        miroir,
+        -- covid_imagewidget,
+        covid_textwidget,
+        layout = wibox.layout.stack
+    }
 
     if args == nil then
-        return covid_widget
+        return widget.covid_widget
     end
-
+    
     args = args or {}
     args.departement          = args.departement or "Maine-et-Loire"
-    args.indicateur           = args.indicateur  or "reanimation"
     args.from_date            = args.from_date   or "20200228"
     args.square_size          = args.square_size or 4
     args.fg                   = args.fg          or "#ffffff"
@@ -134,7 +156,7 @@ local function worker(args)
             date = os.date("%a %d %b %Y",
                            os.time({year=year, month=month, day=day}))
             awful.tooltip {
-                text = string.format("%s %s : %s", args.indicateur, date, count),
+                text = string.format("%s %s : %s", widget.indicateurs[widget.indexIndicateur], date, count),
                 mode = "mouse"
             }:add_to_object(square)
         end
@@ -142,21 +164,21 @@ local function worker(args)
         return square
     end
 
-    local col = {layout = wibox.layout.fixed.vertical}
-    local row = {layout = wibox.layout.fixed.horizontal}
-    -- début le lundi
-    local day_idx = 6 - (os.date('%w') - 1)%7
-    for _ = 1, day_idx do
-        table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
-    end
-
     local update_widget = function(_, sortie, _, _, _)
-
+        --
         local tab = {}
         local max = tonumber(os.date("%Y%m%d"))
         local min = max
         local effectifMax = 0
 
+        local col = {layout = wibox.layout.fixed.vertical}
+        local row = {layout = wibox.layout.fixed.horizontal}
+        -- début le lundi
+        local day_idx = 6 - (os.date('%w') - 1)%7
+        for _ = 1, day_idx do
+            table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
+        end
+        --         show_warning(tostring(day_idx))
         -- parcours date par date, détermination des dates limites
         -- et de l'effectif maximal -> blanc sur la grille
         for resultatDuJour in sortie:gmatch("[^\r\n]+") do
@@ -214,18 +236,38 @@ local function worker(args)
     
     covid_textwidget:set_markup("<span foreground='" .. args.fg .. "'>Covid-19 "
                                 .. args.departement .. "</span>")
-    awful.spawn.easy_async(string.format(COMMAND, args.departement, args.indicateur),
+    --
+    local indicateur = widget.indicateurs[widget.indexIndicateur]
+    awful.spawn.easy_async(string.format(widget.commande, args.departement, indicateur),
                            function(stdout,stderr,reason,exit_code)
-                               -- show_warning(stderr)
                                update_widget(covid_widget, stdout)
                            end
+    )
+
+    covid_widget:buttons(
+        gears.table.join(
+            awful.button({}, 3,
+                         function()
+                             widget.indexIndicateur = 1 + widget.indexIndicateur  % #widget.indicateurs
+                             indicateur = widget.indicateurs[widget.indexIndicateur]
+    awful.spawn.easy_async(string.format(widget.commande, args.departement, indicateur),
+                           function(stdout,stderr,reason,exit_code)
+                               update_widget(covid_widget, stdout)
+                           end
+    )
+                         end
+            )
+        )
     )
 
     return covid_widget
 end
 
-return setmetatable(covid_widget, {
-                        __call = function(_, args)
-                            return worker(args)
-                        end
-})
+
+return widget
+
+-- return setmetatable(widget, {
+--                         __call = function(_, args)
+--                             return widget.worker(args)
+--                         end
+-- })
