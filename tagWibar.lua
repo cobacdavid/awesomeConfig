@@ -93,7 +93,6 @@ for s in screen do
                       }
         )
         --
-        s.mypromptbox = awful.widget.prompt()
         --
         s.mywibar = awful.wibar(
             {
@@ -104,6 +103,10 @@ for s in screen do
         )
         --
         local left_layout = wibox.layout.fixed.horizontal()
+        mypromptbox = awful.widget.prompt()
+        left_layout:add(mypromptbox)
+        left_layout:add(separateur())
+        --
         if screen.count() <= 2 then 
             local heureW = heure({
                     width = 100,
@@ -131,23 +134,48 @@ for s in screen do
         end
         --
         left_layout:add(separateur())
-        left_layout:add(volumemaster())
+        left_layout:add(volumemaster({
+                                text = "volume"
+        }))
         left_layout:add(separateur())
         if ordinateur == "laptop" then
-            left_layout:add(batt())
+            battwm = wmatrice({
+                    COMMANDE = 'bash -c "cat /sys/class/power_supply/BAT0/capacity"',
+                    title = '<b>batt</b>',
+                    from_color = "#f00",
+                    to_color = "#0f0"
+--                    fun = function(s)
+--                        return valeur
+--                    end
+            })
+            left_layout:add(battwm)
             left_layout:add(separateur())
         end
-        left_layout:add(infos())
         left_layout:add(separateur())
-        left_layout:add(chrono())
+        local twm = wmatrice({
+                COMMANDE = [[ bash -c "sensors | grep Package | cut -d \" \" -f 5-6" ]],
+                title = '<b>CPU °C</b>',
+                fun = function(s)
+                    local valeur = s:match("%d+")
+                    return valeur
+                end
+        })
+        left_layout:add(twm)
         left_layout:add(separateur())
-        -- local mto = meteo({
-        --         max_value = 35,
-        --         color = "#fff",
-        --         lat = 47.4667,
-        --         lon = -0.55
-        -- })
-        -- left_layout:add(mto)
+        local rwm = wmatrice({
+                COMMANDE = 'bash -c "free | grep Mem"',
+                title = '<b>RAM %</b>',
+                fun = function(s)
+                    local total, used, free, shared, buff_cache, available
+                                               = s:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
+                    local valeur = math.floor(100 * (total - available)/total + .5)
+                    return valeur
+                end
+        })
+        left_layout:add(rwm)
+        left_layout:add(separateur())
+
+        --
         local mto = weather_widget({
             api_key     = idMeteo.api_key,
             coordinates = {47.4667, -0.55},
@@ -161,41 +189,14 @@ for s in screen do
             show_daily_forecast = true,
         })
         left_layout:add(mto)
+        --
         left_layout:add(separateur())
-        local ak = flower_pbar({
-                sectors      = 5,
-                sector_angle = 68,
-                inner_radius = 7, 
-                line_width   = 1,
-                fg           = "#fff",
-                color        = "#fff",
-                color_type   = "solid",
-                font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
-                font_size    = 9,
-                text         = function(v, m, M)
-                    return tostring(math.floor(v *100))
-                end
-        })
-        gears.timer({
-                timeout   = 10,
-                call_now  = true,
-                autostart = true,
-                callback  = function()
-                    local commande = "free |grep Mem"
-                    awful.spawn.easy_async_with_shell(
-                        commande, function(stdout)
-                            local total, used, free, shared, buff_cache, available
-                                = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
-                            -- fu.montre((total-free)/total)
-                            ak:set_value((total - available)/total)
-                    end)
-                end
-        })
-        left_layout:add(ak)
+        --
+        left_layout:add(chrono())
         left_layout:add(separateur())
         local gcw = github_contributions_widget({
                 username             = "cobacdavid",
-                theme                = "standard",
+                theme                = "dracula",
                 with_border          = true,
                 square_size          = 4,
                 color_of_empty_cells = "#fff2",
@@ -221,21 +222,26 @@ for s in screen do
         left_layout:add(fichiers({
                             path ="/home/david/travail/david/production/lycee/informatique/nsi",
                             color_of_empty_cells = "#0000ff55",
-                            from_date = "20200901",
-                            n_colors = 50
+                            from_date            = "20200901",
+                            n_colors             = 10
         }))
-        --left_layout:add(matrice({
-        --                        color_of_empty_cells = "#fff2",
-        --                        width = 100
-        --}))
         left_layout:add(separateur())
-        left_layout:add(s.mypromptbox)
+        local polar_id = require("widgets.polar.polar_id")
+        left_layout:add(polar({
+                                polar_id             = polar_id,
+                                color_of_empty_cells = "#0f02",
+                                from_color           = "#0f08",
+                                from_date            = "20201014",
+                                n_colors             = 15
+        }))
+        left_layout:add(separateur())
         --
         local right_layout = wibox.layout.fixed.horizontal()
         local cvd = covid({
                  departement          = "Maine-et-Loire",
                  -- "hospitalises", "reanimation", "nouvellesReanimations",
                  -- "deces", "gueris", "nouvellesHospitalisations"
+                 -- indicateur           = "nouvellesHospitalisations",
                  indicateur           = "nouvellesHospitalisations",
                  theme                = "gradient",
                  square_size          = 4,
@@ -459,3 +465,44 @@ for s in screen do
 end
 
 
+        -- left_layout:add(infos())
+        -- left_layout:add(separateur())
+        -- local ak = flower_pbar({
+        --         sectors      = 5,
+        --         sector_angle = 68,
+        --         inner_radius = 7, 
+        --         line_width   = 1,
+        --         fg           = "#fff",
+        --         color        = "#fff",
+        --         color_type   = "solid",
+        --         font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
+        --         font_size    = 9,
+        --         text         = function(v, m, M)
+        --             return tostring(math.floor(v *100))
+        --         end
+        -- })
+        -- gears.timer({
+        --         timeout   = 10,
+        --         call_now  = true,
+        --         autostart = true,
+        --         callback  = function()
+        --             local commande = "free |grep Mem"
+        --             awful.spawn.easy_async_with_shell(
+        --                 commande, function(stdout)
+        --                     local total, used, free, shared, buff_cache, available
+        --                         = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
+        --                     -- fu.montre((total-free)/total)
+        --                     ak:set_value((total - available)/total)
+        --             end)
+        --         end
+        -- })
+        -- left_layout:add(ak)
+        --left_layout:add(ram({
+        --                        rect_width = 2,
+        --                        rect_height = 6
+        --}))
+        --left_layout:add(separateur())
+        --left_layout:add(tempM({
+        --                        rect_width = 2,
+        --                        rect_height = 6
+        --}))

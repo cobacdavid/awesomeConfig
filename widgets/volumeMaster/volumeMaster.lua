@@ -2,6 +2,16 @@ local gears = require("gears")
 local wibox = require("wibox")
 local awful = require("awful")
 --
+local widget_themes = require("widgets.themes_matrice.themes")
+--
+local function niveau(effectif, limites)
+    local i = 1
+    while i <= #limites and limites[i] < effectif do
+        i = i + 1
+    end
+    return i-1
+end
+--
 local widget = {}
 
 widget.sortie   = " Master "
@@ -49,22 +59,39 @@ function widget.createWidget(args)
     --
     local width      = args.width         or 150
     local bshape     = args.barshape      or gears.shape.rounded_rect
-    local bheight    = args.barheight     or 1
+    local bheight    = args.barheight     or 10
     local bcolortype = args.barcolortype  or "gradient"
     -- local bcolor     = args.barcolor      or couleurBarre(bcolortype, volumeactuel, MIN, MAX)
     local hcolortype = args.handcolortype or "gradient"
+    local from_color = args.from_color  or "#f0f"
+    local to_color   = args.to_color    or "#f00"
+    local n_colors   = args.n_colors or 100
     -- local hcolor     = args.handcolor     or bcolor
     local hradius    = args.handradius    or 5
-    local ttext      = args.texttext      or "master"
-    local tjustify   = args.textjustify   or "center"
+    local ttext      = args.text          or "master"
+    local tjustify   = args.justify       or "center"
     local tvoffset   = args.textvoffset   or 5
     --
+    local tabTheme
+    if hcolortype == "gradient" then
+        tabTheme = widget_themes.gradtheme(n_colors,
+                                           from_color,
+                                           to_color)
+    else
+        tabTheme = widget_themes.gtheme(100)
+    end
+    local k = 100 / (n_colors - 2)
+    local limits = {0}
+    for i = 1, n_colors-2 do
+        table.insert(limits, math.floor(i * k))
+    end
     -- slider
     local volumemasterControle = wibox.widget({
             forced_width        = width,
             bar_shape           = bshape,
             bar_height          = bheight,
-            bar_color           = bcolor,
+            bar_color           = "#fff2",
+            bar_active_color    = bcolor,
             -- handle_shape        = gears.shape.circle,
             handle_shape        = function(cr, w, h)
                 gears.shape.circle (cr, w, h, hradius)
@@ -82,8 +109,8 @@ function widget.createWidget(args)
     })
     -- à afficher
     local volumemaster = wibox.layout({
-            volumemasterTexte,
             volumemasterControle,
+            volumemasterTexte,
             vertical_offset = tvoffset,
             layout = wibox.layout.stack
     })
@@ -94,17 +121,20 @@ function widget.createWidget(args)
             local v = volumemasterControle.value
             local command='amixer set' .. widget.sortie  .. v
             awful.spawn.with_shell(command)
-            local couleur = couleurBarre(hcolortype, v, MIN, MAX)
+            local couleur = tabTheme[niveau(math.floor(100*v/MAX), limits)]-- couleurBarre(hcolortype, v, MIN, MAX)
             volumemasterControle.handle_color = couleur
-            volumemasterControle.bar_color    = couleur
+            volumemasterControle.bar_active_color    = couleur
         end
     )
     --
-    volumemasterTexte:connect_signal(
-        "button::press",
-        function()
-            volumemasterControle.value = 0
-        end
+    volumemaster:buttons(
+        gears.table.join(
+            awful.button({}, 3,
+                function()
+                    volumemasterControle.value = 0
+                end
+            )
+        )
     )
     --
     volumemasterControle.value = tonumber(readResult(widget.com_get))

@@ -257,7 +257,7 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "r",
         function ()
             local s = screen.primary
-            s.mypromptbox:run()
+            mypromptbox:run()
         end,
         {description = "run prompt", group = "launcher"}
     ),
@@ -268,7 +268,7 @@ globalkeys = gears.table.join(
             awful.prompt.run(
                 {
                     prompt = "Run Lua code : ",
-                    textbox = s.mypromptbox.widget,
+                    textbox = mypromptbox.widget,
                     exe_callback = awful.util.eval,
                     history_path = awful.util.get_cache_dir() .. "/history_eval"
                 }
@@ -282,13 +282,13 @@ globalkeys = gears.table.join(
             awful.prompt.run(
                 {
                     prompt = "Expression Rpn : ",
-                    textbox = s.mypromptbox.widget,
+                    textbox = mypromptbox.widget,
                     exe_callback = function(expression)
                         local commande = "python3 " .. myhome .. ".config/awesome/scripts/rpnEval.py '" .. expression .. "'"
                         awful.spawn.easy_async_with_shell(commande,
                                                           function(stdout, stderr, reason, exit_code)
-                                                              s.mypromptbox.widget.font = "Inconsolata 20"
-                                                              s.mypromptbox.widget:set_text(expression .. " " .. stdout)
+                                                              promptbox.widget.font = "Inconsolata 20"
+                                                              promptbox.widget:set_text(expression .. " " .. stdout)
                         end)
                     end,
                     history_path = awful.util.get_cache_dir() .. "/expression_eval"
@@ -303,7 +303,7 @@ globalkeys = gears.table.join(
             local s = screen.primary
             awful.prompt.run {
                 prompt  = "Recherche Web Google : " ,
-                textbox = s.mypromptbox.widget,
+                textbox = promptbox.widget,
                 exe_callback = function (recherche)
                     if recherche:len() == 0 then
                         url = " '" .. urlGoogle .. "'"
@@ -323,7 +323,7 @@ globalkeys = gears.table.join(
             local s = screen.primary
             awful.prompt.run {
                 prompt = "Secret : ",
-                textbox = s.mypromptbox.widget,
+                textbox = promptbox.widget,
                 exe_callback = function (t)
                     local commande = "echo " .. t
                         .. " |md5sum |cut -d ' ' -f 1"
@@ -343,7 +343,7 @@ globalkeys = gears.table.join(
             local s = screen.primary
             awful.prompt.run({
                     prompt = "Thème fond : ",
-                    textbox = s.mypromptbox.widget,
+                    textbox = mypromptbox.widget,
                     exe_callback = function(t)
                         ppeintNasa.themeFond = t
                     end,

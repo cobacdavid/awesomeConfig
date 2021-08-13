@@ -120,18 +120,13 @@ function widget.sliderBrightnessWidget(args)
     args                    = args                   or {}
     local width             = args.width             or 150
     local handle_color_type = args.handle_color_type or "nuance"
-    local bar_height        = args.bar_height        or 1
+    local bar_height        = args.bar_height        or 10
     local night_mode        = args.night_mode        or 0.8
     --
     -- complete widget
     local widgetComplet = wibox.widget(
         {
             {
-                {
-                    id     = "texte",
-                    align  = "center",
-                    widget = wibox.widget.textbox
-                },
                 {
                     id           = "slider",
                     bar_shape    = gears.shape.rounded_rect,
@@ -142,8 +137,13 @@ function widget.sliderBrightnessWidget(args)
                     maximum      = widget.limits.MAX,
                     widget       = wibox.widget.slider,
                 },
+                {
+                    id     = "texte",
+                    align  = "center",
+                    widget = wibox.widget.textbox
+                },
                 id              = "stack",
-                vertical_offset = 0,
+                vertical_offset = 5,
                 layout          = wibox.layout.stack
             },
             forced_width = width,
@@ -178,16 +178,10 @@ function widget.sliderBrightnessWidget(args)
         gears.table.join(
             awful.button({}, 2,
                 function()
-                    widget.nightMode = true
+                    widget.nightMode = not widget.nightMode
                     local iface = widget.interfaces[widget.activeIndex]
-                    widget.applyNightMode(iface, night_mode)
-                end
-            ),
-            awful.button({modkey}, 2,
-                function()
-                    widget.nightMode = false
-                    local iface = widget.interfaces[widget.activeIndex]
-                    widget.applyNightMode(iface, 1)
+                    local mode = widget.nightMode and night_mode or 1
+                    widget.applyNightMode(iface, mode)
                 end
             ),
             awful.button({}, 3,

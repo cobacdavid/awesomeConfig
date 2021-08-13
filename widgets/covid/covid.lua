@@ -144,7 +144,8 @@ local function worker(args)
 
     local col = {layout = wibox.layout.fixed.vertical}
     local row = {layout = wibox.layout.fixed.horizontal}
-    local day_idx = math.floor(6 - os.date('%w'))
+    -- début le lundi
+    local day_idx = 6 - (os.date('%w') - 1)%7
     for _ = 1, day_idx do
         table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
     end

@@ -6,9 +6,9 @@ local widget_themes = require("widgets.themes_matrice.themes")
 
 local HOME_DIR = os.getenv("HOME")
 local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
-local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/fichiers/'
+local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/polar/'
 
-local COMMANDE = 'bash -c "' .. WIDGET_DIR .. 'fichiers.sh %s %s %s"'
+local COMMANDE = 'bash -c "' .. WIDGET_DIR .. 'polar.sh %s"'
 
 local function niveau(effectif, limites)
     local i = 1
@@ -33,7 +33,7 @@ local miroir = wibox.widget{
     widget = wibox.container.mirror
 }
 
-local fichiers_textwidget = wibox.widget {
+local polar_textwidget = wibox.widget {
     align   = 'right',
     valign  = 'bottom',
     opacity = .75,
@@ -41,7 +41,7 @@ local fichiers_textwidget = wibox.widget {
     widget  = wibox.widget.textbox
 }
 
-local fichiers_imagewidget = wibox.widget {
+local polar_imagewidget = wibox.widget {
     -- image   = ICONS_DIR .. "logo-covid.png",
     resize  = true,
     opacity = .75,
@@ -50,42 +50,45 @@ local fichiers_imagewidget = wibox.widget {
     widget  = wibox.widget.imagebox
 }
 
-local fichiers_widget = wibox.widget {
+local polar_widget = wibox.widget {
     miroir,
     -- fichiers_imagewidget,
-    fichiers_textwidget,
+    polar_textwidget,
     layout = wibox.layout.stack
 }
 
 local function show_warning(message)
     naughty.notify{
         preset = naughty.config.presets.critical,
-        title = 'Fichiers Widget',
+        title = 'Widget Polar',
         text = message}
 end
 
 local function worker(args)
 
-    if args == nil then
-        return fichiers_widget
+    if args == nil or args.polar_id == nil then
+        return polar_widget
     end
 
     -- show_warning("OK")
     args = args or {}
-
+    args.polar_id             = args.polar_id
     args.path                 = args.path        or HOME_DIR
     args.from_date            = args.from_date   or "20210101"
     args.square_size          = args.square_size or 4
-    args.fg                   = args.fg          or "#ffffff"
+    args.fg                   = args.fg          or "#fff"
     args.color_of_empty_cells = args.color_of_empty_cells
     args.with_border          = args.with_border
     args.margin_top           = args.margin_top  or 1
     -- two themes : grey or gradient
     args.theme                = args.theme       or 'gradient'
     args.n_colors             = args.n_colors    or 4
-    args.from_color           = args.from_color  or "#ffff00"
-    args.to_color             = args.to_color    or "#ff0000"
+    args.from_color           = args.from_color  or "#000"
+    args.to_color             = args.to_color    or "#f00"
 
+    -- local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
+    -- args.from_date = y .. "-" .. m .. "-" .. d
+        
     local tabTheme
     if args.theme == "gradient" then
         tabTheme = widget_themes.gradtheme(args.n_colors,
@@ -123,7 +126,7 @@ local function worker(args)
         if date ~= nil then
             date = os.date("%a %d %b %Y", date2timestamp(date))
             awful.tooltip {
-                text = string.format("%s : %s", date, count),
+                text = string.format("%s : %s", date, math.floor(count + 1723)),
                 mode = "mouse"
             }:add_to_object(square)
         end
@@ -131,17 +134,18 @@ local function worker(args)
         return square
     end
 
+    local col = {layout = wibox.layout.fixed.vertical}
+    local row = {layout = wibox.layout.fixed.horizontal}
+       -- début le lundi
+    local day_idx = 6 - (os.date('%w') - 1)%7
+    for _ = 1, day_idx do
+        table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
+    end
+
     local update_widget = function(_, sortie, _, _, _)
-        local col = {layout = wibox.layout.fixed.vertical}
-        local row = {layout = wibox.layout.fixed.horizontal}
-        -- début le lundi
-        local day_idx = 6 - (os.date('%w') - 1)%7
-        for _ = 1, day_idx do
-            table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
-        end
         local tab = {}
         --
-        local k = 100 / (args.n_colors - 2)
+        local k = 5000 / (args.n_colors - 2)
         local limits = {0}
         for i = 1, args.n_colors-2 do
             table.insert(limits, math.floor(i * k))
@@ -151,9 +155,9 @@ local function worker(args)
         for resultats in sortie:gmatch("[^\r\n]+") do
             local date, effectif = resultats:match("(.*) (.*)")
             if date2timestamp(date) >= date2timestamp(args.from_date) then
-                -- show_warning(tostring(date) .. tostring(effectif))
                 if effectif ~= nil then
                     effectif = tonumber(effectif)
+                    effectif = (effectif < 1800) and 0 or (effectif - 1723)
                     tab[date] = effectif
                     --
                     if day_idx %7 == 0 then
@@ -174,26 +178,19 @@ local function worker(args)
                 layout = wibox.container.margin
         })
 
-        fichiers_textwidget:set_markup("<b>" .. "fichiers" .. "</b>")
+        polar_textwidget:set_markup("<b>" .. "m430" .. "</b>")
     end
 
-    local aujourdhui = os.date("%Y%m%d", os.time())
-    local CMD1 = string.format(COMMANDE, args.from_date, aujourdhui, args.path)
-    awful.spawn.easy_async(CMD1,
+    awful.spawn.easy_async(string.format(COMMANDE, args.polar_id),
                            function(stdout, stderr, reason, exit_code)
-                               local CMD2 = 'bash -c "tac ' .. stdout .. ' "'
-                               awful.spawn.easy_async(CMD2,
-                                                      function(stdout)
-                                                          update_widget(fichiers_widget, stdout)
-                                                      end
-                               )
+                               update_widget(polar_widget, stdout)
                            end
     )
 
-    return fichiers_widget
+    return polar_widget
 end
 
-return setmetatable(fichiers_widget, {
+return setmetatable(polar_widget, {
                         __call = function(_, args)
                             return worker(args)
                         end

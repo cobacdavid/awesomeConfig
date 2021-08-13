@@ -98,15 +98,14 @@ calendrier       = require("widgets.calendrier.calendrier")
 calendrierMois   = require("widgets.calendrier.calendrierMois")
 infos            = require("widgets.infos.infos")
 chrono           = require("widgets.chrono.chrono")
-if ordinateur == "laptop" then
-   batt          = require("widgets.batterie.batterie")
-end
 lastfm           = require("widgets.lastfm-scrobbles.lastfm-scrobbles")
 btg              = require("widgets.batterieGraph.batterieGraph")
 meteo            = require("widgets.meteo.meteo")
 covid            = require("widgets.covid.covid")
 matrice          = require("widgets.matrice.matrice")
 fichiers         = require("widgets.fichiers.fichiers")
+polar            = require("widgets.polar.polar")
+wmatrice         = require("widgets.widgetMatrice.widgetMatrice")
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
 ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
