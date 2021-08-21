@@ -18,18 +18,11 @@ local widget_themes = require("widgets.themes_matrice.themes")
 --
 local HOME_DIR = os.getenv('HOME')
 local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
+local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/lastfm-scrobbles/'
 --
---
-local COMMAND1 = [[ bash -c "curl -s http://ws.audioscrobbler.com/2.0/\?method\=user.getrecenttracks\&user\=%s\&api_key\=%s\&page\=1\&from\=%s\&limit\=200\&format\=json | jq -r '.recenttracks.\"@attr\".totalPages, .recenttracks.track[].date.uts'" ]]
-local COMMAND2 = [[ bash -c "i=2
-while [ $i -le %s ]
-do
-    curl -s http://ws.audioscrobbler.com/2.0/\?method\=user.getrecenttracks\&user\=%s\&api_key\=%s\&page\=${i}\&from\=%s\&limit\=200\&format\=json | jq -r '.recenttracks.track[].date.uts'
-    ((i++))
-done"
-]]
-local number_of_max_downloaded_pages = 10
-
+-- retrieve data from local save
+COMMAND = [[ bash -c "cat ]] .. WIDGET_DIR ..
+    [[donnees/%s.json | jq  -r '.[].date.uts'"]]
 
 local function niveau(effectif, limites)
     local i = 1
@@ -47,18 +40,6 @@ local function hier(date)
     return os.date("%Y%m%d", j)
 end
 
-local function ilyaunan()
-    local aujourdhui = os.date("*t")
-    local unanavant  = os.date("%Y%m%d",
-                               os.time({
-                                       year  = aujourdhui.year-1,
-                                       month = aujourdhui.month,
-                                       day   = aujourdhui.day
-                               })
-    )
-    return unanavant
-end
-
 local ecoute_widget = wibox.widget{
     reflection = {
         horizontal = true,
@@ -70,7 +51,7 @@ local ecoute_widget = wibox.widget{
 local lastfm_textwidget = wibox.widget {
     align  = 'right',
     valign = 'bottom',
-    opacity = .75,
+    opacity = .45,
     font = "Arial 8",
     widget = wibox.widget.textbox
 }
@@ -78,7 +59,7 @@ local lastfm_textwidget = wibox.widget {
 local lastfm_imagewidget = wibox.widget {
     image   = ICONS_DIR .. "logo-lastfm.png",
     resize  = true,
-    opacity = .5,
+    opacity = .3,
     halign  = "center",
     widget  = wibox.widget.imagebox
 }
@@ -92,10 +73,13 @@ local lastfm_widget = wibox.widget {
 
 local function leWidget(args)
 
+    if args == nil then
+        return lastfm_widget
+    end
+
     args = args or {}
-    args.username             = args.username
-    args.api_key              = args.api_key
-    args.from_date            = args.from_date   or ilyaunan()
+    args.year                 = args.year
+    -- args.from_date            = args.from_date   or ilyaunan()
     args.square_size          = args.square_size or 4
     args.color_of_empty_cells = args.color_of_empty_cells
     args.with_border          = args.with_border
@@ -113,10 +97,11 @@ local function leWidget(args)
     else
         tabTheme = widget_themes.gtheme(args.n_colors)
     end
-    
 
-    local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
-    args.from_date = os.time({year=y, month=m, day=d})
+    if args.year ~= nil then
+        args.from_date = tostring(args.year) .. "0101"
+        args.to_date   = tostring(args.year) .. "1231"
+    end
 
     if args.with_border == nil then args.with_border = true end
 
@@ -155,32 +140,23 @@ local function leWidget(args)
         return square
     end
 
-
-    local col = {layout = wibox.layout.fixed.vertical}
-    local row = {layout = wibox.layout.fixed.horizontal}
-   -- début le lundi
-    local day_idx = 6 - (os.date('%w') - 1)%7
-    for _ = 1, day_idx do
-        table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
-    end
-
     local update_widget = function(_, sortie, _, _, _)
 
         local tab = {}
-        local max = tonumber(os.date("%Y%m%d"))
-        local min = max
+        local max = tonumber(args.to_date)
+        local min = tonumber(args.from_date)
         local total = 0
         local effectifMax = 0
 
         for ecoute in sortie:gmatch("[^\r\n]+") do
             -- on supprime la potentielle chanson en cours d'écoute
-            -- et le nombre de pages à téélcharger qui est resté
+            -- et le nombre de pages à télécharger qui est resté
             -- en tête des résultats
             if ecoute ~= "null" and tonumber(ecoute) > 1000000 then
                 local date = tonumber(os.date("%Y%m%d", ecoute))
-                if date < min then
-                    min = date
-                end
+                -- if date < min then
+                --    min = date
+                -- end
                 tab[date] = tab[date] == nil and 1 or tab[date] + 1
                 if tab[date] > effectifMax then
                     effectifMax = tab[date]
@@ -197,7 +173,19 @@ local function leWidget(args)
         for i = 1, args.n_colors-2 do
             table.insert(limits, math.floor(k ^ i))
         end
-
+        --
+        local col = {layout = wibox.layout.fixed.vertical}
+        local row = {layout = wibox.layout.fixed.horizontal}
+        -- début le lundi
+        local y, m, d = args.to_date:match("(%d%d%d%d)(%d%d)(%d%d)")
+        local day_idx = 6 - (os.date('%w',
+                                     os.time({year=y, month=m, day=d})
+                                    ) - 1)%7
+        -- naughty.notify({text=tostring(day_idx) .. temp})
+        for _ = 1, day_idx do
+            table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
+        end
+        --
         local jour = max
         while jour >= min do
             tab[jour] = tab[jour] == nil and 0 or tab[jour]
@@ -211,52 +199,35 @@ local function leWidget(args)
             day_idx = day_idx + 1
             jour = tonumber(hier(jour))
         end
+        table.insert(row, col)
         
         ecoute_widget:setup({
                 row,
                 top = args.margin_top,
                 layout = wibox.container.margin
         })
-
-        lastfm_textwidget:set_markup("<b>" .. tostring(total) .. " scrobbles</b>")
+        --
+        local texte = "<b>"
+        texte = args.year == nil and texte or texte .. tostring(args.year) .. " : "
+        texte = texte .. tostring(total) .. " scrobbles</b>"
+        lastfm_textwidget:set_markup(texte)
     end
-
-    local function requetes(user, apikey, from_date)
-        -- attention la première valeur du tableau resultats
-        -- n'est pas une date mais un effectif de pages ->
-        -- à ne pas interpréter comme une date
-        local resultats
-
-        local commande = string.format(COMMAND1, user, apikey, from_date)
-        awful.spawn.easy_async(commande,
-                               function(stdout)
-                                   resultats = stdout
-                                   -- récupération du nombre de pages nécessaires
-                                   local tP
-                                   for totalPages in resultats:gmatch("[^\r\n]+") do
-                                       tP = tonumber(totalPages)
-                                       break
-                                   end
-                                   -- limite du nombre de téléchargements
-                                   if tP <  number_of_max_downloaded_pages then
-                                       commande = string.format(COMMAND2, tP, user, apikey, from_date)
-                                       awful.spawn.easy_async(
-                                           commande,
-                                           function(stdout2, stderr, reason, exit_code)
-                                               resultats = resultats .. stdout2
-                                               update_widget(lastfm_widget, resultats)
-                                           end
-                                       )
-                                   end
-                               end
-        )
-    end
-
-    if args.api_key ~= nil then
-        requetes(args.username, args.api_key, args.from_date)
-    end
-
-
+    --
+    local cmd_maj = [[ bash -c "]] .. WIDGET_DIR ..
+        "mise_a_jour_annee.sh " .. tostring(os.date("%Y")) .. [["]]
+    -- naughty.notify({text=cmd_maj})
+    awful.spawn.easy_async(cmd_maj,
+                           function(stdout)
+                                   local commande = string.format(COMMAND, args.year)
+                                   awful.spawn.easy_async(commande,
+                                                          function(stdout)
+                                                              local resultats = stdout
+                                                              update_widget(lastfm_widget, resultats)
+                                                          end
+                                   )
+                           end
+    )
+    
     return lastfm_widget
 end
 

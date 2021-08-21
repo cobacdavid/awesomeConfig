@@ -1,3 +1,15 @@
+-------------------------------------------------
+-- author: David Cobac
+-- twitter: @david_cobac
+-- github: https://github.com/cobacdavid
+-- date: 2021
+-- copyright: CC-BY-NC-SA
+-------------------------------------------------
+-------------------------------------------------
+-- some parts from awesome wm
+-- distribution
+-- copyright ??
+-------------------------------------------------
 local gears = require("gears")
 local wibox = require("wibox")
 local awful = require("awful")
@@ -96,7 +108,7 @@ function widget.createWidget(args)
             handle_shape        = function(cr, w, h)
                 gears.shape.circle (cr, w, h, hradius)
             end,
-            handle_color        = hcolor,
+            -- handle_color        = hcolor,
             minimum             = MIN,
             maximum             = MAX,
             widget              = wibox.widget.slider,

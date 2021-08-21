@@ -9,6 +9,7 @@
 -- ditribution
 -- copyright ??
 -------------------------------------------------
+local fu = require("fonctionsUtiles")
 -- désactivation de ces deux nouvelles fonctionnalités
 awful.mouse.snap.edge_enabled = false
 awful.mouse.snap.client_enabled = false
@@ -281,14 +282,30 @@ globalkeys = gears.table.join(
             local s = screen.primary
             awful.prompt.run(
                 {
-                    prompt = "Expression Rpn : ",
+                    prompt = "RPN : ",
                     textbox = mypromptbox.widget,
                     exe_callback = function(expression)
                         local commande = "python3 " .. myhome .. ".config/awesome/scripts/rpnEval.py '" .. expression .. "'"
                         awful.spawn.easy_async_with_shell(commande,
                                                           function(stdout, stderr, reason, exit_code)
-                                                              promptbox.widget.font = "Inconsolata 20"
-                                                              promptbox.widget:set_text(expression .. " " .. stdout)
+                                                              local texte = expression .. " -> " .. stdout
+                                                              texte  = texte:match("(.*)\n")
+                                                              local resultat = stdout:match("%[(.*)]")
+                                                              naughty.notify({
+                                                                      title="Expression RPN",
+                                                                      preset=naughty.config.presets.warning,
+                                                                      timeout=0,
+                                                                      bg="#0008",
+                                                                      fg="#f008",
+                                                                      font="Inconsolata 30",
+                                                                      shape=fu.arrondiPetit,
+                                                                      text=texte
+                                                              })
+                                                              -- mypromptbox.widget.font = "Inconsolata 20"
+                                                              -- mypromptbox.widget:set_text(texte)
+                                                              local commande  = "bash -c 'echo -n " .. resultat ..
+                                                                  "|xclip -selection p'"
+                                                              awful.spawn(commande)
                         end)
                     end,
                     history_path = awful.util.get_cache_dir() .. "/expression_eval"
@@ -303,7 +320,7 @@ globalkeys = gears.table.join(
             local s = screen.primary
             awful.prompt.run {
                 prompt  = "Recherche Web Google : " ,
-                textbox = promptbox.widget,
+                textbox = mypromptbox.widget,
                 exe_callback = function (recherche)
                     if recherche:len() == 0 then
                         url = " '" .. urlGoogle .. "'"
@@ -323,7 +340,7 @@ globalkeys = gears.table.join(
             local s = screen.primary
             awful.prompt.run {
                 prompt = "Secret : ",
-                textbox = promptbox.widget,
+                textbox = mypromptbox.widget,
                 exe_callback = function (t)
                     local commande = "echo " .. t
                         .. " |md5sum |cut -d ' ' -f 1"

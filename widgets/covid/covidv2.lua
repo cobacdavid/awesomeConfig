@@ -10,7 +10,6 @@
 -- copyright ??
 -------------------------------------------------
 --
--- à partir des données de https://github.com/florianzemma/CoronavirusAPI-France
 --
 local awful         = require("awful")
 local naughty       = require("naughty")
@@ -18,8 +17,9 @@ local wibox         = require("wibox")
 local gears         = require("gears")
 local widget_themes = require("widgets.themes_matrice.themes")
 
-local HOME_DIR = os.getenv("HOME")
-local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
+local HOME_DIR   = os.getenv("HOME")
+local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/covid/'
+local ICONS_DIR  = HOME_DIR .. '/.config/awesome/icons/'
 --
 --
 local function indexInTable(element, t)
@@ -58,17 +58,25 @@ end
 --
 widget = {}
 widget.indicateurs = {
-    "nouvellesHospitalisations",
-    "hospitalises",
-    "reanimation",
-    "nouvellesReanimations",
-    "deces",
-    "gueris"
+    hosp         = "total hospitalisés", -- OK
+    incid_hosp   = "nouveaux hospitalisés", -- OK
+    rea          = "total réanimation", -- OK
+    incid_rea    = "nouveaux réanimation", -- OK
+    rad          = "total guéris", -- OK
+    incid_rad    = "nouveaux guéris", -- OK
+    dchosp       = "total décès hôpital", -- OK
+    incid_dchosp = "nouveaux décès hôpital", -- OK
+    pos          = "cas positifis -1", -- OK
+    pos_7j       = "cas positifs -7", -- OK
+    tx_pos       = "taux + test", -- OK
+    tx_incid     = "taux incidence", -- OK
+    TO           = "taux occupation", -- OK
+    R            = "évolution du R0" -- OK
 }
+
+widget.keysIndicateurs = gears.table.keys(widget.indicateurs)
 widget.indexIndicateur = 1
-widget.commande = [[bash -c "curl -s ]]
-    .. [[ https://coronavirusapi-france.vercel.app/AllDataByDepartement\?Departement\=%s ]]
-    .. [[ | jq -r '.allDataByDepartement[] | .date + \" \" +(.%s|tostring)'" ]]
+widget.commande = [[bash -c ]]
 
 
 function widget.worker(args)
@@ -111,7 +119,7 @@ function widget.worker(args)
     
     args = args or {}
     args.departement          = args.departement or "Maine-et-Loire"
-    args.from_date            = args.from_date   or "20200228"
+    args.from_date            = args.from_date   or "20200318"
     args.square_size          = args.square_size or 4
     args.fg                   = args.fg          or "#ffffff"
     args.color_of_empty_cells = args.color_of_empty_cells
@@ -170,7 +178,10 @@ function widget.worker(args)
             date = os.date("%a %d %b %Y",
                            os.time({year=year, month=month, day=day}))
             awful.tooltip {
-                text = string.format("%s %s : %s", widget.indicateurs[widget.indexIndicateur], date, count),
+                text = string.format("%s %s : %s",
+                                     widget.indicateurs[widget.keysIndicateurs[widget.indexIndicateur]],
+                                     date,
+                                     math.floor(count)),
                 mode = "mouse"
             }:add_to_object(square)
         end
@@ -192,27 +203,24 @@ function widget.worker(args)
         for _ = 1, day_idx do
             table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
         end
-        --         show_warning(tostring(day_idx))
+
         -- parcours date par date, détermination des dates limites
         -- et de l'effectif maximal -> blanc sur la grille
         for resultatDuJour in sortie:gmatch("[^\r\n]+") do
             local date, effectif = resultatDuJour:match("(.*)%s+(.*)")
-            if effectif ~= "null" then
-                effectif = tonumber(effectif)
-                local y, m, d = date:match("(%d%d%d%d)-(%d%d)-(%d%d)")
-                --date = os.time({year=y, month=m, day=d})
-                --date = tonumber(os.date("%Y%m%d", ecoute))
-                date = tonumber(y .. m .. d)
-                if date < min then
-                    min = date
-                end
-                if effectifMax < effectif then
-                    effectifMax = effectif
-                end
-                tab[date] = effectif -- tab[date] == nil and 1 or tab[date] + 1
+            effectif = tonumber(effectif)
+            local y, m, d = date:match("(%d%d%d%d)-(%d%d)-(%d%d)")
+            date = tonumber(y .. m .. d)
+            if date < min then
+                min = date
             end
+            if effectifMax < effectif then
+                effectifMax = effectif
+            end
+            tab[date] = effectif -- tab[date] == nil and 1 or tab[date] + 1
         end
-        
+
+        -- show_warning(tostring(min) .. " " .. tostring(max))
         -- détermination des limites de valeurs : de 0 puis 1 à effectifMax
         -- par crroissance exponentielle en k valeurs (variables user)
         -- 0 1 k k² ... k^(n-2)=effectifMax
@@ -226,13 +234,14 @@ function widget.worker(args)
         local jour = max
         local couleur
         while jour >= min do
-            -- show_warning(tostring(jour))
-            if tab[jour] == nil then
+            tab[jour] = tab[jour] == nil and 0 or tab[jour]
+            if tab[jour] == -1 then
                 tab[jour] = 0
                 couleur = "#f00"
             else
                 couleur = tabTheme[niveau(tab[jour], limits)]
             end
+
             if day_idx %7 == 0 then
                 table.insert(row, col)
                 col = {layout = wibox.layout.fixed.vertical}
@@ -240,9 +249,7 @@ function widget.worker(args)
             --
             table.insert(col, get_square(jour, tab[jour], couleur))
             day_idx = day_idx + 1
-            -- show_warning(tostring(day_idx))
             jour = tonumber(hier(jour))
-            -- nb = nb + 1
         end
 
         miroir:setup({
@@ -255,18 +262,26 @@ function widget.worker(args)
     covid_textwidget:set_markup("<span foreground='" .. args.fg .. "'>Covid-19 "
                                 .. args.departement .. "</span>")
     --
-    local indicateur = widget.indicateurs[widget.indexIndicateur]
-    awful.spawn.easy_async(string.format(widget.commande, args.departement, indicateur),
+    awful.spawn.easy_async([[ bash -c "python3 ]] .. WIDGET_DIR .. [[recup_gouv.py" ]],
                            function(stdout,stderr,reason,exit_code)
+                               -- 
+                           end
+    )
+    local indicateur = widget.keysIndicateurs[widget.indexIndicateur]
+    local commande = [[ bash -c "cat ]] .. WIDGET_DIR .. [[donnees/%s"]]
+    awful.spawn.easy_async(string.format(commande, indicateur),
+                           function(stdout,stderr,reason,exit_code)
+                               -- show_warning(stdout)
                                update_widget(covid_widget, stdout)
                            end
     )
     covid_widget:buttons({
             awful.button({}, 3,
                          function()
-                             widget.indexIndicateur = 1 + widget.indexIndicateur  % #widget.indicateurs
-                             indicateur = widget.indicateurs[widget.indexIndicateur]
-                             awful.spawn.easy_async(string.format(widget.commande, args.departement, indicateur),
+                             widget.indexIndicateur = 1 + widget.indexIndicateur  % #widget.keysIndicateurs
+                             indicateur = widget.keysIndicateurs[widget.indexIndicateur]
+                             commande = [[ bash -c "cat ]] .. WIDGET_DIR .. [[donnees/%s" ]]
+                             awful.spawn.easy_async(string.format(commande, indicateur),
                                                     function(stdout,stderr,reason,exit_code)
                                                         update_widget(covid_widget, stdout)
                                                     end

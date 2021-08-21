@@ -59,6 +59,18 @@ function fonctionsUtiles.ok()
    naughty.notify({text = "OK"})
 end
 
+-- date YYYYMMDD il y a un an
+function fonctionsUtiles.ilyaunan()
+    local aujourdhui = os.date("*t")
+    local unanavant  = os.date("%Y%m%d",
+                               os.time({
+                                       year  = aujourdhui.year-1,
+                                       month = aujourdhui.month,
+                                       day   = aujourdhui.day
+                               })
+    )
+    return unanavant
+end
 
 --
 function fonctionsUtiles.contains(tab, val)

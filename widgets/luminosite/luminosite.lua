@@ -15,6 +15,16 @@ local beautiful = require("beautiful")
 local wibox     = require("wibox")
 local awful     = require("awful")
 --
+local widget_themes = require("widgets.themes_matrice.themes")
+--
+local function niveau(effectif, limites)
+    local i = 1
+    while i <= #limites and limites[i] < effectif do
+        i = i + 1
+    end
+    return i-1
+end
+--
 -- renvoie une couleur nuance ou gradient (vert au rouge)
 -- t : theme beautiful
 -- v : valeur à colorer
@@ -47,63 +57,97 @@ local FIC = "/sys/class/backlight/intel_backlight/brightness"
 
 
 function widget.createWidget(args)
-   args = args or {}
-   --
-   -- le widget slider
-   local luminositeControle = wibox.widget({
-      forced_width        = 100,
-      bar_height          = 1,
-      bar_shape           = gears.shape.rounded_rect,
-      bar_color           = beautiful.widget_luminosite_bar_color,
-      handle_shape        = gears.shape.circle,
-      handle_color        = beautiful.widget_luminosite_handle_color,
-      handle_border_color = beautiful.widget_luminosite_handle_border_color,
-      handle_border_width = 1,
-      minimum             = MIN,
-      maximum             = MAX,
-      --   value               = valeurLue,
-      widget              = wibox.widget.slider,
-   })
-   -- le widget text
-   local luminositeTexte = wibox.widget({
-      text                = "luminosite",
-      align               = "center",
-      widget              = wibox.widget.textbox,
-   })
-   -- le widget à afficher
-   local luminosite = wibox.widget({
-      luminositeTexte,
-      luminositeControle,
-      vertical_offset=5,
-      layout=wibox.layout.stack
-   })
-   -- actualisation
-   luminositeControle:connect_signal("property::value", function()
-                                        local v = luminositeControle.value
-                                        --
-                                        local command = 'echo '.. v .. ' > '.. FIC
-                                        --montre( command )
-                                        awful.spawn.easy_async_with_shell(command, function(s,t,u,v)  end)
-                                        --
-                                        --local valeur=math.floor(v*255/MAX)
-                                        --local nuance = string.format("#%x%x%x", valeur,valeur,valeur)
-                                        --luminositeControle.handle_color=nuance
-                                        luminositeControle.handle_color =
-                                            couleurBarre(beautiful.widget_luminosite_handle_color_type, v, MIN, MAX)
-   end)
---
-   if ordinateur == "laptop" then
-      local f = io.open( FIC )
-      local valeurLue = tonumber(f:read "*a")
-      luminositeControle.value = valeurLue
-      f.close()
-   end
-   --
-   return luminosite
+    args = args or {}
+    --
+    local width      = args.width         or 150
+    local bshape     = args.barshape      or gears.shape.rounded_rect
+    local bheight    = args.barheight     or 10
+    local hradius    = args.handradius    or 5
+    local hcolortype = args.handcolortype or "gradient"
+    local from_color = args.from_color    or "#f0f"
+    local to_color   = args.to_color      or "#f00"
+    local n_colors   = args.n_colors      or 100
+    --
+    local tabTheme
+    if hcolortype == "gradient" then
+        tabTheme = widget_themes.gradtheme(n_colors,
+                                           from_color,
+                                           to_color)
+    else
+        tabTheme = widget_themes.gtheme(100)
+    end
+    local k = 100 / (n_colors - 2)
+    local limits = {0}
+    for i = 1, n_colors-2 do
+        table.insert(limits, math.floor(i * k))
+    end
+    -- le widget slider
+    local luminositeControle = wibox.widget({
+            forced_width        = width,
+            bar_height          = bheight,
+            bar_shape           = bshape,
+            bar_color           = "#fff2", -- beautiful.widget_luminosite_bar_color,
+            handle_shape        = function(cr, w, h)
+                gears.shape.circle (cr, w, h, hradius)
+            end,
+            handle_color        = beautiful.widget_luminosite_handle_color,
+            -- handle_border_color = beautiful.widget_luminosite_handle_border_color,
+            -- handle_border_width = 1,
+            minimum             = MIN,
+            maximum             = MAX,
+            --   value               = valeurLue,
+            widget              = wibox.widget.slider,
+    })
+    -- le widget text
+    local luminositeTexte = wibox.widget({
+            text                = "lum.",
+            align               = "center",
+            widget              = wibox.widget.textbox,
+    })
+    -- le widget à afficher
+    local luminosite = wibox.widget({
+            luminositeControle,
+            luminositeTexte,
+            vertical_offset=5,
+            layout=wibox.layout.stack
+    })
+    -- actualisation
+    luminositeControle:connect_signal(
+        "property::value",
+        function()
+            local v = luminositeControle.value
+            local command = 'echo '.. v .. ' > '.. FIC
+            awful.spawn.easy_async_with_shell(command, function(s,t,u,v)  end)
+            local couleur = tabTheme[niveau(math.floor(100*v/MAX), limits)]-- couleurBarre(hcolortype, v, MIN, MAX)
+            luminositeControle.handle_color = couleur
+            luminositeControle.bar_active_color    = couleur
+        end
+    )
+    --
+    -- luminositeControle:connect_signal("property::value", function()
+    --                                      local v = luminositeControle.value
+    --                                      --
+    --                                      local command = 'echo '.. v .. ' > '.. FIC
+    --                                      --montre( command )
+    --                                      awful.spawn.easy_async_with_shell(command, function(s,t,u,v)  end)
+    --                                      --
+    --                                      --local valeur=math.floor(v*255/MAX)
+    --                                      --local nuance = string.format("#%x%x%x", valeur,valeur,valeur)
+    --                                      --luminositeControle.handle_color=nuance
+    --                                      luminositeControle.handle_color =
+    --                                          couleurBarre(beautiful.widget_luminosite_handle_color_type, v, MIN, MAX)
+    -- end)
+    --
+    local command = [[ bash -c "cat ]] .. FIC .. [["]]
+    awful.spawn.easy_async_with_shell(command, function(s,t,u,v)
+                                          luminositeControle.value = tonumber(s)
+    end)
+    --
+    return luminosite
 end
 
 
 return setmetatable(widget, {__call=function(_, args)
-                                return widget.createWidget(args)
+                                 return widget.createWidget(args)
                    end})
 

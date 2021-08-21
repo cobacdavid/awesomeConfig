@@ -103,9 +103,6 @@ for s in screen do
         )
         --
         local left_layout = wibox.layout.fixed.horizontal()
-        mypromptbox = awful.widget.prompt()
-        left_layout:add(mypromptbox)
-        left_layout:add(separateur())
         --
         if screen.count() <= 2 then 
             local heureW = heure({
@@ -194,27 +191,8 @@ for s in screen do
         --
         left_layout:add(chrono())
         left_layout:add(separateur())
-        local gcw = github_contributions_widget({
-                username             = "cobacdavid",
-                theme                = "dracula",
-                with_border          = true,
-                square_size          = 4,
-                color_of_empty_cells = "#fff2",
-                days                 = 500
-        })
-        gcw:add_button(
-                awful.button({}, 1,
-                     function()
-                         awful.spawn(browser .. " " .. "https://github.com/" .. "cobacdavid")
-                     end
-                )
-        )
-        left_layout:add(gcw)
-        left_layout:add(separateur())
-        local identifiants = require("widgets.lastfm-scrobbles.private_api_key")
         local lfm = lastfm({
-                username             = identifiants.username,
-                api_key              = identifiants.api_key,
+                year                 = os.date("%Y"),
                 theme                = "gradient",
                 square_size          = 4,
                 with_border          = true,
@@ -222,22 +200,25 @@ for s in screen do
                 n_colors             = 10,
                 from_color           = "#00ffff",
                 to_color             = "#0000ff"
-                -- from_date            = "20210101"
         })
         lfm:add_button(
                 awful.button({}, 1,
-                     function()
-                         awful.spawn(browser .. " " .. "https://last.fm/user/" ..  identifiants.username)
+                    function()
+                        -- à rectifier
+                        -- awful.spawn(browser .. " " .. "https://last.fm/user/" ..  identifiants.username)
                      end
                 )
         )
         left_layout:add(lfm)
         left_layout:add(separateur())
         local fic = fichiers({
-                            path ="/home/david/travail/david/production/lycee/informatique/nsi",
-                            color_of_empty_cells = "#0000ff55",
-                            from_date            = "20200901",
-                            n_colors             = 10
+                -- path ="/home/david/travail/david/production/lycee/informatique/nsi",
+                path ="/home/david/",
+                color_of_empty_cells = "#0000ff55",
+                year                 = os.date("%Y"),
+                -- from_date            = "20200901",
+                n_colors             = 10,
+                text                 = ""
         })
         left_layout:add(fic)
         fic:add_button(
@@ -252,9 +233,10 @@ for s in screen do
         local plr = polar({
                                 polar_id             = polar_id,
                                 color_of_empty_cells = "#0f02",
-                                from_color           = "#0f08",
-                                from_date            = "20201014",
-                                n_colors             = 15
+                                from_color           = "#00f8",
+                                -- from_date            = "20201014",
+                                year                 = os.date("%Y"),
+                                n_colors             = 5
         })
         plr:add_button(
             awful.button({}, 1,
@@ -265,30 +247,73 @@ for s in screen do
         )
         left_layout:add(plr)
         left_layout:add(separateur())
+        mypromptbox = awful.widget.prompt()
+        mypromptbox:add_button(
+            awful.button({}, 2,
+                function()
+                    mypromptbox.widget:set_text("OK")
+                end
+            )
+        )
+        left_layout:add(mypromptbox)
+        left_layout:add(separateur())
+
         --
         local right_layout = wibox.layout.fixed.horizontal()
-        local cvd = covid.worker({
+        local gcw = github_contributions_widget({
+                username             = "cobacdavid",
+                theme                = "dracula",
+                with_border          = true,
+                square_size          = 4,
+                color_of_empty_cells = "#fff2",
+                days                 = 365
+        })
+        gcw:add_button(
+                awful.button({}, 1,
+                     function()
+                         awful.spawn(browser .. " " .. "https://github.com/" .. "cobacdavid")
+                     end
+                )
+        )
+        right_layout:add(gcw)
+        right_layout:add(separateur())
+        -- local cvd = covid.worker({
+        --          departement          = "Maine-et-Loire",
+        --          theme                = "gradient",
+        --          square_size          = 4,
+        --          with_border          = true,
+        --          color_of_empty_cells = "#fff2",
+        --          n_colors             = 10,
+        --          -- from_date            = os.date("%Y").. "0101"
+        -- })
+        -- cvd:add_button(
+        --         awful.button({}, 1,
+        --              function()
+        --                  awful.spawn(browser .. " " .. "https://covidtracker.fr/")
+        --              end
+        --         )
+        -- )
+        -- right_layout:add(cvd)
+        -- right_layout:add(separateur())
+        --
+        local cvdv2 = covidv2.worker({
                  departement          = "Maine-et-Loire",
-                 -- "hospitalises", "reanimation", "nouvellesReanimations",
-                 -- "deces", "gueris", "nouvellesHospitalisations"
-                 -- indicateur           = "nouvellesHospitalisations",
-                 -- indicateur           = "nouvellesHospitalisations",
                  theme                = "gradient",
                  square_size          = 4,
                  with_border          = true,
                  color_of_empty_cells = "#fff2",
-                 n_colors             = 10
-                                -- from_date            = "20210101"))
+                 n_colors             = 10,
+                 -- from_date            = os.date("%Y").. "0101"
         })
-        cvd:add_button(
+        cvdv2:add_button(
                 awful.button({}, 1,
                      function()
                          awful.spawn(browser .. " " .. "https://covidtracker.fr/")
                      end
                 )
         )
-        right_layout:add(cvd)
-        right_layout:add(separateur())
+        right_layout:add(cvdv2)
+
         -- from https://pavelmakhov.com/2018/01/hide-systray-in-awesome/
         my_systray = wibox.widget.systray()
         my_systray.visible = false
