@@ -22,15 +22,15 @@ local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/covid/'
 local ICONS_DIR  = HOME_DIR .. '/.config/awesome/icons/'
 --
 --
-local function indexInTable(element, t)
-    for i, v in ipairs(t) do
-        if v == element then
-            return i
-        end
-        -- return nil si pas trouvé
-        return nil
-    end
-end
+-- local function indexInTable(element, t)
+--     for i, v in ipairs(t) do
+--         if v == element then
+--             return i
+--         end
+--         -- return nil si pas trouvé
+--         return nil
+--     end
+-- end
 
 local function hier(date)
     -- date est de la forme YYYYMMDD
@@ -75,7 +75,7 @@ widget.indicateurs = {
 }
 
 widget.keysIndicateurs = gears.table.keys(widget.indicateurs)
-widget.indexIndicateur = 1
+widget.indexIndicateur = 4
 widget.commande = [[bash -c ]]
 
 
@@ -92,7 +92,7 @@ function widget.worker(args)
     local covid_textwidget = wibox.widget {
         align   = 'right',
         valign  = 'bottom',
-        opacity = .85,
+        opacity = .3,
         font    = "Arial 8",
         widget  = wibox.widget.textbox
     }
@@ -149,7 +149,12 @@ function widget.worker(args)
     args.from_date = os.time({year=y, month=m, day=d})
 
     if args.with_border == nil then args.with_border = true end
-
+    --
+    local tau = 2 * math.pi
+    local moitieDim = args.square_size / 2
+    local rayon = args.with_border and  moitieDim - 1
+        or moitieDim
+    --
     local function get_square(date, count, color)
         if args.color_of_empty_cells ~= nil and
             color == tabTheme[0] then
@@ -162,12 +167,13 @@ function widget.worker(args)
             end,
             draw = function(_, _, cr, _, _)
                 cr:set_source(gears.color(color))
-                cr:rectangle(
-                    0,
-                    0,
-                    args.with_border and args.square_size-1 or args.square_size,
-                    args.with_border and args.square_size-1 or args.square_size
-                )
+                -- cr:rectangle(
+                --     0,
+                --     0,
+                --     args.with_border and args.square_size-1 or args.square_size,
+                --     args.with_border and args.square_size-1 or args.square_size
+                -- )
+                cr:arc(moitieDim, moitieDim, rayon, 0, tau)
                 cr:fill()
             end,
             layout = wibox.widget.base.make_widget
@@ -259,8 +265,8 @@ function widget.worker(args)
         })
     end
     
-    covid_textwidget:set_markup("<span foreground='" .. args.fg .. "'>Covid-19 "
-                                .. args.departement .. "</span>")
+    covid_textwidget:set_markup("<b><span foreground='" .. args.fg .. "'>Covid-19 "
+                                .. args.departement .. "</span></b>")
     --
     awful.spawn.easy_async([[ bash -c "python3 ]] .. WIDGET_DIR .. [[recup_gouv.py" ]],
                            function(stdout,stderr,reason,exit_code)
@@ -289,7 +295,6 @@ function widget.worker(args)
                          end
             )
     })
-
 
     return covid_widget
 end

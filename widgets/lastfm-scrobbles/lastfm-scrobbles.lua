@@ -23,7 +23,9 @@ local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/lastfm-scrobbles/'
 -- retrieve data from local save
 COMMAND = [[ bash -c "cat ]] .. WIDGET_DIR ..
     [[donnees/%s.json | jq  -r '.[].date.uts'"]]
-
+COMMAND_MAJ = [[ bash -c "]] .. WIDGET_DIR ..
+    "mise_a_jour_annee.sh " .. tostring(os.date("%Y")) .. [["]]
+--
 local function niveau(effectif, limites)
     local i = 1
     while i <= #limites and limites[i] < effectif do
@@ -40,7 +42,16 @@ local function hier(date)
     return os.date("%Y%m%d", j)
 end
 
-local ecoute_widget = wibox.widget{
+local function show_warning(message)
+    naughty.notify{
+        preset = naughty.config.presets.critical,
+        title = 'LastFM Widget',
+        text = message}
+end
+--
+local widget = {}
+--
+widget.ecoute_widget = wibox.widget{
     reflection = {
         horizontal = true,
         vertical = true,
@@ -48,7 +59,7 @@ local ecoute_widget = wibox.widget{
     widget = wibox.container.mirror
 }
 
-local lastfm_textwidget = wibox.widget {
+widget.lastfm_textwidget = wibox.widget {
     align  = 'right',
     valign = 'bottom',
     opacity = .45,
@@ -56,7 +67,7 @@ local lastfm_textwidget = wibox.widget {
     widget = wibox.widget.textbox
 }
 
-local lastfm_imagewidget = wibox.widget {
+widget.lastfm_imagewidget = wibox.widget {
     image   = ICONS_DIR .. "logo-lastfm.png",
     resize  = true,
     opacity = .3,
@@ -64,21 +75,21 @@ local lastfm_imagewidget = wibox.widget {
     widget  = wibox.widget.imagebox
 }
 
-local lastfm_widget = wibox.widget {
-    ecoute_widget,
-    lastfm_imagewidget,
-    lastfm_textwidget,
+widget.lastfm_widget = wibox.widget {
+    widget.ecoute_widget,
+    widget.lastfm_imagewidget,
+    widget.lastfm_textwidget,
     layout = wibox.layout.stack
 }
 
-local function leWidget(args)
+function widget.leWidget(args)
 
     if args == nil then
-        return lastfm_widget
+        return widget.lastfm_widget
     end
 
     args = args or {}
-    args.year                 = args.year
+    widget.year               = args.year
     -- args.from_date            = args.from_date   or ilyaunan()
     args.square_size          = args.square_size or 4
     args.color_of_empty_cells = args.color_of_empty_cells
@@ -96,11 +107,6 @@ local function leWidget(args)
                                            args.to_color)
     else
         tabTheme = widget_themes.gtheme(args.n_colors)
-    end
-
-    if args.year ~= nil then
-        args.from_date = tostring(args.year) .. "0101"
-        args.to_date   = tostring(args.year) .. "1231"
     end
 
     if args.with_border == nil then args.with_border = true end
@@ -141,11 +147,14 @@ local function leWidget(args)
     end
 
     local update_widget = function(_, sortie, _, _, _)
-
+        if args.year ~= nil then
+            args.from_date = tostring(widget.year) .. "0101"
+            args.to_date   = tostring(widget.year) .. "1231"
+        end
+         
         local tab = {}
         local max = tonumber(args.to_date)
         local min = tonumber(args.from_date)
-        local total = 0
         local effectifMax = 0
 
         for ecoute in sortie:gmatch("[^\r\n]+") do
@@ -161,10 +170,8 @@ local function leWidget(args)
                 if tab[date] > effectifMax then
                     effectifMax = tab[date]
                 end
-                total = total + 1
             end
         end
-
         -- détermination des limites de valeurs : de 0 puis 1 à effectifMax
         -- par crroissance exponentielle en k valeurs (variables user)
         -- 0 1 k k² ... k^(n-2)=effectifMax
@@ -181,7 +188,6 @@ local function leWidget(args)
         local day_idx = 6 - (os.date('%w',
                                      os.time({year=y, month=m, day=d})
                                     ) - 1)%7
-        -- naughty.notify({text=tostring(day_idx) .. temp})
         for _ = 1, day_idx do
             table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
         end
@@ -201,36 +207,81 @@ local function leWidget(args)
         end
         table.insert(row, col)
         
-        ecoute_widget:setup({
+        widget.ecoute_widget:setup({
                 row,
                 top = args.margin_top,
                 layout = wibox.container.margin
         })
         --
         local texte = "<b>"
-        texte = args.year == nil and texte or texte .. tostring(args.year) .. " : "
+        texte = args.year == nil and texte or texte .. tostring(widget.year) .. " : "
         texte = texte .. tostring(total) .. " scrobbles</b>"
-        lastfm_textwidget:set_markup(texte)
+        widget.lastfm_textwidget:set_markup(texte)
     end
     --
-    local cmd_maj = [[ bash -c "]] .. WIDGET_DIR ..
-        "mise_a_jour_annee.sh " .. tostring(os.date("%Y")) .. [["]]
-    -- naughty.notify({text=cmd_maj})
-    awful.spawn.easy_async(cmd_maj,
+    -- commande affichage annee demandée
+    awful.spawn.easy_async(COMMAND_MAJ,
                            function(stdout)
-                                   local commande = string.format(COMMAND, args.year)
-                                   awful.spawn.easy_async(commande,
-                                                          function(stdout)
-                                                              local resultats = stdout
-                                                              update_widget(lastfm_widget, resultats)
-                                                          end
-                                   )
+                               -- le script renvoie le nom d'utilisateur
+                               -- ce qui peut servir pour élaborer des liens
+                               -- vers le site (voir tagWibar.lua)
+                               widget.username = stdout
+                               local commande = string.format(COMMAND, widget.year)
+                               awful.spawn.easy_async(commande,
+                                                      function(stdout)
+                                                          local resultats = stdout
+                                                          update_widget(widget.lastfm_widget, resultats)
+                                                      end
+                               )
                            end
     )
-    
-    return lastfm_widget
+    widget.lastfm_widget:buttons({
+            awful.button({}, 3,
+                function()
+                    -- année suivante si elle existe
+                    widget.year = math.floor(widget.year + 1)
+                    if not gears.filesystem.file_readable(WIDGET_DIR .. "donnees/" .. widget.year .. ".json") then
+                        -- retour à 2002 (année creation de last.fm)
+                        widget.year = 2002
+                        while not gears.filesystem.file_readable(WIDGET_DIR .. "donnees/" .. widget.year .. ".json") do
+                            widget.year = widget.year + 1
+                        end
+                    end
+                    local commande = string.format(COMMAND, widget.year)
+                    awful.spawn.easy_async(commande,
+                                           function(stdout)
+                                               local resultats = stdout
+                                               update_widget(widget.lastfm_widget, resultats)
+                                           end
+                    )
+                end
+            ),
+            awful.button({}, 1,
+                function()
+                    -- année précédente si elle existe
+                    widget.year = math.floor(widget.year - 1)
+                    if not gears.filesystem.file_readable(WIDGET_DIR .. "donnees/" .. widget.year .. ".json") then
+                        -- retour à cette année
+                        widget.year = os.date("%Y")
+                        while not gears.filesystem.file_readable(WIDGET_DIR .. "donnees/" .. widget.year .. ".json") do
+                            widget.year = widget.year - 1
+                        end
+                    end
+                    local commande = string.format(COMMAND, widget.year)
+                    awful.spawn.easy_async(commande,
+                                           function(stdout)
+                                               local resultats = stdout
+                                               update_widget(widget.lastfm_widget, resultats)
+                                           end
+                    )
+                end
+            )
+    })
+
+    --
+    return widget.lastfm_widget
 end
 
-return setmetatable(lastfm_widget, {__call=function(_, args)
-                                        return leWidget(args)
+return setmetatable(widget, {__call=function(_, args)
+                                 return widget.leWidget(args)
                    end})

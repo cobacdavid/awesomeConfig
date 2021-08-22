@@ -141,9 +141,9 @@ for s in screen do
                     title = '<b>batt</b>',
                     from_color = "#f00",
                     to_color = "#0f0"
---                    fun = function(s)
---                        return valeur
---                    end
+                    --                    fun = function(s)
+                    --                        return valeur
+                    --                    end
             })
             left_layout:add(battwm)
             left_layout:add(separateur())
@@ -164,7 +164,7 @@ for s in screen do
                 title = '<b>RAM %</b>',
                 fun = function(s)
                     local total, used, free, shared, buff_cache, available
-                                               = s:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
+                        = s:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
                     local valeur = math.floor(100 * (total - available)/total + .5)
                     return valeur
                 end
@@ -173,17 +173,19 @@ for s in screen do
         left_layout:add(separateur())
 
         --
+        local couleurFondVide = "#fff2"
+        --
         local mto = weather_widget({
-            api_key     = idMeteo.api_key,
-            coordinates = {47.4667, -0.55},
-            time_format_12h = false,
-            units = 'metric',
-            both_units_widget = false,
-            font_name = 'Carter One',
-            icons = 'VitalyGorbachev',
-            icons_extension = '.svg',
-            show_hourly_forecast = true,
-            show_daily_forecast = true,
+                api_key     = idMeteo.api_key,
+                coordinates = {47.4667, -0.55},
+                time_format_12h = false,
+                units = 'metric',
+                both_units_widget = false,
+                font_name = 'Carter One',
+                icons = 'VitalyGorbachev',
+                icons_extension = '.svg',
+                show_hourly_forecast = true,
+                show_daily_forecast = true,
         })
         left_layout:add(mto)
         --
@@ -196,54 +198,56 @@ for s in screen do
                 theme                = "gradient",
                 square_size          = 4,
                 with_border          = true,
-                color_of_empty_cells = "#fff2",
+                color_of_empty_cells = couleurFondVide,
                 n_colors             = 10,
-                from_color           = "#00ffff",
-                to_color             = "#0000ff"
+                from_color           = "#0000ff",
+                to_color             = "#00ffff"
         })
         lfm:add_button(
-                awful.button({}, 1,
-                    function()
-                        -- à rectifier
-                        -- awful.spawn(browser .. " " .. "https://last.fm/user/" ..  identifiants.username)
-                     end
-                )
+            awful.button({}, 2,
+                function()
+                    awful.spawn(browser .. " " ..
+                                "https://last.fm/user/" ..  lastfm.username)
+                end
+            )
         )
         left_layout:add(lfm)
         left_layout:add(separateur())
+        local fichierPath = "/home/david/travail/david/production/lycee"
         local fic = fichiers({
-                -- path ="/home/david/travail/david/production/lycee/informatique/nsi",
-                path ="/home/david/",
-                color_of_empty_cells = "#0000ff55",
+                path                 = fichierPath,
+                color_of_empty_cells = couleurFondVide,
                 year                 = os.date("%Y"),
-                -- from_date            = "20200901",
                 n_colors             = 10,
+                from_color           = "#0000ff",
+                to_color             = "#00ffff",
                 text                 = ""
         })
         left_layout:add(fic)
         fic:add_button(
             awful.button({}, 1,
-                     function()
-                         awful.spawn(fileMgr .. " " .. "/home/david/travail/david/production/lycee/informatique/nsi")
-                     end
-                )
+                function()
+                    awful.spawn(fileMgr .. " " .. fichierPath)
+                end
+            )
         )
         left_layout:add(separateur())
         local polar_id = require("widgets.polar.polar_id")
         local plr = polar({
-                                polar_id             = polar_id,
-                                color_of_empty_cells = "#0f02",
-                                from_color           = "#00f8",
-                                -- from_date            = "20201014",
-                                year                 = os.date("%Y"),
-                                n_colors             = 5
+                polar_id             = polar_id,
+                color_of_empty_cells = couleurFondVide,
+                from_color           = "#0000ff",
+                to_color             = "#00ffff",
+                -- from_date            = "20201014",
+                year                 = os.date("%Y"),
+                n_colors             = 5
         })
         plr:add_button(
             awful.button({}, 1,
-                     function()
-                         awful.spawn(fileMgr .. " " .. "/home/david/Polar/" .. polar_id .. "/U/0")
-                     end
-                )
+                function()
+                    awful.spawn(fileMgr .. " " .. "/home/david/Polar/" .. polar_id .. "/U/0")
+                end
+            )
         )
         left_layout:add(plr)
         left_layout:add(separateur())
@@ -262,18 +266,18 @@ for s in screen do
         local right_layout = wibox.layout.fixed.horizontal()
         local gcw = github_contributions_widget({
                 username             = "cobacdavid",
-                theme                = "dracula",
+                theme                = "standard2",
                 with_border          = true,
                 square_size          = 4,
-                color_of_empty_cells = "#fff2",
+                color_of_empty_cells = couleurFondVide,
                 days                 = 365
         })
         gcw:add_button(
-                awful.button({}, 1,
-                     function()
-                         awful.spawn(browser .. " " .. "https://github.com/" .. "cobacdavid")
-                     end
-                )
+            awful.button({}, 1,
+                function()
+                    awful.spawn(browser .. " " .. "https://github.com/" .. "cobacdavid")
+                end
+            )
         )
         right_layout:add(gcw)
         right_layout:add(separateur())
@@ -297,20 +301,20 @@ for s in screen do
         -- right_layout:add(separateur())
         --
         local cvdv2 = covidv2.worker({
-                 departement          = "Maine-et-Loire",
-                 theme                = "gradient",
-                 square_size          = 4,
-                 with_border          = true,
-                 color_of_empty_cells = "#fff2",
-                 n_colors             = 10,
-                 -- from_date            = os.date("%Y").. "0101"
+                departement          = "Maine-et-Loire",
+                theme                = "gradient",
+                square_size          = 4,
+                with_border          = true,
+                color_of_empty_cells = couleurFondVide,
+                n_colors             = 10,
+                -- from_date            = os.date("%Y").. "0101"
         })
         cvdv2:add_button(
-                awful.button({}, 1,
-                     function()
-                         awful.spawn(browser .. " " .. "https://covidtracker.fr/")
-                     end
-                )
+            awful.button({}, 1,
+                function()
+                    awful.spawn(browser .. " " .. "https://covidtracker.fr/")
+                end
+            )
         )
         right_layout:add(cvdv2)
 
@@ -527,44 +531,44 @@ for s in screen do
 end
 
 
-        -- left_layout:add(infos())
-        -- left_layout:add(separateur())
-        -- local ak = flower_pbar({
-        --         sectors      = 5,
-        --         sector_angle = 68,
-        --         inner_radius = 7, 
-        --         line_width   = 1,
-        --         fg           = "#fff",
-        --         color        = "#fff",
-        --         color_type   = "solid",
-        --         font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
-        --         font_size    = 9,
-        --         text         = function(v, m, M)
-        --             return tostring(math.floor(v *100))
-        --         end
-        -- })
-        -- gears.timer({
-        --         timeout   = 10,
-        --         call_now  = true,
-        --         autostart = true,
-        --         callback  = function()
-        --             local commande = "free |grep Mem"
-        --             awful.spawn.easy_async_with_shell(
-        --                 commande, function(stdout)
-        --                     local total, used, free, shared, buff_cache, available
-        --                         = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
-        --                     -- fu.montre((total-free)/total)
-        --                     ak:set_value((total - available)/total)
-        --             end)
-        --         end
-        -- })
-        -- left_layout:add(ak)
-        --left_layout:add(ram({
-        --                        rect_width = 2,
-        --                        rect_height = 6
-        --}))
-        --left_layout:add(separateur())
-        --left_layout:add(tempM({
-        --                        rect_width = 2,
-        --                        rect_height = 6
-        --}))
+-- left_layout:add(infos())
+-- left_layout:add(separateur())
+-- local ak = flower_pbar({
+--         sectors      = 5,
+--         sector_angle = 68,
+--         inner_radius = 7, 
+--         line_width   = 1,
+--         fg           = "#fff",
+--         color        = "#fff",
+--         color_type   = "solid",
+--         font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
+--         font_size    = 9,
+--         text         = function(v, m, M)
+--             return tostring(math.floor(v *100))
+--         end
+-- })
+-- gears.timer({
+--         timeout   = 10,
+--         call_now  = true,
+--         autostart = true,
+--         callback  = function()
+--             local commande = "free |grep Mem"
+--             awful.spawn.easy_async_with_shell(
+--                 commande, function(stdout)
+--                     local total, used, free, shared, buff_cache, available
+--                         = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
+--                     -- fu.montre((total-free)/total)
+--                     ak:set_value((total - available)/total)
+--             end)
+--         end
+-- })
+-- left_layout:add(ak)
+--left_layout:add(ram({
+--                        rect_width = 2,
+--                        rect_height = 6
+--}))
+--left_layout:add(separateur())
+--left_layout:add(tempM({
+--                        rect_width = 2,
+--                        rect_height = 6
+--}))
