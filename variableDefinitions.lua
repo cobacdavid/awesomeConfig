@@ -136,8 +136,8 @@ emacsElispRcFile = RcFiles .. "emacs-config/elisp/"
 --
 -- clavierCmd       = "/home/david/travail/david/production/info/scripts/tyrfingcolor -s"
 clavierCmd       = "dtv2reader"
-clavierCfgPath   = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader"
-configAwesome    = "config_awesome.json"
+clavierCfgPath   = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader/"
+-- configAwesome    = "config_awesome.json"
 configUrxvt      = "darkblue"
 configEmacs      = "forestgreen"
 --

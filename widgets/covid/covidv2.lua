@@ -134,8 +134,8 @@ function widget.worker(args)
     local tabTheme
     if args.theme == "gradient" then
         tabTheme = widget_themes.gradtheme(args.n_colors,
-                                                 args.from_color,
-                                                 args.to_color)
+                                           args.from_color,
+                                           args.to_color)
     else
         tabTheme = widget_themes.gtheme(args.n_colors)
     end
@@ -151,7 +151,8 @@ function widget.worker(args)
     if args.with_border == nil then args.with_border = true end
     --
     local tau = 2 * math.pi
-    local moitieDim = args.square_size / 2
+    -- en divisant par 2 c'est trop petit
+    local moitieDim = args.square_size / 1.5
     local rayon = args.with_border and  moitieDim - 1
         or moitieDim
     --
@@ -268,31 +269,31 @@ function widget.worker(args)
     covid_textwidget:set_markup("<b><span foreground='" .. args.fg .. "'>Covid-19 "
                                 .. args.departement .. "</span></b>")
     --
-    awful.spawn.easy_async([[ bash -c "python3 ]] .. WIDGET_DIR .. [[recup_gouv.py" ]],
+    local commande1 = [[ bash -c "python3 ]] .. WIDGET_DIR .. [[recup_gouv.py" ]]
+    awful.spawn.easy_async(commande1,
                            function(stdout,stderr,reason,exit_code)
-                               -- 
-                           end
-    )
-    local indicateur = widget.keysIndicateurs[widget.indexIndicateur]
-    local commande = [[ bash -c "cat ]] .. WIDGET_DIR .. [[donnees/%s"]]
-    awful.spawn.easy_async(string.format(commande, indicateur),
-                           function(stdout,stderr,reason,exit_code)
-                               -- show_warning(stdout)
-                               update_widget(covid_widget, stdout)
+                               local indicateur = widget.keysIndicateurs[widget.indexIndicateur]
+                               local commande2 = [[ bash -c "cat ]] .. WIDGET_DIR .. [[donnees/%s"]]
+                               awful.spawn.easy_async(string.format(commande2, indicateur),
+                                                      function(stdout,stderr,reason,exit_code)
+                                                          -- show_warning(stdout)
+                                                          update_widget(covid_widget, stdout)
+                                                      end
+                               )
                            end
     )
     covid_widget:buttons({
             awful.button({}, 3,
-                         function()
-                             widget.indexIndicateur = 1 + widget.indexIndicateur  % #widget.keysIndicateurs
-                             indicateur = widget.keysIndicateurs[widget.indexIndicateur]
-                             commande = [[ bash -c "cat ]] .. WIDGET_DIR .. [[donnees/%s" ]]
-                             awful.spawn.easy_async(string.format(commande, indicateur),
-                                                    function(stdout,stderr,reason,exit_code)
-                                                        update_widget(covid_widget, stdout)
-                                                    end
-                             )
-                         end
+                function()
+                    widget.indexIndicateur = 1 + widget.indexIndicateur  % #widget.keysIndicateurs
+                    indicateur = widget.keysIndicateurs[widget.indexIndicateur]
+                    commande = [[ bash -c "cat ]] .. WIDGET_DIR .. [[donnees/%s" ]]
+                    awful.spawn.easy_async(string.format(commande, indicateur),
+                                           function(stdout,stderr,reason,exit_code)
+                                               update_widget(covid_widget, stdout)
+                                           end
+                    )
+                end
             )
     })
 

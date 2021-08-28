@@ -3,8 +3,11 @@
 # script de récupération totale des informations officielles
 import requests
 import pandas as pd
+from pathlib import Path
 from io import StringIO
 
+
+DIR = Path.home().joinpath(".config", "awesome", "widgets", "covid")
 URL = "https://www.data.gouv.fr/fr/datasets/r/5c4e1452-3850-4b59-b11c-3dd51d7fb8b5"
 
 indicateurs = {
@@ -36,7 +39,7 @@ mel = df[df['dep'] == "49"]
 mel.index = mel["date"]
 
 for cle in indicateurs:
-    mel[cle].to_csv(f"donnees/{cle}",
+    mel[cle].to_csv(f"{DIR}/donnees/{cle}",
                     header=False,
                     sep=" ",
                     na_rep="-1")

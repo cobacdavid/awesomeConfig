@@ -154,7 +154,7 @@ local function worker(args)
         if date ~= nil then
             date = os.date("%a %d %b %Y", date2timestamp(date))
             awful.tooltip {
-                text = string.format("%s : %s", date, math.floor(count + 1723)),
+                text = string.format("%s : %s", date, math.floor(count)),
                 mode = "mouse"
             }:add_to_object(square)
         end
@@ -167,21 +167,23 @@ local function worker(args)
         local max = tonumber(args.to_date)
         local min = tonumber(args.from_date)
         --
-        local k = 5000 / (args.n_colors - 2)
-        local limits = {0}
-        for i = 1, args.n_colors-2 do
-            table.insert(limits, math.floor(i * k))
-        end
-        --
+        local effectifMax = 0
         -- (voir script fichiers.sh)
         for resultats in sortie:gmatch("[^\r\n]+") do
             local date, effectif = resultats:match("(.*) (.*)")
             if date2timestamp(date) >= date2timestamp(args.from_date) and
                 date2timestamp(date) <= date2timestamp(args.to_date) then
-                effectif = effectif == nil and 1723 or tonumber(effectif)
-                effectif = (effectif < 1800) and 0 or (effectif - 1723)
+                effectif = effectif == nil and 0 or tonumber(effectif)
+                effectifMax = effectif > effectifMax and effectif or effectifMax
+                -- effectif = (effectif < 1800) and 0 or (effectif - 1723)
                 tab[tonumber(date)] = effectif
             end
+        end
+        --
+        local k = effectifMax / (args.n_colors - 2)
+        local limits = {0}
+        for i = 1, args.n_colors-2 do
+            table.insert(limits, math.floor(i * k))
         end
 
         local col = {layout = wibox.layout.fixed.vertical}

@@ -160,6 +160,6 @@ ppeintDesc = ppeintNasa()
 -- ppeintTag on first tag of first screen at startup
 screen[1].selected_tag:emit_signal("property::selected")
 --
-fu.commande_execute(clavierCmd .. " " .. clavierCfgPath .. "/" .. configAwesome)
+fu.commande_execute(clavierCmd .. " " .. configAwesome)
 --
 fu.montre("Démarrage terminé")
