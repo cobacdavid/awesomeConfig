@@ -171,7 +171,12 @@ for s in screen do
         })
         left_layout:add(rwm)
         left_layout:add(separateur())
-
+        --
+        local dtv2 = dtv2.worker({
+                square_size = 3.6,
+                json_path   = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader"
+        })
+        left_layout:add(dtv2)
         --
         local couleurFondVide = "#fff2"
         --
@@ -261,7 +266,7 @@ for s in screen do
         )
         left_layout:add(mypromptbox)
         left_layout:add(separateur())
-
+        --
         --
         local right_layout = wibox.layout.fixed.horizontal()
         local gcw = github_contributions_widget({

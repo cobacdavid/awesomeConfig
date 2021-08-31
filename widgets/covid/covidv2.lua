@@ -57,30 +57,28 @@ end
 --
 --
 widget = {}
-widget.indicateurs = {
-    hosp         = "total hospitalisés", -- OK
-    incid_hosp   = "nouveaux hospitalisés", -- OK
-    rea          = "total réanimation", -- OK
-    incid_rea    = "nouveaux réanimation", -- OK
-    rad          = "total guéris", -- OK
-    incid_rad    = "nouveaux guéris", -- OK
-    dchosp       = "total décès hôpital", -- OK
-    incid_dchosp = "nouveaux décès hôpital", -- OK
-    pos          = "cas positifis -1", -- OK
-    pos_7j       = "cas positifs -7", -- OK
-    tx_pos       = "taux + test", -- OK
-    tx_incid     = "taux incidence", -- OK
-    TO           = "taux occupation", -- OK
-    R            = "évolution du R0" -- OK
-}
-
-widget.keysIndicateurs = gears.table.keys(widget.indicateurs)
-widget.indexIndicateur = 4
-widget.commande = [[bash -c ]]
-
 
 function widget.worker(args)
-    -- show_warning(args)
+    widget.indicateurs = {
+        hosp         = "total hospitalisés", -- OK
+        incid_hosp   = "nouveaux hospitalisés", -- OK
+        rea          = "total réanimation", -- OK
+        incid_rea    = "nouveaux réanimation", -- OK
+        rad          = "total guéris", -- OK
+        incid_rad    = "nouveaux guéris", -- OK
+        dchosp       = "total décès hôpital", -- OK
+        incid_dchosp = "nouveaux décès hôpital", -- OK
+        pos          = "cas positifis -1", -- OK
+        pos_7j       = "cas positifs -7", -- OK
+        tx_pos       = "taux + test", -- OK
+        tx_incid     = "taux incidence", -- OK
+        TO           = "taux occupation", -- OK
+        R            = "évolution du R0" -- OK
+    }
+
+    widget.keysIndicateurs = gears.table.keys(widget.indicateurs)
+    widget.indexIndicateur = 4
+
     local miroir = wibox.widget{
         reflection = {
             horizontal = true,

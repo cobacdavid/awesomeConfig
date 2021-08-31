@@ -106,6 +106,7 @@ covidv2          = require("widgets.covid.covidv2")
 matrice          = require("widgets.matrice.matrice")
 fichiers         = require("widgets.fichiers.fichiers")
 polar            = require("widgets.polar.polar")
+dtv2             = require("widgets.dtv2.dtv2")
 wmatrice         = require("widgets.widgetMatrice.widgetMatrice")
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
