@@ -12,7 +12,7 @@ local gears         = require("gears")
 local json          = require("json")
 
 local HOME_DIR   = os.getenv("HOME")
-local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/covid/'
+-- local WIDGET_DIR = HOME_DIR .. '/.config/awesome/widgets/dtv2/'
 local ICONS_DIR  = HOME_DIR .. '/.config/awesome/icons/'
 local COMMAND1   = [[ bash -c "dtv2reader -o %s |jq -c 'to_entries[]| [ .key, .value[] ]'" ]]
 local COMMAND2   = [[ bash -c "cd %s && ls -1 *.json" ]]
@@ -31,13 +31,8 @@ function widget.worker(args)
     widget.jsonFiles = {}
     widget.jsonDefaultIndex = 1
     -- show_warning(args)
-    local conteneur = wibox.widget({
-            bg= "#000",
-            opacity = .5,
-            widget = wibox.container.background
-    })
     if args == nil then
-        return conteneur
+        return  wibox.widget()
     end
 
     args = args or {}
@@ -48,9 +43,13 @@ function widget.worker(args)
     args.color_of_empty_cells = args.color_of_empty_cells
     args.with_border          = args.with_border or 0
     args.margin_top           = args.margin_top  or 1
-
     -- show_warning(tostring(args.square_size))
     if args.with_border == nil then args.with_border = true end
+    --
+    local conteneur = wibox.widget({
+            bg     = args.bg,
+            widget = wibox.container.background
+    })
     --
     local taille0 = 1.3
     local taille1 = args.square_size -- 1.3 cm
@@ -64,19 +63,6 @@ function widget.worker(args)
     local taille_sep0 = taille1 / 2
     local taille_sep1 = taille1 * 2.5 / taille0 -- entre esc et f1
     local taille_sep2 = taille1 * 1.6 / taille0 -- entre les groupes de fn
-    --
-    local wpopup = wibox {
-        ontop = true,
-        visible = false,
-        shape = function(cr, width, height)
-            gears.shape.rounded_rect(cr, width, height, 4)
-        end,
-        border_width = 1,
-        border_color = beautiful.bg_focus,
-        max_widget_size = 500,
-        height = 500,
-        width = 300,
-    }
     --
     local function get_rectangle(w, color, h)
         h = h == nil and args.square_size or h
@@ -534,8 +520,8 @@ function widget.worker(args)
         }
         conteneur:setup({
                 col,
-                bg = args.bg,
-                layout = wibox.container.background
+                margin = 0,
+                layout = wibox.container.margin
         })
 
     end
