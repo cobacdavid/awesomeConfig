@@ -18,6 +18,7 @@ local COMMAND1   = [[ bash -c "dtv2reader -o %s |jq -c 'to_entries[]| [ .key, .v
 local COMMAND2   = [[ bash -c "cd %s && ls -1 *.json" ]]
 local COMMAND3   = [[ bash -c "gcolor3 2>/dev/null" ]]
 local COMMAND4   = [[ bash -c "echo '{ \"kbd\": \"%s\"}' > /tmp/couleur_dtv2.json" ]]
+local COMMAND5   = [[ bash -c "ratbagctl '%s' led 0 set color %s && ratbagctl '%s' led 1 set color %s" ]]
 --
 local function show_warning(message)
     naughty.notify{
@@ -45,6 +46,7 @@ function widget.worker(args)
     args.color_of_empty_cells = args.color_of_empty_cells
     args.with_border          = args.with_border or 0
     args.margin_top           = args.margin_top  or 1
+    args.ratbagctl_id         = args.ratbagctl_id
     -- show_warning(tostring(args.square_size))
     if args.with_border == nil then args.with_border = true end
     --
@@ -630,7 +632,11 @@ function widget.worker(args)
     local function apply_changes(json_file)
         awful.spawn.easy_async(string.format(COMMAND1, json_file),
                                function(stdout,stderr,reason,exit_code)
-                                   update_widget(stdout)
+                                   if stderr ~= "" then
+                                       show_warning(stderr)
+                                   else
+                                       update_widget(stdout)
+                                   end
                                end
         )
     end
@@ -691,10 +697,18 @@ function widget.worker(args)
         gears.table.join(
             awful.button({}, 1, function()
                     awful.spawn.easy_async(COMMAND3,
-                        function(stdout)
-                            awful.spawn.easy_async(string.format(COMMAND4, stdout:match("(.*)\n")),
+                                           function(stdout)
+                                               local couleur = stdout:match("(.*)\n")
+                                               awful.spawn.easy_async(string.format(COMMAND4, couleur),
                                                    function(_)
                                                        apply_changes("/tmp/couleur_dtv2.json")
+                                                       couleur = couleur:match("#(.*)")
+                                                       if args.ratbagctl_id ~= nil then
+                                                           local commande = string.format(COMMAND5,
+                                                                                          args.ratbagctl_id, couleur,
+                                                                                          args.ratbagctl_id, couleur)
+                                                           awful.spawn.easy_async(commande, function(_,e) end)
+                                                       end
                                                    end
                             )
                     end)

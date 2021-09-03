@@ -173,8 +173,9 @@ for s in screen do
         left_layout:add(separateur())
         --
         local dtv2 = dtv2.worker({
-                square_size = 3.6,
-                json_path   = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader"
+                square_size  = 3.6,
+                json_path    = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader",
+                ratbagctl_id = 'singing-gundi'
         })
         left_layout:add(dtv2)
         --
