@@ -25,7 +25,7 @@ def analyse_reponse(r, f_log, lien=""):
 if len(sys.argv) > 1:
     theme = " ".join(sys.argv[1:])
 else:
-    theme = "earth"
+    theme = "jupiter"
 
 myhome = os.environ['HOME']
 fichier_log = "image_hasard_nasa.log"

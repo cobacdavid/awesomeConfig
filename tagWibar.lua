@@ -22,38 +22,76 @@ for s in screen do
     local layoutterm
     if ordinateur ~= "laptop" then
         -- nouvel écran à droite du premier
-        s.versDroite = awful.wibar({
-                position = "right",
-                screen = s ,
-                width = 1,
-                -- bg       = beautiful.noir,
-                opacity = 0,
-                ontop = true
-        })
-        s.versDroite:connect_signal("mouse::enter",
-                                    function(w)
-                                        mouse.coords({
-                                                x = 1,
-                                                y = mouse.coords().y
-                                        })
-                                    end
-        )
-        s.versGauche = awful.wibar({
-                position = "left",
-                screen = s ,
-                width = 1,
-                -- bg       = beautiful.noir,
-                opacity = 0,
-                ontop = true
-        })
-        s.versGauche:connect_signal("mouse::enter",
-                                    function(w)
-                                        mouse.coords({
-                                                x = largeurSecond - 2,
-                                                y = mouse.coords().y
-                                        })
-                                    end
-        )
+        if s.index == 1 then
+             s.versDroite = wibox({
+                    -- écran n°2 vertical 
+                    x       = largeurSecond + largeurPremier - 1,
+                    y       = hauteurSecond - hauteurPremier,
+                    height  = hauteurPremier,
+                    screen  = s ,
+                    width   = 1,
+                    bg      = "#f0f",
+                    opacity = 0,
+                    ontop   = true,
+                    visible = true
+            })
+            s.versDroite:connect_signal("mouse::enter",
+                                        function(w)
+                                            mouse.coords({
+                                                    x = 1,
+                                                    y = mouse.coords().y
+                                            })
+                                        end
+            )
+        end
+        if s.index == 2 then
+            s.versDroite = wibox({
+                    -- écran n°2 vertical 
+                    x       = largeurSecond - 1,
+                    y       = 0,
+                    height  = hauteurSecond - hauteurPremier,
+                    screen  = s ,
+                    width   = 1,
+                    bg      = "#f0f",
+                    opacity = 0,
+                    ontop   = true,
+                    visible = true
+            })
+            s.versDroite:connect_signal("mouse::enter",
+                                        function(w)
+                                            mouse.coords({
+                                                    x = 1,
+                                                    y = mouse.coords().y
+                                            })
+                                        end
+            )
+            s.versGauche = wibox({
+                    x        = 0,
+                    y        = 0,
+                    screen   = s ,
+                    width    = 1,
+                    height   = hauteurSecond,
+                    bg       = "#f0f",
+                    opacity  = 0,
+                    ontop    = true,
+                    visible  = true
+            })
+            s.versGauche:connect_signal("mouse::enter",
+                                        function(w)
+                                            if mouse.coords().y < hauteurSecond - hauteurPremier then
+                                                mouse.coords({
+                                                        x = largeurSecond - 2,
+                                                        y = mouse.coords().y
+                                                })
+                                            else
+                                                mouse.coords({
+                                                        x = largeurPremier + largeurSecond - 2,
+                                                        y = mouse.coords().y
+                                                })
+                                            end
+                                        end
+            )
+        end
     end
     --
     --
@@ -88,7 +126,7 @@ for s in screen do
         )
         awful.tag.add("travail",
                       {
-                          layout = awful.layout.suit.floating,
+                          layout = awful.layout.suit.fair,
                           screen = s,
                       }
         )
@@ -175,7 +213,8 @@ for s in screen do
         local dtv2 = dtv2.worker({
                 square_size  = 3.6,
                 json_path    = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader",
-                ratbagctl_id = 'singing-gundi'
+                -- ratbagctl_id = 'singing-gundi'
+                ratbagctl_id = 'warbling-mara'
         })
         left_layout:add(dtv2)
         --
@@ -339,6 +378,7 @@ for s in screen do
         -- et HDMI à droite de eDP avec le portable
         --
         if (screen.count() >= 2) and (ecrans ~= "configuration1") then
+            -- deux écrans sur le portable
             s.topGauche = wibox({
                     x = 0,
                     y = 0,
@@ -367,7 +407,7 @@ for s in screen do
                     opacity = 0,
                     ontop = true,
                     visible = true,
-                    bg      = "#ff0"
+                    bg      = "#fff"
             })
             s.topDroit:connect_signal("mouse::enter",
                                       function(w)

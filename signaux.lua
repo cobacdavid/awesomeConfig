@@ -126,12 +126,11 @@ client.connect_signal("request::titlebars",function(c)
                                       tempsPasse(c),
                                       separateur(),
                                       screenshot(c),
-                                      separateur(),
                                       awful.titlebar.widget.stickybutton(c),
                                       awful.titlebar.widget.ontopbutton(c),
                                       awful.titlebar.widget.maximizedbutton(c),
-                                      killneuf(c),
                                       awful.titlebar.widget.closebutton(c),
+                                      killneuf(c),
                                       layout = wibox.layout.fixed.horizontal()
                                   },
                                   layout = wibox.layout.align.horizontal
@@ -202,7 +201,15 @@ client.connect_signal("unfocus",
                           -- c.border_color = beautiful.border_color_normal
                           --
                           if not c.blocage then
-                              c.opacity = 0.5
+                              -- c.timer_opacity = gears.timer({
+                              --         timeout  = 10,
+                              --         autostart = true,
+                              --         single_shot = true,
+                              --         callback = function()
+                              --                 c.opacity = .3
+                              --         end
+                              -- })
+                              c.opacity = 0.8
                           end
                       end
 )

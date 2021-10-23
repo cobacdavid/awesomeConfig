@@ -16,6 +16,8 @@ local awful     = require("awful")
 local wibox     = require("wibox")
 local gears     = require("gears")
 --
+local COMMAND = [[ xrandr --listmonitors | grep Monitors | cut -d ' ' -f 2 ]]
+local COMMAND2 = [[ xrandr | grep Screen | cut -d ',' -f 2 ]]
 local widget = {}
 widget.timer = nil
 --
@@ -79,7 +81,20 @@ function widget.heure(args)
             call_now = true,
             autostart = true,
             callback = function()
-                heurew_text(heurew, args)
+                awful.spawn.easy_async(COMMAND,
+                                       function(stdout)
+                                           local resultat = tonumber(stdout)
+                                           awful.spawn.easy_async(COMMAND2,
+                                                                  function(stdout)
+                                                                      if resultat == 2 and stdout == "current 1920 x 1920" then
+                                                                          -- code à rectifier...
+                                                                      else
+                                                                          heurew_text(heurew, args)
+                                                                      end
+                                                                  end
+                                           )
+                                       end
+                )
             end
     })
     return heurew

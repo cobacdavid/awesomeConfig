@@ -15,26 +15,36 @@ local wibox     = require("wibox")
 local awful     = require("awful")
 local beautiful = require("beautiful")
 --
+local HOME_DIR = os.getenv('HOME')
+local ICONS_DIR = HOME_DIR .. '/.config/awesome/icons/'
+--
 local widget = {}
 --
 function widget.killneuf(c, args)
     
     local killneuf = wibox.widget({
             layout = wibox.layout.stack,
+            -- {
+            --     widget = wibox.widget.textbox,
+            --     align  = "center",
+            --     markup = "<span font='" .. beautiful.font
+            --         .. "'  foreground='" .. beautiful.bg_urgent
+            --         .. "'>9</span>"
+            -- },
+            -- {
+            --     widget = wibox.widget.textbox,
+            --     align  = "center",
+            --     markup = "<span font='" .. beautiful.font 
+            --         .. "'  foreground='" .. beautiful.fg_normal
+            --         .. "'>kill</span>"
+            -- },
             {
-                widget = wibox.widget.textbox,
-                align  = "center",
-                markup = "<span font='" .. beautiful.font
-                    .. "'  foreground='" .. beautiful.bg_urgent
-                    .. "'>9</span>"
-            },
-            {
-                widget = wibox.widget.textbox,
-                align  = "center",
-                markup = "<span font='" .. beautiful.font 
-                    .. "'  foreground='" .. beautiful.fg_normal
-                    .. "'>kill</span>"
-            },
+                image   = ICONS_DIR .. "kill.png",
+                resize  = true,
+                opacity = 1,
+                halign  = "center",
+                widget  = wibox.widget.imagebox
+            }
     })
     --
     local tt = awful.tooltip({})
