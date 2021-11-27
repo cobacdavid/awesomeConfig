@@ -13,7 +13,7 @@ local fu = require("fonctionsUtiles")
 -- désactivation de ces deux nouvelles fonctionnalités
 awful.mouse.snap.edge_enabled = false
 awful.mouse.snap.client_enabled = false
-
+--
 -- {{{ Mouse bindings
 -- table_menu = {}
 root.buttons(
@@ -362,7 +362,8 @@ globalkeys = gears.table.join(
                     prompt = "Thème fond : ",
                     textbox = mypromptbox.widget,
                     exe_callback = function(t)
-                        ppeintNasa.themeFond = t
+                        -- ppeintNasa.themeFond = t
+                        ppeint_pytchi_theme = t
                     end,
                     history_path = myhome .. ".config/awesome/widgets/ppeintNasa/themeHistory"
             })

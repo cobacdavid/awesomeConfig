@@ -112,7 +112,7 @@ for s in screen do
         )
         awful.tag.add("net",
                       {
-                          layout = awful.layout.suit.max,
+                          layout = awful.layout.suit.floating,
                           screen = s,
                       }
         )
@@ -213,8 +213,6 @@ for s in screen do
         local dtv2 = dtv2.worker({
                 square_size  = 3.6,
                 json_path    = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader",
-                -- ratbagctl_id = 'singing-gundi'
-                ratbagctl_id = 'warbling-mara'
         })
         left_layout:add(dtv2)
         --
@@ -445,7 +443,7 @@ for s in screen do
         awful.tag.add("Auxiliaire",
                       {
                           -- layout = awful.layout.suit.floating,
-                          layout = awful.layout.suit.tile.left,
+                          layout = awful.layout.suit.tile.top,
                           screen = s,
                           selected = true,
                           gap = 5
@@ -461,7 +459,7 @@ for s in screen do
                     bg = beautiful.bg_normal,
                     widget = clo,
                     position = "top",
-                    ontop = false,
+                    ontop = true,
                     type = "dock",
                     opacity = .75
             })

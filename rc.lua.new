@@ -63,8 +63,8 @@ end
 largeurPremier = screen[1].geometry.width
 hauteurPremier = screen[1].geometry.height
 if screen:count() >= 2 then
-   largeurSecond = screen[2].geometry.width
-   hauteurSecond = screen[2].geometry.height
+    largeurSecond = screen[2].geometry.width
+    hauteurSecond = screen[2].geometry.height
 end
 --
 -- other variables
@@ -110,7 +110,7 @@ dtv2             = require("widgets.dtv2.dtv2")
 wmatrice         = require("widgets.widgetMatrice.widgetMatrice")
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
-ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
+-- ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
 ppeintId         = require("widgets.ppeintId.ppeintId")
 --
 mpdCom           = require("mpdCommande")
@@ -134,32 +134,120 @@ almost_analog_clock = require("widgets.almost_analog_clock.almost_analog_clock")
 --
 --
 listeRcFiles = {--
-   "errorhandling45.lua",
-   -- "logicielsIndispensables.lua",
-   -- "myPRIVATEvariables.lua",
-   "stats.lua",
-   "menu.lua",
-   "tagWibar.lua",
-   "sourisEtClavier.lua",
-   "rules45.lua",
-   "signaux.lua"
+    "errorhandling45.lua",
+    -- "logicielsIndispensables.lua",
+    -- "myPRIVATEvariables.lua",
+    "stats.lua",
+    "menu.lua",
+    "tagWibar.lua",
+    "sourisEtClavier.lua",
+    "rules45.lua",
+    "signaux.lua"
 }
 --
 for i, f in ipairs(listeRcFiles) do
-   dofile (config ..  "/" .. f)
+    dofile (config ..  "/" .. f)
 end
 --
 -- appsDemarrage in variableDefinitions
 for _, app in ipairs(appsDemarrage) do
-   fu.executeUneFois(app)
+    fu.executeUneFois(app)
 end
 --
 ecranFlou.isActivated = false
 ppeintTag.imagesFonds()
-ppeintDesc = ppeintNasa()
+-- ppeintDesc = ppeintNasa()
 --
 -- ppeintTag on first tag of first screen at startup
 screen[1].selected_tag:emit_signal("property::selected")
+--
+-- papier peint pytchi
+COMMANDE_PYTCHI = [[ bash -c "python3 /home/david/travail/david/production/lycee/informatique/modules_perso/pytchi/tests/ppeint_pytchi.py \"%s\"" ]]
+-- screen.connect_signal("request::wallpaper",
+--                       function(s)
+-- awful.spawn.easy_async(string.format(COMMAND, "fields of the nephilim"),
+--                        function()
+--                            awful.wallpaper {
+--                                screen = screen[2],
+--                                widget = {
+--                                    resize = false,
+--                                    vertical_fit_policy   = "fit",
+--                                    halign = "center",
+--                                    image  = gears.surface.load_uncached("/home/david/ppeint.png"),
+--                                    widget = wibox.widget.imagebox
+--                                }
+--                            }
+--                        end
+-- )
+--                       end
+-- )
+
+-- gears.timer({
+--     timeout   = 60,
+--     autostart = true,
+--     callback  = function()
+--         screen[2]:emit_signal("request::wallpaper")
+--     end
+-- })
+--
+-- monppeint = function()
+--     awful.wallpaper({
+
+--     })
+-- end
+ppeint_pytchi_theme = "the cure"
+
+fond_annexe = wibox({
+        screen = screen[2],
+        x = 0,
+        y = 0,
+        bg = "#000",
+        opacity = 1,
+        visible = true,
+        below = true,
+        widget = wibox.widget({
+                {
+                    id = "monimage",
+                    image = "/home/david/ppeint.png",
+                    resize = false,
+                    halign = "center",
+                    valign = "center",
+                    widget = wibox.widget.imagebox,
+                },
+                {
+                    id = "montexte",
+                    markup = "<tt><b>inconnu</b></tt>",
+                    valign = "bottom",
+                    align  = "left",
+                    widget = wibox.widget.textbox
+                },
+                widget = wibox.layout.stack
+        })
+})
+fond_annexe:buttons({
+        awful.button({}, 3, function()
+                fond_annexe.widget.monimage.resize = true
+                -- fond_annexe.widget.montexte.markup = fond_annexe.widget.montexte.markup .. " <tt><b> clic ! </b></tt>"
+        end),
+        awful.button({}, 1, function()
+                fond_annexe.widget.monimage.resize = false
+                -- fond_annexe.widget.montexte.markup = fond_annexe.widget.montexte.markup .. " <tt><b> clic ! </b></tt>"
+        end)
+})
+gears.timer({
+        timeout = 60,
+        autostart = true,
+        callback = function()
+            awful.spawn.easy_async(string.format(COMMANDE_PYTCHI, ppeint_pytchi_theme),
+                                   function(stdout)
+                                       fond_annexe.widget.monimage.image  = gears.surface.load_uncached("/home/david/ppeint.png")
+                                       local titre = stdout:match("(.*)\n") or stdout
+                                       fond_annexe.widget.montexte.markup = "<tt><b>" .. stdout:match("(.*)\n") .. "</b></tt>"
+                                   end
+            )
+        end
+})
+awful.placement.maximize(fond_annexe)
 --
 fu.commande_execute(clavierCmd .. " " .. configAwesome)
 --

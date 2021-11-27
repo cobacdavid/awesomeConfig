@@ -227,13 +227,17 @@ function widget.worker(args)
 
         -- show_warning(tostring(min) .. " " .. tostring(max))
         -- détermination des limites de valeurs : de 0 puis 1 à effectifMax
-        -- par crroissance exponentielle en k valeurs (variables user)
+        -- par croissance exponentielle en k valeurs (variables user)
         -- 0 1 k k² ... k^(n-2)=effectifMax
         local k = effectifMax ^ (1 / (args.n_colors - 2))
         local limits = {0, 1}
         for i = 1, args.n_colors-2 do
             table.insert(limits, math.floor(k ^ i))
         end
+        -- local limits = {}
+        -- for i = 1, args.n_colors do
+        --     table.insert(limits, effectifMax * i / args.n_colors)
+        -- end
         
         -- local nb = 0        
         local jour = max
@@ -242,7 +246,7 @@ function widget.worker(args)
             tab[jour] = tab[jour] == nil and 0 or tab[jour]
             if tab[jour] == -1 then
                 tab[jour] = 0
-                couleur = "#f00"
+                couleur = args.color_of_empty_cells -- "#f00"
             else
                 couleur = tabTheme[niveau(tab[jour], limits)]
             end

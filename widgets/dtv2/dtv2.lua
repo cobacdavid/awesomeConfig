@@ -19,6 +19,7 @@ local COMMAND2   = [[ bash -c "cd %s && ls -1 *.json" ]]
 local COMMAND3   = [[ bash -c "gcolor3 2>/dev/null" ]]
 local COMMAND4   = [[ bash -c "echo '{ \"kbd\": \"%s\"}' > /tmp/couleur_dtv2.json" ]]
 local COMMAND5   = [[ bash -c "ratbagctl '%s' led 0 set color %s && ratbagctl '%s' led 1 set color %s" ]]
+local COMMAND6   = [[ bash -c "ratbagctl | cut -d ':' -f 1" ]]
 --
 local function show_warning(message)
     naughty.notify{
@@ -46,7 +47,13 @@ function widget.worker(args)
     args.color_of_empty_cells = args.color_of_empty_cells
     args.with_border          = args.with_border or 0
     args.margin_top           = args.margin_top  or 1
-    args.ratbagctl_id         = args.ratbagctl_id
+    args.ratbagctl_id         = ""
+    awful.spawn.easy_async(COMMAND6,
+                           function(stdout)
+                               args.ratbagctl_id = stdout:match("(.*)\n")
+                               -- show_warning(args.ratbagctl_id)
+                           end
+    )
     -- show_warning(tostring(args.square_size))
     if args.with_border == nil then args.with_border = true end
     --
