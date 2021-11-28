@@ -242,7 +242,7 @@ gears.timer({
                                    function(stdout)
                                        fond_annexe.widget.monimage.image  = gears.surface.load_uncached("/home/david/ppeint.png")
                                        local titre = stdout:match("(.*)\n") or stdout
-                                       fond_annexe.widget.montexte.markup = "<tt><b>" .. stdout:match("(.*)\n") .. "</b></tt>"
+                                       fond_annexe.widget.montexte.markup = "<tt><b>" .. titre .. "</b></tt>"
                                    end
             )
         end
