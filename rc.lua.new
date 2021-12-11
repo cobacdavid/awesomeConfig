@@ -90,6 +90,7 @@ flower_pbar = require("widgets.flower_pbar.flower_pbar")
 -- widgets
 separateur       = require("widgets.separateur.separateur")
 heure            = require("widgets.heure.heure")
+madate           = require("widgets.date.date")
 bigC             = require("widgets.bigClock.bigClock")
 volumemaster     = require("widgets.volumeMaster.volumeMaster")
 luminosite       = require("widgets.luminosite.luminosite")
@@ -162,7 +163,7 @@ ppeintTag.imagesFonds()
 screen[1].selected_tag:emit_signal("property::selected")
 --
 -- papier peint pytchi
-COMMANDE_PYTCHI = [[ bash -c "python3 /home/david/travail/david/production/lycee/informatique/modules_perso/pytchi/tests/ppeint_pytchi.py \"%s\"" ]]
+COMMANDE_PYTCHI = [[ bash -c "python3 /home/david/.config/awesome/ppeint_pytchi.py \"%s\"" ]]
 -- screen.connect_signal("request::wallpaper",
 --                       function(s)
 -- awful.spawn.easy_async(string.format(COMMAND, "fields of the nephilim"),
@@ -195,59 +196,70 @@ COMMANDE_PYTCHI = [[ bash -c "python3 /home/david/travail/david/production/lycee
 
 --     })
 -- end
-ppeint_pytchi_theme = "the cure"
+-- ppeint_pytchi_theme = "the cure"
 
-fond_annexe = wibox({
-        screen = screen[2],
-        x = 0,
-        y = 0,
-        bg = "#000",
-        opacity = 1,
-        visible = true,
-        below = true,
-        widget = wibox.widget({
-                {
-                    id = "monimage",
-                    image = "/home/david/ppeint.png",
-                    resize = false,
-                    halign = "center",
-                    valign = "center",
-                    widget = wibox.widget.imagebox,
-                },
-                {
-                    id = "montexte",
-                    markup = "<tt><b>inconnu</b></tt>",
-                    valign = "bottom",
-                    align  = "left",
-                    widget = wibox.widget.textbox
-                },
-                widget = wibox.layout.stack
-        })
-})
-fond_annexe:buttons({
-        awful.button({}, 3, function()
-                fond_annexe.widget.monimage.resize = true
-                -- fond_annexe.widget.montexte.markup = fond_annexe.widget.montexte.markup .. " <tt><b> clic ! </b></tt>"
-        end),
-        awful.button({}, 1, function()
-                fond_annexe.widget.monimage.resize = false
-                -- fond_annexe.widget.montexte.markup = fond_annexe.widget.montexte.markup .. " <tt><b> clic ! </b></tt>"
-        end)
-})
+-- fond_annexe = wibox({
+--         screen = screen[2],
+--         x = 0,
+--         y = 0,
+--         bg = "#000",
+--         opacity = 1,
+--         visible = true,
+--         below = true,
+--         widget = wibox.widget({
+--                 {
+--                     id = "monimage",
+--                     image = "/home/david/ppeint.jpg",
+--                     resize = false,
+--                     halign = "center",
+--                     valign = "center",
+--                     widget = wibox.widget.imagebox,
+--                 },
+--                 {
+--                     id = "montexte",
+--                     markup = "<tt><b>" .. ppeint_pytchi_theme .. "</b></tt>",
+--                     valign = "bottom",
+--                     align  = "left",
+--                     widget = wibox.widget.textbox
+--                 },
+--                 widget = wibox.layout.stack
+--         })
+-- })
+-- fond_annexe:buttons({
+--         awful.button({}, 3, function()
+--                 fond_annexe.widget.monimage.resize = true
+--                 -- fond_annexe.widget.montexte.markup = fond_annexe.widget.montexte.markup .. " <tt><b> clic ! </b></tt>"
+--         end),
+--         awful.button({}, 1, function()
+--                 fond_annexe.widget.monimage.resize = false
+--                 -- fond_annexe.widget.montexte.markup = fond_annexe.widget.montexte.markup .. " <tt><b> clic ! </b></tt>"
+--         end)
+-- })
+-- gears.timer({
+--         timeout = 60,
+--         autostart = true,
+--         callback = function()
+--             awful.spawn.easy_async(string.format(COMMANDE_PYTCHI, ppeint_pytchi_theme),
+--                                    function(stdout)
+--                                        fond_annexe.widget.monimage.image  = gears.surface.load_uncached("/home/david/ppeint.jpg")
+--                                        local titre = stdout:match("(.*)\n") or stdout
+--                                        fond_annexe.widget.montexte.markup = "<tt><b>" .. titre .. "</b></tt>"
+--                                    end
+--             )
+--         end
+-- })
+-- awful.placement.maximize(fond_annexe)
+--
 gears.timer({
-        timeout = 60,
+        timeout = 600,
         autostart = true,
         callback = function()
-            awful.spawn.easy_async(string.format(COMMANDE_PYTCHI, ppeint_pytchi_theme),
-                                   function(stdout)
-                                       fond_annexe.widget.monimage.image  = gears.surface.load_uncached("/home/david/ppeint.png")
-                                       local titre = stdout:match("(.*)\n") or stdout
-                                       fond_annexe.widget.montexte.markup = "<tt><b>" .. titre .. "</b></tt>"
-                                   end
+            awful.spawn.easy_async([[ bash -c "python3 /home/david/travail/david/production/lycee/informatique/modules_perso/pytchi/pytchibot/gestion_requetes.py" ]],
+                function(stdout)
+                end
             )
-        end
+end
 })
-awful.placement.maximize(fond_annexe)
 --
 fu.commande_execute(clavierCmd .. " " .. configAwesome)
 --

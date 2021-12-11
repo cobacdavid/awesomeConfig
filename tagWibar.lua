@@ -144,7 +144,7 @@ for s in screen do
         --
         if screen.count() <= 2 then 
             local heureW = heure({
-                    width = 100,
+                    width = 80,
                     justify = "center",
                     hr_format = "%H:%M",
                     actionLeft = function()
@@ -154,7 +154,18 @@ for s in screen do
                         })
                     end
             })
-            left_layout:add(heureW)
+            -- left_layout:add(heureW)
+            local dateW = madate({
+                    width = 30,
+                    justify = "center",
+                    actionLeft = function()
+                        calendrier.calendrier({
+                                width = 1100,
+                                height = 900
+                        })
+                    end
+            })
+            left_layout:add(dateW)
         end
         --
         if ordinateur == "laptop" then
@@ -452,7 +463,7 @@ for s in screen do
         if screen.count() == 2 then
             clo = wibox.widget {
                 align = "center",
-                widget = wibox.widget.textclock("%A %d %B %Y")
+                widget = wibox.widget.textclock("%A %d %B %Y %H:%M")
             }
             s.mywibar = awful.wibar({
                     screen = s ,
