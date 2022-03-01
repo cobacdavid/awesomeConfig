@@ -254,8 +254,8 @@ for s in screen do
                 with_border          = true,
                 color_of_empty_cells = couleurFondVide,
                 n_colors             = 10,
-                from_color           = "#0000ff",
-                to_color             = "#00ffff"
+                from_color           = "#00ff00",
+                to_color             = "#0000ff"
         })
         lfm:add_button(
             awful.button({}, 2,
@@ -265,16 +265,16 @@ for s in screen do
                 end
             )
         )
-        left_layout:add(lfm)
-        left_layout:add(separateur())
+        -- left_layout:add(lfm)
+        -- left_layout:add(separateur())
         local fichierPath = "/home/david/travail/david/production/lycee"
         local fic = fichiers({
                 path                 = fichierPath,
                 color_of_empty_cells = couleurFondVide,
                 year                 = os.date("%Y"),
                 n_colors             = 10,
-                from_color           = "#0000ff",
-                to_color             = "#00ffff",
+                from_color           = "#00ff00",
+                to_color             = "#0000ff",
                 text                 = ""
         })
         left_layout:add(fic)
@@ -290,8 +290,8 @@ for s in screen do
         local plr = polar({
                 polar_id             = polar_id,
                 color_of_empty_cells = couleurFondVide,
-                from_color           = "#0000ff",
-                to_color             = "#00ffff",
+                from_color           = "#00ff00",
+                to_color             = "#0000ff",
                 -- from_date            = "20201014",
                 year                 = os.date("%Y"),
                 n_colors             = 5
@@ -303,8 +303,8 @@ for s in screen do
                 end
             )
         )
-        left_layout:add(plr)
-        left_layout:add(separateur())
+        -- left_layout:add(plr)
+        -- left_layout:add(separateur())
         mypromptbox = awful.widget.prompt()
         mypromptbox:add_button(
             awful.button({}, 2,
@@ -360,7 +360,7 @@ for s in screen do
                 square_size          = 4,
                 with_border          = true,
                 color_of_empty_cells = couleurFondVide,
-                n_colors             = 10,
+                n_colors             = 15,
                 -- from_date            = os.date("%Y").. "0101"
         })
         cvdv2:add_button(

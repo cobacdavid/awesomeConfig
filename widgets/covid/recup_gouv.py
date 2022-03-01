@@ -34,10 +34,11 @@ indicateurs = {
 
 contenu = requests.get(URL).text
 
-df = pd.read_csv(StringIO(contenu))
+
+df = pd.read_csv(StringIO(contenu), low_memory=False)
 mel = df[df['dep'] == "49"]
 mel.index = mel["date"]
-
+print(mel)
 for cle in indicateurs:
     mel[cle].to_csv(f"{DIR}/donnees/{cle}",
                     header=False,
