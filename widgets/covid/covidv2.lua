@@ -42,7 +42,7 @@ end
 
 local function niveau(effectif, limites)
     local i = 1
-    while i <= #limites and limites[i] < effectif do
+    while i <= #limites and limites[i] <= effectif do
         i = i + 1
     end
     return i-1

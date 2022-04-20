@@ -29,7 +29,7 @@ function themes.gradtheme(n, col1, col2)
         g = vers_hex(p, g1, g2)
         b = vers_hex(p, b1, b2)
         a = vers_hex(p, a1, a2)
-        tab[i] = "#" .. r .. g .. b .. a
+        table.insert(tab, "#" .. r .. g .. b .. a)
     end
     --
     return tab

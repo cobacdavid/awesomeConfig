@@ -156,7 +156,7 @@ for s in screen do
             })
             -- left_layout:add(heureW)
             local dateW = madate({
-                    width = 30,
+                    width = 35,
                     justify = "center",
                     actionLeft = function()
                         calendrier.calendrier({

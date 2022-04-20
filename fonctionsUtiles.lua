@@ -135,8 +135,9 @@ function fonctionsUtiles.getBtVolume ()
    local philips="00_22_37_22_BA_76"
    -- sony srs-xb2
    local sony="FC_A8_9A_3A_F6_3C"
+   local audio_tech="00_18_09_FD_8A_B6"
    --
-   local choix=sony
+   local choix=audio_tech
    --
    local vol_actuel_hexa = "pacmd dump | egrep 'set-sink-volume bluez_sink." ..  choix ..".a2dp_sink '| cut -d ' ' -f 3"
    awful.spawn.easy_async(vol_actuel_hexa,
@@ -156,8 +157,9 @@ function fonctionsUtiles.incBtVolume( inc )
    local philips="00_22_37_22_BA_76"
    -- sony srs-xb2
    local sony="FC_A8_9A_3A_F6_3C"
+   local audio_tech="00_18_09_FD_8A_B6"
    --
-   local choix=sony
+   local choix=audio_tech
    --
    local v = getBtVolume()
    local i = math.floor(v + inc)
