@@ -20,7 +20,7 @@ for s in screen do
     -- ÉCRAN PRINCIPAL
     --
     local layoutterm
-    if ordinateur ~= "laptop" then
+    if ordinateur ~= "laptop" and ordinateur ~= "masterNSI" then
         -- nouvel écran à droite du premier
         if s.index == 1 then
              s.versDroite = wibox({
@@ -185,10 +185,9 @@ for s in screen do
         }))
         left_layout:add(separateur())
         if ordinateur == "laptop" or ordinateur == "masterNSI" then
+            local bat_cmd = "cat /sys/class/power_supply/BAT0/capacity"
             if ordinateur == "masterNSI" then
-                local bat_cmd = "cat /sys/class/power_supply/BAT1/capacity"
-            else
-                local bat_cmd = "cat /sys/class/power_supply/BAT0/capacity"
+                bat_cmd = "cat /sys/class/power_supply/BAT1/capacity"
             end
             battwm = wmatrice({
                     -- la commande peut être avec BAT1
