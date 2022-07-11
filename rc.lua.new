@@ -106,9 +106,9 @@ calendrierMois   = require("widgets.calendrier.calendrierMois")
 infos            = require("widgets.infos.infos")
 chrono           = require("widgets.chrono.chrono")
 lastfm           = require("widgets.lastfm-scrobbles.lastfm-scrobbles")
-btg              = require("widgets.batterieGraph.batterieGraph")
-meteo            = require("widgets.meteo.meteo")
-covid            = require("widgets.covid.covid")
+--btg              = require("widgets.batterieGraph.batterieGraph")
+--meteo            = require("widgets.meteo.meteo")
+--covid            = require("widgets.covid.covid")
 covidv2          = require("widgets.covid.covidv2")
 matrice          = require("widgets.matrice.matrice")
 fichiers         = require("widgets.fichiers.fichiers")
@@ -133,7 +133,9 @@ titreClient      = require("widgets.titreClient.titreClient")
 secretFenetre    = require("widgets.secretFenetre.secretFenetre")
 -- widgets externes
 github_contributions_widget = require("awesome-wm-widgets.github-contributions-widget.github-contributions-widget")
-idMeteo = require("widgets.meteo.private_openweather_api_key")
+if ordinateur ~= "masterNSI" then
+    idMeteo = require("widgets.meteo.private_openweather_api_key")
+end
 weather_widget = require("awesome-wm-widgets.weather-widget.weather")
 --
 semi_analog_clock = require("widgets.semi_analog_clock.semi_analog_clock")

@@ -185,9 +185,14 @@ for s in screen do
         }))
         left_layout:add(separateur())
         if ordinateur == "laptop" or ordinateur == "masterNSI" then
+            if ordinateur == "masterNSI" then
+                local bat_cmd = "cat /sys/class/power_supply/BAT1/capacity"
+            else
+                local bat_cmd = "cat /sys/class/power_supply/BAT0/capacity"
+            end
             battwm = wmatrice({
                     -- la commande peut être avec BAT1
-                    COMMANDE = 'bash -c "cat /sys/class/power_supply/BAT0/capacity"',
+                    COMMANDE = 'bash -c "' .. bat_cmd .. '"',
                     title = '<b>batt</b>',
                     from_color = "#f00",
                     to_color = "#0f0"
@@ -233,21 +238,23 @@ for s in screen do
         --
         local couleurFondVide = "#fff2"
         --
-        local mto = weather_widget({
-                api_key     = idMeteo.api_key,
-                coordinates = {47.4667, -0.55},
-                time_format_12h = false,
-                units = 'metric',
-                both_units_widget = false,
-                font_name = 'Carter One',
-                icons = 'VitalyGorbachev',
-                icons_extension = '.svg',
-                show_hourly_forecast = true,
-                show_daily_forecast = true,
-        })
-        left_layout:add(mto)
-        --
-        left_layout:add(separateur())
+        if ordinateur ~= "masterNSI" then
+            local mto = weather_widget({
+                    api_key     = idMeteo.api_key,
+                    coordinates = {47.4667, -0.55},
+                    time_format_12h = false,
+                    units = 'metric',
+                    both_units_widget = false,
+                    font_name = 'Carter One',
+                    icons = 'VitalyGorbachev',
+                    icons_extension = '.svg',
+                    show_hourly_forecast = true,
+                    show_daily_forecast = true,
+            })
+            left_layout:add(mto)
+            --
+            left_layout:add(separateur())
+        end
         --
         left_layout:add(chrono())
         left_layout:add(separateur())
@@ -262,13 +269,15 @@ for s in screen do
                 text                 = ""
         })
         left_layout:add(fic)
-        fic:add_button(
-            awful.button({}, 1,
-                function()
-                    awful.spawn(fileMgr .. " " .. fichierPath)
-                end
+        if ordinateur ~= "masterNSI" then
+            fic:add_button(
+                awful.button({}, 1,
+                    function()
+                        awful.spawn(fileMgr .. " " .. fichierPath)
+                    end
+                )
             )
-        )
+        end
         left_layout:add(separateur())
         --
         --
@@ -283,6 +292,7 @@ for s in screen do
                     from_color           = "#00ff00",
                     to_color             = "#0000ff"
             })
+
             lfm:add_button(
                 awful.button({}, 2,
                     function()
@@ -316,34 +326,44 @@ for s in screen do
         --
         --
         mypromptbox = awful.widget.prompt()
-        mypromptbox:add_button(
-            awful.button({}, 2,
-                function()
-                    mypromptbox.widget:set_text("OK")
-                end
+        if ordinateur ~= "masterNSI" then
+            mypromptbox:add_button(
+                awful.button({}, 2,
+                    function()
+                        mypromptbox.widget:set_text("OK")
+                    end
+                )
             )
-        )
+        end
         left_layout:add(mypromptbox)
         left_layout:add(separateur())
         --
         --
         local right_layout = wibox.layout.fixed.horizontal()
         local gcw_id =  "cobacdavid"
+        if ordinateur == "matserNSI" then
+            gcw_theme = "standard"
+        else
+            gcw_theme = "standard2"
+        end
+        
         local gcw = github_contributions_widget({
                 username             = gcw_id,
-                theme                = "standard2",
+                theme                = gcw_theme,
                 with_border          = true,
                 square_size          = 4,
                 color_of_empty_cells = couleurFondVide,
                 days                 = 365
         })
-        gcw:add_button(
-            awful.button({}, 1,
-                function()
-                    awful.spawn(browser .. " " .. "https://github.com/" .. gcw_id)
-                end
+        if ordinateur ~= "masterNSI" then
+            gcw:add_button(
+                awful.button({}, 1,
+                    function()
+                        awful.spawn(browser .. " " .. "https://github.com/" .. gcw_id)
+                    end
+                )
             )
-        )
+        end
         right_layout:add(gcw)
         right_layout:add(separateur())
         --
