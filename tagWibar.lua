@@ -168,7 +168,7 @@ for s in screen do
             left_layout:add(dateW)
         end
         --
-        if ordinateur == "laptop" then
+        if ordinateur == "laptop" or ordinateur == "masterNSI" then
             left_layout:add(luminosite())
         else
             local sLevel = {}
@@ -184,8 +184,9 @@ for s in screen do
                                 text = "volume"
         }))
         left_layout:add(separateur())
-        if ordinateur == "laptop" then
+        if ordinateur == "laptop" or ordinateur == "masterNSI" then
             battwm = wmatrice({
+                    -- la commande peut être avec BAT1
                     COMMANDE = 'bash -c "cat /sys/class/power_supply/BAT0/capacity"',
                     title = '<b>batt</b>',
                     from_color = "#f00",
@@ -199,6 +200,7 @@ for s in screen do
         end
         left_layout:add(separateur())
         local twm = wmatrice({
+                -- la commande nécessite lm-sensors
                 COMMANDE = [[ bash -c "sensors | grep Package | cut -d \" \" -f 5-6" ]],
                 title = '<b>CPU °C</b>',
                 fun = function(s)
@@ -221,11 +223,13 @@ for s in screen do
         left_layout:add(rwm)
         left_layout:add(separateur())
         --
-        local dtv2 = dtv2.worker({
-                square_size  = 3.6,
-                json_path    = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader",
-        })
-        left_layout:add(dtv2)
+        if ordinateur == "desktop" then
+            local dtv2 = dtv2.worker({
+                    square_size  = 3.6,
+                    json_path    = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader",
+            })
+            left_layout:add(dtv2)
+        end
         --
         local couleurFondVide = "#fff2"
         --
@@ -247,26 +251,6 @@ for s in screen do
         --
         left_layout:add(chrono())
         left_layout:add(separateur())
-        local lfm = lastfm({
-                year                 = os.date("%Y"),
-                theme                = "gradient",
-                square_size          = 4,
-                with_border          = true,
-                color_of_empty_cells = couleurFondVide,
-                n_colors             = 10,
-                from_color           = "#00ff00",
-                to_color             = "#0000ff"
-        })
-        lfm:add_button(
-            awful.button({}, 2,
-                function()
-                    awful.spawn(browser .. " " ..
-                                "https://last.fm/user/" ..  lastfm.username)
-                end
-            )
-        )
-        -- left_layout:add(lfm)
-        -- left_layout:add(separateur())
         local fichierPath = "/home/david/travail/david/production/lycee"
         local fic = fichiers({
                 path                 = fichierPath,
@@ -286,25 +270,51 @@ for s in screen do
             )
         )
         left_layout:add(separateur())
-        local polar_id = require("widgets.polar.polar_id")
-        local plr = polar({
-                polar_id             = polar_id,
-                color_of_empty_cells = couleurFondVide,
-                from_color           = "#00ff00",
-                to_color             = "#0000ff",
-                -- from_date            = "20201014",
-                year                 = os.date("%Y"),
-                n_colors             = 5
-        })
-        plr:add_button(
-            awful.button({}, 1,
-                function()
-                    awful.spawn(fileMgr .. " " .. "/home/david/Polar/" .. polar_id .. "/U/0")
-                end
+        --
+        --
+        if ordinateur == "desktop" then
+            local lfm = lastfm({
+                    year                 = os.date("%Y"),
+                    theme                = "gradient",
+                    square_size          = 4,
+                    with_border          = true,
+                    color_of_empty_cells = couleurFondVide,
+                    n_colors             = 10,
+                    from_color           = "#00ff00",
+                    to_color             = "#0000ff"
+            })
+            lfm:add_button(
+                awful.button({}, 2,
+                    function()
+                        awful.spawn(browser .. " " ..
+                                    "https://last.fm/user/" ..  lastfm.username)
+                    end
+                )
             )
-        )
-        -- left_layout:add(plr)
-        -- left_layout:add(separateur())
+            left_layout:add(lfm)
+            left_layout:add(separateur())
+            -- local polar_id = require("widgets.polar.polar_id")
+            -- local plr = polar({
+            --         polar_id             = polar_id,
+            --         color_of_empty_cells = couleurFondVide,
+            --         from_color           = "#00ff00",
+            --         to_color             = "#0000ff",
+            --         -- from_date            = "20201014",
+            --         year                 = os.date("%Y"),
+            --         n_colors             = 5
+            -- })
+            -- plr:add_button(
+            --     awful.button({}, 1,
+            --         function()
+            --             awful.spawn(fileMgr .. " " .. "/home/david/Polar/" .. polar_id .. "/U/0")
+            --         end
+            --     )
+            -- )
+            -- left_layout:add(plr)
+            -- left_layout:add(separateur())
+        end
+        --
+        --
         mypromptbox = awful.widget.prompt()
         mypromptbox:add_button(
             awful.button({}, 2,
@@ -318,8 +328,9 @@ for s in screen do
         --
         --
         local right_layout = wibox.layout.fixed.horizontal()
+        local gcw_id =  "cobacdavid"
         local gcw = github_contributions_widget({
-                username             = "cobacdavid",
+                username             = gcw_id,
                 theme                = "standard2",
                 with_border          = true,
                 square_size          = 4,
@@ -329,49 +340,53 @@ for s in screen do
         gcw:add_button(
             awful.button({}, 1,
                 function()
-                    awful.spawn(browser .. " " .. "https://github.com/" .. "cobacdavid")
+                    awful.spawn(browser .. " " .. "https://github.com/" .. gcw_id)
                 end
             )
         )
         right_layout:add(gcw)
         right_layout:add(separateur())
-        -- local cvd = covid.worker({
-        --          departement          = "Maine-et-Loire",
-        --          theme                = "gradient",
-        --          square_size          = 4,
-        --          with_border          = true,
-        --          color_of_empty_cells = "#fff2",
-        --          n_colors             = 10,
-        --          -- from_date            = os.date("%Y").. "0101"
-        -- })
-        -- cvd:add_button(
-        --         awful.button({}, 1,
-        --              function()
-        --                  awful.spawn(browser .. " " .. "https://covidtracker.fr/")
-        --              end
-        --         )
-        -- )
-        -- right_layout:add(cvd)
-        -- right_layout:add(separateur())
         --
-        local cvdv2 = covidv2.worker({
-                departement          = "Maine-et-Loire",
-                theme                = "gradient",
-                square_size          = 4,
-                with_border          = true,
-                color_of_empty_cells = couleurFondVide,
-                n_colors             = 15,
-                -- from_date            = os.date("%Y").. "0101"
-        })
-        cvdv2:add_button(
-            awful.button({}, 1,
-                function()
-                    awful.spawn(browser .. " " .. "https://covidtracker.fr/")
-                end
+        if ordinateur == "desktop" then
+            -- local cvd = covid.worker({
+            --          departement          = "Maine-et-Loire",
+            --          theme                = "gradient",
+            --          square_size          = 4,
+            --          with_border          = true,
+            --          color_of_empty_cells = "#fff2",
+            --          n_colors             = 10,
+            --          -- from_date            = os.date("%Y").. "0101"
+            -- })
+            -- cvd:add_button(
+            --         awful.button({}, 1,
+            --              function()
+            --                  awful.spawn(browser .. " " .. "https://covidtracker.fr/")
+            --              end
+            --         )
+            -- )
+            -- right_layout:add(cvd)
+            -- right_layout:add(separateur())
+            --
+            local cvdv2 = covidv2.worker({
+                    departement          = "Maine-et-Loire",
+                    theme                = "gradient",
+                    square_size          = 4,
+                    with_border          = true,
+                    color_of_empty_cells = couleurFondVide,
+                    n_colors             = 15,
+                    from_date            = os.date("%Y").. "0101"
+            })
+            cvdv2:add_button(
+                awful.button({}, 1,
+                    function()
+                        awful.spawn(browser .. " " .. "https://covidtracker.fr/")
+                    end
+                )
             )
-        )
-        right_layout:add(cvdv2)
-
+            right_layout:add(cvdv2)
+        end
+        --
+        --
         -- from https://pavelmakhov.com/2018/01/hide-systray-in-awesome/
         my_systray = wibox.widget.systray()
         my_systray.visible = false

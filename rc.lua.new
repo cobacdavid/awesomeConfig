@@ -40,8 +40,14 @@ myhome = os.getenv("HOME") .. "/"
 socket            = require("socket")
 -- asus is my laptop's hostname
 local hname = socket.dns.gethostname()
-if hname == "asus" then
-    ordinateur = "laptop"
+if hname == "asus" or hname == "master" then
+    -- sur laptop asus
+    -- eDP1 1920x1080
+        ordinateur = "laptop"
+elseif hname == "master" then
+    -- sur master NSI
+    -- eDP-1 1366x768
+    ordinateur = "masterNSI"
 elseif hname == "david-coolermaster" then
     ordinateur = "desktop"
     -- configuration1
@@ -50,7 +56,7 @@ elseif hname == "david-coolermaster" then
     -- xrandr --output DVI-0 --mode 1920x1080 --output VGA-0 --above DVI-0 --mode 1920x1080
     ecrans = "configuration1"
 elseif hname == "coolermaster" then
-    ordinateur = "desktop2"
+    ordinateur = "desktop"
     -- configuration1
     -- VGA-0 1920x1080
     -- DVI-0 1920x1080
@@ -102,7 +108,7 @@ chrono           = require("widgets.chrono.chrono")
 lastfm           = require("widgets.lastfm-scrobbles.lastfm-scrobbles")
 btg              = require("widgets.batterieGraph.batterieGraph")
 meteo            = require("widgets.meteo.meteo")
--- covid            = require("widgets.covid.covid")
+covid            = require("widgets.covid.covid")
 covidv2          = require("widgets.covid.covidv2")
 matrice          = require("widgets.matrice.matrice")
 fichiers         = require("widgets.fichiers.fichiers")
@@ -111,7 +117,7 @@ dtv2             = require("widgets.dtv2.dtv2")
 wmatrice         = require("widgets.widgetMatrice.widgetMatrice")
 --
 ppeintTag        = require("widgets.ppeintTag.ppeintTag")
--- ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
+ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
 ppeintId         = require("widgets.ppeintId.ppeintId")
 --
 mpdCom           = require("mpdCommande")
@@ -147,7 +153,7 @@ listeRcFiles = {--
 }
 --
 for i, f in ipairs(listeRcFiles) do
-    dofile (config ..  "/" .. f)
+    dofile (config .. "/" .. f)
 end
 --
 -- appsDemarrage in variableDefinitions

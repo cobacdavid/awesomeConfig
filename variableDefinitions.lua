@@ -13,26 +13,23 @@
 --
 --
 modkey           = "Mod4"
-scriptsPath       = config .. "/scripts/"
-batteryCmd            = "cat /sys/class/power_supply/BAT0/capacity"
-imageParDefaut     = "/usr/local/share/awesome/icons/awesome64.png"
---
+scriptsPath      = config .. "/scripts/"
+imageParDefaut   = "/usr/local/share/awesome/icons/awesome64.png"
+-- ou 
 --
 -- SAUVEGARDE CONFIG awesome
 --
-configSvg          = "cd /home/david/travail/david/production/info/config/awesome/ && tar czf awesome_$(date +%Y%m%d-%H%M%S)-config.tgz /home/david/.config/awesome"
+configSvgDir     = config .. "/" .. "sauvegarde/"
+configSvg        = "cd " .. configSvgDir
+    .. "&& tar czf awesome_$(date +%Y%m%d-%H%M%S)-config.tgz "
+    .. config
 --
 -- cylindreEcrans     = scriptsPath .. "cylindreEcran_alt.sh"
 -- APPS and APPS class
 --
 --
-vlcCmd             = "vlc"
-tvCmd              = "cvlc"
---
-mediaDir         = " /media/ReadyNAS/media/"
-videoDir         = mediaDir .."Videos/"
-collegeDir       = " /media/ReadyNAS/travail/david/production/college"
-photoDir         = " /media/ReadyNAS/media/photos"
+vlcCmd           = "vlc"
+tvCmd            = "cvlc"
 --
 terminalD        = "urxvtd -q -o -f "
 terminal         = "urxvtc"
@@ -43,7 +40,6 @@ htop             = terminal .. " -e htop"
 --
 ftpMgr           = "gftp"
 ftpMgrClass      = "gFTP"
--- ftpReadyNAS      = "cd /home/david/Téléchargements/ && " .. ftpMgr .. " ftp://" .. ftpNASUser .. "@192.168.1.15/media/Videos"
 --
 editorClass      = "Emacs"
 editor           = "emacsclient -c "
@@ -71,25 +67,15 @@ urlDDGo          = "https://duckduckgo.com/"
 metaDDGo         = "?"
 -- urlSearch        = urlQwant
 -- metaSearch       = metaQwant
-spotify          = browser .. " https://play.spotify.com"
--- lastfm           = browser .. " http://beta.last.fm/fr/user/" .. lastfmUser
 gmail            = browser .. " https://mail.google.com"
---flickr           = browser .. " https://www.flickr.com/photos/" .. flickrUser
---flickrAlt        = browser .. " https://www.flickr.com/photos_user.gne?path=&nsid=" .. flickrUserAlt .. "&page=&details=1"
 -- github           = browser .. " https://github.com/" .. githubUser
 youtube          = browser .. " https://www.youtube.com"
 maps             = browser .. " https://maps.google.fr"
--- rabelais         = browser .. " http://francois-rabelais.anjou.e-lyco.fr"
 meteofrance      = browser .. " http://france.meteofrance.com/france/meteo?PREVISIONS_PORTLET.path=previsionsdept%2FDEPT49"
--- running          = browser_alt .. " https://connect.garmin.com/profile/" .. garminUser
 --
 BTapplet         = "blueman-applet" -- "bluetooth-applet"
 WIFIapplet       = "nm-applet"
 radio            = "radiotray-lite"
--- hpsystray        = "hp-systray"
-
--- cloudTravail     = "hubic status"
--- cloudMusique     = "google-musicmanager"
 cloudMusique     = "google-play-music-desktop-player"
 --
 --mpdClient        = "ario"
@@ -100,18 +86,17 @@ amixermoins      = "amixer set Master 3%-"
 amixerzero       = "amixer set Master 0%"
 amixermax        = "amixer set Master 100%"
 --
-mpdscribble      = "mpdscribble --conf  /home/david/.config/mpd/mpdscribble.conf"
+mpdscribble      = "mpdscribble --conf  " .. myhome .. "/.config/mpd/mpdscribble.conf"
 coverMPD         = scriptsPath .. "pod_coverMPD.sh"
 --
 -- lumiplus         = "xbacklight -inc 5"
 -- lumimoins        = "xbacklight -dec 5"
 -- lumimin          = "xbacklight -set 7"
 -- lumimax          = "xbacklight -set 100"
-lumimoins           = "luminosite.sh -"
-lumiplus            = "luminosite.sh +"
+lumimoins        = "luminosite.sh -"
+lumiplus         = "luminosite.sh +"
 --
 --alterneMode      = scriptsPath .. "alterneMode.sh"
-calculatrice     = "wish8.6/maths/hp15/hp15simulation/HP-15C.tcl"
 -- calendrier       = "gsimplecal"
 compositeMgr     = "xcompmgr" --"unagi"-- 
 --
@@ -124,9 +109,8 @@ rawEditor        = "darktable"
 imageEditor      = "gimp"
 synaptic         = "gksudo synaptic"
 --
-keepassCmd       = "/usr/bin/keepassxc"
--- keepassCmd       = "/home/david/Téléchargements/KeePassXC-2.5.4-x86_64.AppImage"
-keepass          = keepassCmd .. " /home/david/travail/david/david.kdbx"
+keepassCmd       = "/usr/bin/keepassxc "
+keepass          = keepassCmd .. myhome .. "/travail/david/david.kdbx"
 --
 RcFiles          = "/home/david/travail/david/production/info/config/"
 latexRcFile      = RcFiles .. "texmf/tex/latex/prof/"
@@ -134,15 +118,20 @@ metapostRcFile   = RcFiles .. "texmf/metapost/macros_travail/"
 emacsRcFile      = RcFiles .. "emacs-config/.gnu-emacs-custom"
 emacsElispRcFile = RcFiles .. "emacs-config/elisp/"
 --
--- clavierCmd       = "/home/david/travail/david/production/info/scripts/tyrfingcolor -s"
 clavierCmd       = "dtv2reader"
 clavierCfgPath   = "/home/david/travail/david/production/lycee/informatique/modules_perso/drevo/examples/dtv2reader/"
 -- configAwesome    = "config_awesome.json"
 configUrxvt      = "darkblue"
 configEmacs      = "forestgreen"
+-- config1          = clavierCfgPath .. "config_1.json"
+configAwesome    = clavierCfgPath .. "config_awesome.json"
+-- configEmacs      = clavierCfgPath .. "config_emacs.json"
+-- configUrxvt      = clavierCfgPath .. "config_urxvt.json"
+--
+
 --
 --
-appsDemarrage = {
+appsDemarrage    = {
    compositeMgr,
    editorD,
    terminalD,
@@ -153,9 +142,4 @@ appsDemarrage = {
    -- radio,
 }
 
--- config1          = clavierCfgPath .. "config_1.json"
-configAwesome    = clavierCfgPath .. "config_awesome.json"
--- configEmacs      = clavierCfgPath .. "config_emacs.json"
--- configUrxvt      = clavierCfgPath .. "config_urxvt.json"
---
 -- }}}
