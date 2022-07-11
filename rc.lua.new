@@ -135,8 +135,8 @@ secretFenetre    = require("widgets.secretFenetre.secretFenetre")
 github_contributions_widget = require("awesome-wm-widgets.github-contributions-widget.github-contributions-widget")
 if ordinateur ~= "masterNSI" then
     idMeteo = require("widgets.meteo.private_openweather_api_key")
+    weather_widget = require("awesome-wm-widgets.weather-widget.weather")
 end
-weather_widget = require("awesome-wm-widgets.weather-widget.weather")
 --
 semi_analog_clock = require("widgets.semi_analog_clock.semi_analog_clock")
 almost_analog_clock = require("widgets.almost_analog_clock.almost_analog_clock")
