@@ -140,6 +140,7 @@ appsDemarrage    = {
    -- mpdscribble,
    "wmname LG3D",
    -- radio,
+   "openrgb --server"
 }
 
 -- }}}

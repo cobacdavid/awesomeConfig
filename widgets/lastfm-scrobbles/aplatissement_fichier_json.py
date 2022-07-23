@@ -14,7 +14,9 @@ with open(fichier_a_traiter) as fh, \
      open(fichier_sauvegarde, "w") as fi, \
      open(fichier_definitif) as fj:
     contenu_nouveau = json.load(fh)
+    # TODO: on doit tester s'il existe un fichier définitif !!
     contenu_ancien = json.load(fj)
     liste_aplatie_nouveau = [v for page in contenu_nouveau for v in page]
+    # TODO: on n'ajoute rien si contenu_ancien n'existe pas
     liste_aplatie_nouveau += contenu_ancien
     json.dump(liste_aplatie_nouveau, fi)

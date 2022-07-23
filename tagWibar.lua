@@ -340,7 +340,7 @@ for s in screen do
         --
         local right_layout = wibox.layout.fixed.horizontal()
         local gcw_id =  "cobacdavid"
-        if ordinateur == "matserNSI" then
+        if ordinateur == "masterNSI" then
             gcw_theme = "standard"
         else
             gcw_theme = "standard2"
