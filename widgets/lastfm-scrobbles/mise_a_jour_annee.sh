@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 # david cobac
 # 2021
 #

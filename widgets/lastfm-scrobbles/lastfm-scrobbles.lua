@@ -192,9 +192,11 @@ function widget.leWidget(args)
             table.insert(col, get_square(nil, 0, args.color_of_empty_cells))
         end
         --
+        local total = 0
         local jour = max
         while jour >= min do
             tab[jour] = tab[jour] == nil and 0 or tab[jour]
+            total = total + tab[jour]
             if day_idx %7 == 0 then
                 table.insert(row, col)
                 col = {layout = wibox.layout.fixed.vertical}
