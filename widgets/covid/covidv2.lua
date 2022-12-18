@@ -143,8 +143,8 @@ function widget.worker(args)
         args.theme = 'standard'
     end
 
-    local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
-    args.from_date = os.time({year=y, month=m, day=d})
+    -- local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
+    -- args.from_date = os.time({year=y, month=m, day=d})
 
     if args.with_border == nil then args.with_border = true end
     --
@@ -242,6 +242,8 @@ function widget.worker(args)
         -- local nb = 0        
         local jour = max
         local couleur
+        local y, m, d = string.match(args.from_date, "(%d%d%d%d)(%d%d)(%d%d)")
+        min = tonumber(y .. m .. d)
         while jour >= min do
             tab[jour] = tab[jour] == nil and 0 or tab[jour]
             if tab[jour] == -1 then

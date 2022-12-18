@@ -113,7 +113,20 @@ globalkeys = gears.table.join(
         end
     ),
     awful.key({modkey}, "F8",           function()  end),
-    awful.key({modkey}, "F9",           function()  end),
+    awful.key({modkey}, "F9",
+        function()
+            if ordinateur == "laptop" then
+                if montouchpadactif then
+                    -- 15 à coder comme le résultat de :
+                    -- xinput list|grep Touchpad|cut -f2|cut -d= -f2
+                    fu.commandeExecute("xinput disable 15")
+                else
+                    fu.commandeExecute("xinput enable 15")
+                end
+                montouchpadactif = not montouchpadactif
+            end
+        end
+    ),
     awful.key({modkey}, "F10",          function()  end),
     awful.key({modkey}, "F11",
         function()
@@ -123,6 +136,11 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "F12",
         function()
             my_systray.visible = not my_systray.visible
+        end
+    ),
+    awful.key({}, "Print",
+        function()
+            awful.spawn(browser .. " 127.0.0.1:631")
         end
     ),
     --

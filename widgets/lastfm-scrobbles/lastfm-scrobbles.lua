@@ -62,7 +62,7 @@ widget.ecoute_widget = wibox.widget{
 widget.lastfm_textwidget = wibox.widget {
     align  = 'right',
     valign = 'bottom',
-    opacity = .45,
+    opacity = .4,
     font = "Arial 8",
     widget = wibox.widget.textbox
 }
@@ -70,7 +70,7 @@ widget.lastfm_textwidget = wibox.widget {
 widget.lastfm_imagewidget = wibox.widget {
     image   = ICONS_DIR .. "logo-lastfm.png",
     resize  = true,
-    opacity = .3,
+    opacity = .15,
     halign  = "center",
     widget  = wibox.widget.imagebox
 }

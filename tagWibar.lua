@@ -23,7 +23,7 @@ for s in screen do
     if ordinateur ~= "laptop" and ordinateur ~= "masterNSI" then
         -- nouvel écran à droite du premier
         if s.index == 1 then
-             s.versDroite = wibox({
+            s.versDroite = wibox({
                     -- écran n°2 vertical 
                     x       = largeurSecond + largeurPremier - 1,
                     y       = hauteurSecond - hauteurPremier,
@@ -156,8 +156,9 @@ for s in screen do
             })
             -- left_layout:add(heureW)
             local dateW = madate({
-                    width = 35,
-                    justify = "center",
+                    width      = 35,
+                    fg         = "#f00",
+                    justify    = "center",
                     actionLeft = function()
                         calendrier.calendrier({
                                 width = 1100,
@@ -168,20 +169,30 @@ for s in screen do
             left_layout:add(dateW)
         end
         --
+        if ordinateur == "laptop" then
+            lumclavier = luminositeClavier()
+            left_layout:add(lumclavier)
+        end
+        --
         if ordinateur == "laptop" or ordinateur == "masterNSI" then
             left_layout:add(luminosite())
         else
             local sLevel = {}
             sLevel["HDMI-0"] = 1
             sLevel["VGA-0"]  = .85
-            left_layout:add(luminositeEcran({
-                                    startLevel = sLevel,
-            }))
+            -- left_layout:add(luminositeEcran({
+            --                        startLevel = sLevel,
+            -- }))
         end
         --
         left_layout:add(separateur())
         left_layout:add(volumemaster({
-                                text = "volume"
+                                barcolortype = "nuance",
+                                barheight    = 6,
+                                handradius   = 3,
+                                from_color   = "#f00",
+                                to_color     = "#f00",
+                                text         = ""
         }))
         left_layout:add(separateur())
         if ordinateur == "laptop" or ordinateur == "masterNSI" then
@@ -202,29 +213,96 @@ for s in screen do
             left_layout:add(battwm)
             left_layout:add(separateur())
         end
+        --
         left_layout:add(separateur())
-        local twm = wmatrice({
-                -- la commande nécessite lm-sensors
-                COMMANDE = [[ bash -c "sensors | grep Package | cut -d \" \" -f 5-6" ]],
-                title = '<b>CPU °C</b>',
-                fun = function(s)
-                    local valeur = s:match("%d+")
-                    return valeur
+        local ak = flower_pbar({
+                sectors      = 10,
+                sector_angle = 26,
+                inner_radius = 7, 
+                line_width   = 1,
+                fg           = "#0000",
+                color        = "#f00",
+                color_type   = "solid",
+                font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
+                font_size    = 9,
+                text         = function(v, m, M)
+                    -- return tostring(math.floor(v *100))
                 end
         })
-        left_layout:add(twm)
-        left_layout:add(separateur())
-        local rwm = wmatrice({
-                COMMANDE = 'bash -c "free | grep Mem"',
-                title = '<b>RAM %</b>',
-                fun = function(s)
-                    local total, used, free, shared, buff_cache, available
-                        = s:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
-                    local valeur = math.floor(100 * (total - available)/total + .5)
-                    return valeur
+        gears.timer({
+                timeout   = 10,
+                call_now  = true,
+                autostart = true,
+                callback  = function()
+                    local commande = "free |grep Mem"
+                    awful.spawn.easy_async_with_shell(
+                        commande, function(stdout)
+                            local total, used, free, shared, buff_cache, available
+                                = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
+                            -- fu.montre((total-free)/total)
+                            ak:set_value((total - available)/total)
+                    end)
                 end
         })
-        left_layout:add(rwm)
+        left_layout:add(ak)
+        left_layout:add(separateur())
+        local bk = flower_pbar({
+                sectors      = 10,
+                sector_angle = 26,
+                inner_radius = 7, 
+                line_width   = 1,
+                fg           = "#0000",
+                color        = "#f00",
+                color_type   = "solid",
+                font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
+                font_size    = 9,
+                text         = function(v, m, M)
+                    -- return tostring(math.floor(v *100))
+                end
+        })
+        gears.timer({
+                timeout   = 10,
+                call_now  = true,
+                autostart = true,
+                callback  = function()
+                    local commande = "sensors | grep Package | cut -d \" \" -f 5-6"
+                    awful.spawn.easy_async_with_shell(
+                        commande, function(stdout)
+                             local valeur = stdout:match("%d+")
+                             bk:set_value(valeur/100)
+                    end)
+                end
+        })
+        left_layout:add(bk)
+        left_layout:add(separateur())
+        --
+        --
+        -- local twm = wmatrice({
+        --         -- la commande nécessite lm-sensors
+        --         COMMANDE = [[ bash -c "sensors | grep Package | cut -d \" \" -f 5-6" ]],
+        --         title = '<b>CPU °C</b>',
+        --         text = '',
+        --         fun = function(s)
+        --             local valeur = s:match("%d+")
+        --             return valeur
+        --         end
+        -- })
+        -- left_layout:add(twm)
+        -- left_layout:add(separateur())
+        -- local rwm = wmatrice({
+        --         COMMANDE = 'bash -c "free | grep Mem"',
+        --         title = '<b>RAM %</b>',
+        --         text  = '',
+        --         fun   = function(s)
+        --             local total, used, free, shared, buff_cache, available
+        --                 = s:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
+        --             local valeur = math.floor(100 * (total - available)/total + .5)
+        --             return valeur
+        --         end
+        -- })
+        -- left_layout:add(rwm)
+        --
+        --
         left_layout:add(separateur())
         --
         if ordinateur == "desktop" then
@@ -235,49 +313,30 @@ for s in screen do
             left_layout:add(dtv2)
         end
         --
-        local couleurFondVide = "#fff2"
+        local couleurFondVide = "#f002"
         --
         if ordinateur ~= "masterNSI" then
             local mto = weather_widget({
-                    api_key     = idMeteo.api_key,
-                    coordinates = {47.4667, -0.55},
-                    time_format_12h = false,
-                    units = 'metric',
-                    both_units_widget = false,
-                    font_name = 'Carter One',
-                    icons = 'VitalyGorbachev',
-                    icons_extension = '.svg',
+                    api_key              = idMeteo.api_key,
+                    coordinates          = {47.4667, -0.55},
+                    time_format_12h      = false,
+                    units                = 'metric',
+                    both_units_widget    = false,
+                    font_name            = 'Carter One',
+                    icons                = 'VitalyGorbachev',
+                    icons_extension      = '.svg',
                     show_hourly_forecast = true,
-                    show_daily_forecast = true,
+                    show_daily_forecast  = true,
+                    fg                   = "#f00",
+                    no_icon              = true
             })
             left_layout:add(mto)
             --
             left_layout:add(separateur())
         end
         --
-        left_layout:add(chrono())
-        left_layout:add(separateur())
-        local fichierPath = "/home/david/travail/david/production/lycee"
-        local fic = fichiers({
-                path                 = fichierPath,
-                color_of_empty_cells = couleurFondVide,
-                year                 = os.date("%Y"),
-                n_colors             = 10,
-                from_color           = "#00ff00",
-                to_color             = "#0000ff",
-                text                 = ""
-        })
-        left_layout:add(fic)
-        if ordinateur ~= "masterNSI" then
-            fic:add_button(
-                awful.button({}, 1,
-                    function()
-                        awful.spawn(fileMgr .. " " .. fichierPath)
-                    end
-                )
-            )
-        end
-        left_layout:add(separateur())
+        -- left_layout:add(chrono())
+        -- left_layout:add(separateur())
         --
         --
         if ordinateur == "desktop" then
@@ -287,9 +346,9 @@ for s in screen do
                     square_size          = 4,
                     with_border          = true,
                     color_of_empty_cells = couleurFondVide,
-                    n_colors             = 10,
-                    from_color           = "#00ff00",
-                    to_color             = "#0000ff"
+                    n_colors             = 15,
+                    from_color           = "#100",
+                    to_color             = "#f00",
             })
 
             lfm:add_button(
@@ -343,7 +402,7 @@ for s in screen do
         if ordinateur == "masterNSI" then
             gcw_theme = "standard"
         else
-            gcw_theme = "standard2"
+            gcw_theme = "rouge"
         end
         
         local gcw = github_contributions_widget({
@@ -352,7 +411,7 @@ for s in screen do
                 with_border          = true,
                 square_size          = 4,
                 color_of_empty_cells = couleurFondVide,
-                days                 = 365
+                days                 = os.date("*t").yday
         })
         if ordinateur ~= "masterNSI" then
             gcw:add_button(
@@ -386,23 +445,48 @@ for s in screen do
             -- right_layout:add(cvd)
             -- right_layout:add(separateur())
             --
-            local cvdv2 = covidv2.worker({
-                    departement          = "Maine-et-Loire",
-                    theme                = "gradient",
-                    square_size          = 4,
-                    with_border          = true,
+            left_layout:add(separateur())
+            local fichierPath = "/home/david/travail/david/production/lycee"
+            local fic = fichiers({
+                    path                 = fichierPath,
                     color_of_empty_cells = couleurFondVide,
+                    year                 = os.date("%Y"),
+                    to_date              = os.date("%Y%m%d"),
                     n_colors             = 15,
-                    from_date            = os.date("%Y").. "0101"
+                    from_color           = "#100",
+                    to_color             = "#f00",
+                    text                 = "",
+                    fg                   = "#f00"
             })
-            cvdv2:add_button(
-                awful.button({}, 1,
-                    function()
-                        awful.spawn(browser .. " " .. "https://covidtracker.fr/")
-                    end
+            right_layout:add(fic)
+            if ordinateur ~= "masterNSI" then
+                fic:add_button(
+                    awful.button({}, 1,
+                        function()
+                            awful.spawn(fileMgr .. " " .. fichierPath)
+                        end
+                    )
                 )
-            )
-            right_layout:add(cvdv2)
+            end
+            -- local cvdv2 = covidv2.worker({
+            --         departement          = "Maine-et-Loire",
+            --         theme                = "gradient",
+            --         square_size          = 4,
+            --         with_border          = true,
+            --         color_of_empty_cells = couleurFondVide,
+            --         n_colors             = 15,
+            --         from_date            = os.date("%Y").. "0101",
+            --         from_color           = "#a00",
+            --         to_color             = "#f00",
+            -- })
+            -- cvdv2:add_button(
+            --     awful.button({}, 1,
+            --         function()
+            --             awful.spawn(browser .. " " .. "https://covidtracker.fr/")
+            --         end
+            --     )
+            -- )
+            -- right_layout:add(cvdv2)
         end
         --
         --
@@ -622,36 +706,7 @@ end
 
 -- left_layout:add(infos())
 -- left_layout:add(separateur())
--- local ak = flower_pbar({
---         sectors      = 5,
---         sector_angle = 68,
---         inner_radius = 7, 
---         line_width   = 1,
---         fg           = "#fff",
---         color        = "#fff",
---         color_type   = "solid",
---         font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
---         font_size    = 9,
---         text         = function(v, m, M)
---             return tostring(math.floor(v *100))
---         end
--- })
--- gears.timer({
---         timeout   = 10,
---         call_now  = true,
---         autostart = true,
---         callback  = function()
---             local commande = "free |grep Mem"
---             awful.spawn.easy_async_with_shell(
---                 commande, function(stdout)
---                     local total, used, free, shared, buff_cache, available
---                         = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
---                     -- fu.montre((total-free)/total)
---                     ak:set_value((total - available)/total)
---             end)
---         end
--- })
--- left_layout:add(ak)
+
 --left_layout:add(ram({
 --                        rect_width = 2,
 --                        rect_height = 6

@@ -51,8 +51,10 @@ end
 --
 local widget = {}
 
-local MAX = 937
-local MIN = 30
+-- sur asus ux305 : MAX = 937 et MIN = 30
+-- sur asus ux370 : MAX = 7500 et MIN = 500
+local MAX = 7500
+local MIN = 500
 local FIC = "/sys/class/backlight/intel_backlight/brightness"
 
 

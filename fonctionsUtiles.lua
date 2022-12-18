@@ -213,7 +213,12 @@ function fonctionsUtiles.executeUneFois(cmd)
    awful.spawn.easy_async_with_shell(findme,
                                      function(stdout,stderr,reason,exit_code)
                                         if tonumber(stdout) <= 2 then
-                                           awful.spawn(cmd)
+                                           awful.spawn.easy_async(
+                                              string.format([[ bash -c "%s"]], cmd),
+                                              function(stdout,stderr,reason,exit_code)
+                                                 fu.montre(cmd .. " démarré " .. stderr)
+                                              end
+                                           )
                                         end
    end)
 end

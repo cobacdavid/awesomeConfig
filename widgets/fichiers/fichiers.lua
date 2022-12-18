@@ -61,18 +61,18 @@ local fichiers_textwidget = wibox.widget {
     widget  = wibox.widget.textbox
 }
 
-local fichiers_imagewidget = wibox.widget {
-    -- image   = ICONS_DIR .. "logo-covid.png",
+local fichiers_fondwidget = wibox.widget {
     resize  = true,
-    opacity = .15,
-    halign  = "center",
+    opacity = .3,
+    align  = "center",
     valign  = "center",
-    widget  = wibox.widget.imagebox
+    font    = "Arial 20",
+    widget  = wibox.widget.textbox
 }
 
 local fichiers_widget = wibox.widget {
     miroir,
-    -- fichiers_imagewidget,
+    fichiers_fondwidget,
     fichiers_textwidget,
     layout = wibox.layout.stack
 }
@@ -120,9 +120,11 @@ local function worker(args)
 
     if args.with_border == nil then args.with_border = true end
 
+    
+    
     if args.year ~= nil then
-        args.from_date = tostring(args.year) .. "0101"
-        args.to_date   = tostring(args.year) .. "1231"
+        args.from_date = args.from_date or tostring(args.year) .. "0101"
+        args.to_date   = args.to_date   or tostring(args.year) .. "1231"
     end
     
     local function get_square(date, count, color)
@@ -211,10 +213,12 @@ local function worker(args)
                 layout = wibox.container.margin
         })
         --
-        local texte = "<b>"
+        local texte = "<span foreground='" .. args.fg .. "'>"
         texte = args.year == nil and texte or texte .. tostring(args.year)
-        texte = texte .. " " .. args.text .. "</b>"
+        texte = texte .. " " .. args.text .. "</span>"
         fichiers_textwidget:set_markup(texte)
+        local p = string.match(args.path, ".*/(.*)")
+        fichiers_fondwidget:set_markup("<span foreground='" .. args.fg .. "'>" .. p .. "</span>")
     end
 
     local aujourdhui = os.date("%Y%m%d", os.time())

@@ -40,10 +40,11 @@ myhome = os.getenv("HOME") .. "/"
 socket            = require("socket")
 -- asus is my laptop's hostname
 local hname = socket.dns.gethostname()
-if hname == "asus" then
+if hname == "asus" or hname == "basus" then
     -- sur laptop asus
     -- eDP1 1920x1080
         ordinateur = "laptop"
+        montouchpadactif = true
 elseif hname == "master" then
     -- sur master NSI
     -- eDP-1 1366x768
@@ -94,43 +95,44 @@ fu               = require("fonctionsUtiles")
 -- generic widget
 flower_pbar = require("widgets.flower_pbar.flower_pbar")
 -- widgets
-separateur       = require("widgets.separateur.separateur")
-heure            = require("widgets.heure.heure")
-madate           = require("widgets.date.date")
-bigC             = require("widgets.bigClock.bigClock")
-volumemaster     = require("widgets.volumeMaster.volumeMaster")
-luminosite       = require("widgets.luminosite.luminosite")
-luminositeEcran  = require("widgets.luminositeEcran.luminositeEcran")
-calendrier       = require("widgets.calendrier.calendrier")
-calendrierMois   = require("widgets.calendrier.calendrierMois")
-infos            = require("widgets.infos.infos")
-chrono           = require("widgets.chrono.chrono")
-lastfm           = require("widgets.lastfm-scrobbles.lastfm-scrobbles")
+separateur        = require("widgets.separateur.separateur")
+heure             = require("widgets.heure.heure")
+madate            = require("widgets.date.date")
+bigC              = require("widgets.bigClock.bigClock")
+volumemaster      = require("widgets.volumeMaster.volumeMaster")
+luminosite        = require("widgets.luminosite.luminosite")
+luminositeClavier = require("widgets.luminositeClavier.luminositeClavier")
+luminositeEcran   = require("widgets.luminositeEcran.luminositeEcran")
+calendrier        = require("widgets.calendrier.calendrier")
+calendrierMois    = require("widgets.calendrier.calendrierMois")
+infos             = require("widgets.infos.infos")
+chrono            = require("widgets.chrono.chrono")
+lastfm            = require("widgets.lastfm-scrobbles.lastfm-scrobbles")
 --btg              = require("widgets.batterieGraph.batterieGraph")
 --meteo            = require("widgets.meteo.meteo")
 --covid            = require("widgets.covid.covid")
-covidv2          = require("widgets.covid.covidv2")
-matrice          = require("widgets.matrice.matrice")
-fichiers         = require("widgets.fichiers.fichiers")
-polar            = require("widgets.polar.polar")
-dtv2             = require("widgets.dtv2.dtv2")
-wmatrice         = require("widgets.widgetMatrice.widgetMatrice")
+covidv2           = require("widgets.covid.covidv2")
+matrice           = require("widgets.matrice.matrice")
+fichiers          = require("widgets.fichiers.fichiers")
+polar             = require("widgets.polar.polar")
+dtv2              = require("widgets.dtv2.dtv2")
+wmatrice          = require("widgets.widgetMatrice.widgetMatrice")
 --
-ppeintTag        = require("widgets.ppeintTag.ppeintTag")
-ppeintNasa       = require("widgets.ppeintNasa.ppeintNasa")
-ppeintId         = require("widgets.ppeintId.ppeintId")
+ppeintTag         = require("widgets.ppeintTag.ppeintTag")
+ppeintNasa        = require("widgets.ppeintNasa.ppeintNasa")
+ppeintId          = require("widgets.ppeintId.ppeintId")
 --
-mpdCom           = require("mpdCommande")
-ecranFlou        = require("widgets.ecranFlou.ecranFlou")
+mpdCom            = require("mpdCommande")
+ecranFlou         = require("widgets.ecranFlou.ecranFlou")
 -- widgets titlebar fenêtres
-killneuf         = require("widgets.killneuf.killneuf")
-blocageopacite   = require("widgets.opacite.blocageopacite")
-opacite          = require("widgets.opacite.opacite")
-screenshot       = require("widgets.screenshot.screenshot")
-dimFenetre       = require("widgets.dimFenetre.dimFenetre")
-tempsPasse       = require("widgets.tempsPasse.tempsPasse")
-titreClient      = require("widgets.titreClient.titreClient")
-secretFenetre    = require("widgets.secretFenetre.secretFenetre")
+killneuf          = require("widgets.killneuf.killneuf")
+blocageopacite    = require("widgets.opacite.blocageopacite")
+opacite           = require("widgets.opacite.opacite")
+screenshot        = require("widgets.screenshot.screenshot")
+dimFenetre        = require("widgets.dimFenetre.dimFenetre")
+tempsPasse        = require("widgets.tempsPasse.tempsPasse")
+titreClient       = require("widgets.titreClient.titreClient")
+secretFenetre     = require("widgets.secretFenetre.secretFenetre")
 -- widgets externes
 github_contributions_widget = require("awesome-wm-widgets.github-contributions-widget.github-contributions-widget")
 if ordinateur ~= "masterNSI" then

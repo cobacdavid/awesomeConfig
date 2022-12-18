@@ -36,6 +36,7 @@ function tabwidget.worker(args)
     -- show_warning("OK")
     args = args or {}
     args.title                = args.title       or "widget"
+    args.text                 = args.text        or "value"
     args.rect_width           = args.rect_width  or 2
     args.rect_height          = args.rect_height or 6
     args.fg                   = args.fg          or "#fff"
@@ -181,7 +182,9 @@ function tabwidget.worker(args)
                                        function(stdout)
                                            local valeur = args.fun(stdout)
                                            local coul = update_widget(widget, tonumber(valeur))
-                                           intextwidget:set_markup("<b><span foreground='" .. coul .. "'>" .. valeur .. "</span></b>")
+                                           if args.text == 'value' then
+                                               intextwidget:set_markup("<b><span foreground='" .. coul .. "'>" .. valeur .. "</span></b>")
+                                           end
                                        end
                 )
             end
