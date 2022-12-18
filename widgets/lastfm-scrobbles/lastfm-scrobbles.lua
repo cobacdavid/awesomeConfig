@@ -63,12 +63,12 @@ widget.lastfm_textwidget = wibox.widget {
     align  = 'right',
     valign = 'bottom',
     opacity = .4,
-    font = "Arial 8",
+    font = "Arial 10",
     widget = wibox.widget.textbox
 }
 
 widget.lastfm_imagewidget = wibox.widget {
-    image   = ICONS_DIR .. "logo-lastfm.png",
+    image   = ICONS_DIR .. "logo-lastfm-rouge.png",
     resize  = true,
     opacity = .15,
     halign  = "center",
@@ -99,6 +99,7 @@ function widget.leWidget(args)
     args.n_colors             = args.n_colors    or 4
     args.from_color           = args.from_color  or "#0000ff55"
     args.to_color             = args.to_color    or "#88ff00"
+    args.fg                   = args.fg          or "#fff"
 
     local tabTheme
     if args.theme == "gradient" then
@@ -215,9 +216,9 @@ function widget.leWidget(args)
                 layout = wibox.container.margin
         })
         --
-        local texte = "<b>"
+        local texte = "<span font_weight='ultrabold' foreground='" .. args.fg .. "'>"
         texte = args.year == nil and texte or texte .. tostring(widget.year) .. " : "
-        texte = texte .. tostring(total) .. " scrobbles</b>"
+        texte = texte .. tostring(total) .. " scrobbles</span>"
         widget.lastfm_textwidget:set_markup(texte)
     end
     --

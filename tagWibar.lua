@@ -218,7 +218,7 @@ for s in screen do
         local ak = flower_pbar({
                 sectors      = 10,
                 sector_angle = 26,
-                inner_radius = 7, 
+                inner_radius = 10, 
                 line_width   = 1,
                 fg           = "#0000",
                 color        = "#f00",
@@ -249,7 +249,7 @@ for s in screen do
         local bk = flower_pbar({
                 sectors      = 10,
                 sector_angle = 26,
-                inner_radius = 7, 
+                inner_radius = 10, 
                 line_width   = 1,
                 fg           = "#0000",
                 color        = "#f00",
@@ -349,6 +349,7 @@ for s in screen do
                     n_colors             = 15,
                     from_color           = "#100",
                     to_color             = "#f00",
+                    fg                   = "#f00"
             })
 
             lfm:add_button(
@@ -411,7 +412,8 @@ for s in screen do
                 with_border          = true,
                 square_size          = 4,
                 color_of_empty_cells = couleurFondVide,
-                days                 = os.date("*t").yday
+                days                 = os.date("*t").yday,
+                fg                   = "#f00"
         })
         if ordinateur ~= "masterNSI" then
             gcw:add_button(

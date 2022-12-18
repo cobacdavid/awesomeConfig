@@ -167,7 +167,9 @@ for _, app in ipairs(appsDemarrage) do
 end
 --
 ecranFlou.isActivated = false
-ppeintTag.imagesFonds()
+ppeintTag.imagesFonds({
+        strip_color = "#f002"
+})
 -- ppeintDesc = ppeintNasa()
 --
 -- ppeintTag on first tag of first screen at startup

@@ -59,12 +59,12 @@ function ppeintTag.fondEcran(t, args)
     -- cr:paint()
     --
     -- nombre
-    cr:set_font_size(0.95 * t.screen.geometry.height)
-    cr:set_source(gears.color(args.strip_color))
-    local monTexte = tostring(j)
-    local T = cr:text_extents(monTexte)
-    cr:move_to((w - T['width']) // 2 - 50, (h + T['height']) // 2)
-    cr:show_text(monTexte)
+    -- cr:set_font_size(0.95 * t.screen.geometry.height)
+    -- cr:set_source(gears.color(args.strip_color))
+    -- local monTexte = tostring(j)
+    -- local T = cr:text_extents(monTexte)
+    -- cr:move_to((w - T['width']) // 2 - 50, (h + T['height']) // 2)
+    -- cr:show_text(monTexte)
     --
     -- calculs
     cr:set_font_size(args.font_size)

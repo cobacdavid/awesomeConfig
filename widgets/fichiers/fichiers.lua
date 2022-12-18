@@ -57,7 +57,7 @@ local fichiers_textwidget = wibox.widget {
     align   = 'right',
     valign  = 'bottom',
     opacity = .5,
-    font    = "Arial 8",
+    font    = "Arial 10",
     widget  = wibox.widget.textbox
 }
 
@@ -213,7 +213,7 @@ local function worker(args)
                 layout = wibox.container.margin
         })
         --
-        local texte = "<span foreground='" .. args.fg .. "'>"
+        local texte = "<span font_weight='bold' foreground='" .. args.fg .. "'>"
         texte = args.year == nil and texte or texte .. tostring(args.year)
         texte = texte .. " " .. args.text .. "</span>"
         fichiers_textwidget:set_markup(texte)
