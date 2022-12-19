@@ -12,6 +12,7 @@ local beautiful = require("beautiful")
 -- attention : pour l'instant m n'est pas utilisé...
 -- ni coulDebut ni coulFin
 local function couleurBarre (t, v , m , M , coulDebut, coulFin)
+    local couleur = beautiful.titlebar_fg_focus
     local resultat
     if v == nil then return end
     -- if coulDebut == nil or coulFin == nil then
@@ -19,13 +20,14 @@ local function couleurBarre (t, v , m , M , coulDebut, coulFin)
     -- montre( t .. " " .. tostring(v) .. " " .. tostring(M) .. " " .. tostring(niveau) )
     if t == "gradient" then
         -- couleur du vert au rouge
-        local r = niveau
-        local g = 255 - r
-        resultat  = string.format("#%02X%02X00", r, g)
+        --local r = niveau
+        --local g = 255 - r
+        -- resultat  = string.format("#%02X%02X00", r, g)
+        resultat = couleur .. string.format("%02X", niveau)
     elseif t == "nuance" then
         resultat = string.format("#%02X%02X%02X", niveau, niveau, niveau)
     end
-    return resultat .. "DD"
+    return resultat
 end
 
 local widget = {}
@@ -66,13 +68,13 @@ function widget.opacite(c, args)
     c:connect_signal("property::opacity",
                      function()
                          w.value = (c.opacity - mini) / ((maxi-mini)/ MAX)
-                         w.handle_color = couleurBarre("nuance", w.value, MIN, MAX)
+                         --w.handle_color = couleurBarre("gradient", w.value, MIN, MAX)
                      end
     )
     w:connect_signal("property::value",
                           function()
                               c.opacity = mini + (w.value * (maxi-mini)/ MAX)
-                              w.handle_color = couleurBarre("nuance", w.value, MIN, MAX)
+                              --w.handle_color = couleurBarre("gradient", w.value, MIN, MAX)
                           end
     )
     --

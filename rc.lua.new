@@ -76,6 +76,7 @@ end
 --
 -- other variables
 dofile (config ..  "/variableDefinitions.lua")
+dofile (config ..  "/creeLogo.lua")
 --
 --
 gears            = require("gears")
@@ -168,7 +169,7 @@ end
 --
 ecranFlou.isActivated = false
 ppeintTag.imagesFonds({
-        strip_color = "#f002"
+        strip_color = couleurTheme .. "5"
 })
 -- ppeintDesc = ppeintNasa()
 --

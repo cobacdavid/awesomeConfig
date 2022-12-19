@@ -68,7 +68,6 @@ widget.lastfm_textwidget = wibox.widget {
 }
 
 widget.lastfm_imagewidget = wibox.widget {
-    image   = ICONS_DIR .. "logo-lastfm-rouge.png",
     resize  = true,
     opacity = .15,
     halign  = "center",
@@ -89,6 +88,7 @@ function widget.leWidget(args)
     end
 
     args = args or {}
+    args.logo                 = args.logo or ICONS_DIR .. "logo-lastfm.png"
     widget.year               = args.year
     -- args.from_date            = args.from_date   or ilyaunan()
     args.square_size          = args.square_size or 4
@@ -216,6 +216,7 @@ function widget.leWidget(args)
                 layout = wibox.container.margin
         })
         --
+        widget.lastfm_imagewidget:set_image(args.logo)
         local texte = "<span font_weight='ultrabold' foreground='" .. args.fg .. "'>"
         texte = args.year == nil and texte or texte .. tostring(widget.year) .. " : "
         texte = texte .. tostring(total) .. " scrobbles</span>"

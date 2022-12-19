@@ -102,7 +102,7 @@ function widget.createWidget(args)
             forced_width        = width,
             bar_shape           = bshape,
             bar_height          = bheight,
-            bar_color           = "#f002",
+            bar_color           = args.from_color .. "2",
             -- bar_active_color    = bcolor,
             -- handle_shape        = gears.shape.circle,
             handle_shape        = function(cr, w, h)

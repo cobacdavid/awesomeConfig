@@ -157,7 +157,7 @@ for s in screen do
             -- left_layout:add(heureW)
             local dateW = madate({
                     width      = 35,
-                    fg         = "#f00",
+                    fg         = couleurTheme,
                     justify    = "center",
                     actionLeft = function()
                         calendrier.calendrier({
@@ -190,8 +190,8 @@ for s in screen do
                                 barcolortype = "nuance",
                                 barheight    = 6,
                                 handradius   = 3,
-                                from_color   = "#f00",
-                                to_color     = "#f00",
+                                from_color   = couleurTheme,
+                                to_color     = couleurTheme,
                                 text         = ""
         }))
         left_layout:add(separateur())
@@ -204,7 +204,7 @@ for s in screen do
                     -- la commande peut être avec BAT1
                     COMMANDE = 'bash -c "' .. bat_cmd .. '"',
                     title = '<b>batt</b>',
-                    from_color = "#f00",
+                    from_color = couleurTheme,
                     to_color = "#0f0"
                     --                    fun = function(s)
                     --                        return valeur
@@ -221,7 +221,7 @@ for s in screen do
                 inner_radius = 10, 
                 line_width   = 1,
                 fg           = "#0000",
-                color        = "#f00",
+                color        = couleurTheme,
                 color_type   = "solid",
                 font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
                 font_size    = 9,
@@ -252,7 +252,7 @@ for s in screen do
                 inner_radius = 10, 
                 line_width   = 1,
                 fg           = "#0000",
-                color        = "#f00",
+                color        = couleurTheme,
                 color_type   = "solid",
                 font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
                 font_size    = 9,
@@ -313,8 +313,6 @@ for s in screen do
             left_layout:add(dtv2)
         end
         --
-        local couleurFondVide = "#f002"
-        --
         if ordinateur ~= "masterNSI" then
             local mto = weather_widget({
                     api_key              = idMeteo.api_key,
@@ -327,7 +325,7 @@ for s in screen do
                     icons_extension      = '.svg',
                     show_hourly_forecast = true,
                     show_daily_forecast  = true,
-                    fg                   = "#f00",
+                    fg                   = couleurTheme,
                     no_icon              = true
             })
             left_layout:add(mto)
@@ -341,15 +339,16 @@ for s in screen do
         --
         if ordinateur == "desktop" then
             local lfm = lastfm({
+                    logo                 = creeLogo(config .. "/" .. "icons" .. "/logo-lastfm.png", couleurTheme),
                     year                 = os.date("%Y"),
                     theme                = "gradient",
                     square_size          = 4,
                     with_border          = true,
                     color_of_empty_cells = couleurFondVide,
                     n_colors             = 15,
-                    from_color           = "#100",
-                    to_color             = "#f00",
-                    fg                   = "#f00"
+                    from_color           = couleurFondVide,
+                    to_color             = couleurTheme,
+                    fg                   = couleurTheme
             })
 
             lfm:add_button(
@@ -403,17 +402,20 @@ for s in screen do
         if ordinateur == "masterNSI" then
             gcw_theme = "standard"
         else
-            gcw_theme = "rouge"
+            gcw_theme = "gradient"
         end
         
         local gcw = github_contributions_widget({
+                logo                 = creeLogo(config .. "/" .. "icons" .. "/logo-github.png", couleurTheme),
                 username             = gcw_id,
                 theme                = gcw_theme,
                 with_border          = true,
                 square_size          = 4,
                 color_of_empty_cells = couleurFondVide,
                 days                 = os.date("*t").yday,
-                fg                   = "#f00"
+                fg                   = couleurTheme,
+                from_color           = couleurFondVide,
+                to_color             = couleurTheme
         })
         if ordinateur ~= "masterNSI" then
             gcw:add_button(
@@ -455,10 +457,10 @@ for s in screen do
                     year                 = os.date("%Y"),
                     to_date              = os.date("%Y%m%d"),
                     n_colors             = 15,
-                    from_color           = "#100",
-                    to_color             = "#f00",
+                    from_color           = couleurFondVide,
+                    to_color             = couleurTheme,
                     text                 = "",
-                    fg                   = "#f00"
+                    fg                   = couleurTheme
             })
             right_layout:add(fic)
             if ordinateur ~= "masterNSI" then
@@ -479,7 +481,7 @@ for s in screen do
             --         n_colors             = 15,
             --         from_date            = os.date("%Y").. "0101",
             --         from_color           = "#a00",
-            --         to_color             = "#f00",
+            --         to_color             = couleurTheme,
             -- })
             -- cvdv2:add_button(
             --     awful.button({}, 1,
@@ -583,7 +585,8 @@ for s in screen do
         if screen.count() == 2 then
             clo = wibox.widget {
                 align = "center",
-                widget = wibox.widget.textclock("%A %d %B %Y %H:%M")
+                format = "%A %d %B %Y %H:%M",
+                widget = wibox.widget.textclock
             }
             s.mywibar = awful.wibar({
                     screen = s ,

@@ -128,8 +128,6 @@ configAwesome    = clavierCfgPath .. "config_awesome.json"
 -- configEmacs      = clavierCfgPath .. "config_emacs.json"
 -- configUrxvt      = clavierCfgPath .. "config_urxvt.json"
 --
-
---
 --
 appsDemarrage    = {
    compositeMgr,

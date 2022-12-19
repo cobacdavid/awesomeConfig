@@ -6,7 +6,6 @@ local function vers_hex(p, n1, n2)
     return  string.format("%02x", math.floor(0.5 + (p * n2 + (1 - p) * n1) * 255))
 end
 
-
 function themes.gtheme(n)
     local tab = {}
     local nuance

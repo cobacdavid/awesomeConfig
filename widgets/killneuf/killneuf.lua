@@ -39,7 +39,7 @@ function widget.killneuf(c, args)
             --         .. "'>kill</span>"
             -- },
             {
-                image   = ICONS_DIR .. "kill.png",
+                image   = creeLogo(ICONS_DIR .. "kill.png", couleurTheme),
                 resize  = true,
                 opacity = 1,
                 halign  = "center",
