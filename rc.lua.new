@@ -75,8 +75,8 @@ if screen:count() >= 2 then
 end
 --
 -- other variables
-dofile (config ..  "/variableDefinitions.lua")
-dofile (config ..  "/creeLogo.lua")
+dofile (config .. "/variableDefinitions.lua")
+dofile (config .. "/creeLogo.lua")
 --
 --
 gears            = require("gears")

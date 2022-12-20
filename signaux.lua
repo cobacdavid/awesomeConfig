@@ -30,6 +30,7 @@ client.connect_signal("manage", function (c)
                           fu.surTermOuPas(c)
                           --
                           c.shape = fu.pArrondiGros
+                          c.border_width = 3
 end)
 
 client.connect_signal("tagged", function (c)
@@ -146,6 +147,8 @@ client.connect_signal("mouse::leave",
                           -- if ordinateur == "desktop" and (c.class == editorClass or c.class == terminalClass) then
                           --     fu.commande_execute(clavierCmd .. " " .. configAwesome)
                           -- end
+                          
+                          -- ci-dessous ne fonctionne pas
                           c.border_color = beautiful.border_color_normal
                       end
 )
@@ -190,7 +193,8 @@ client.connect_signal("mouse::enter",
                           --     fu.commande_execute(clavierCmd .. " " .. configUrxvt)
                           -- end
                           --
-                          c.border_color = beautiful.border_color_active
+                          -- ci-dessous ne fonctionne pas
+                          c.border_color =  beautiful.border_color_active
                           --
                           --
                       end

@@ -20,9 +20,18 @@ local dpi          = xresources.apply_dpi
 local gfs          = require("gears.filesystem")
 local themes_path  = gfs.get_themes_dir()
 local gears        = require("gears")
+local fu           = require("fonctionsUtiles")
 --
 theme = {}
 --
+-- lecture de la couleur sauvegardée
+dofile(config .. "/couleurTheme.lua")
+if string.len(couleurTheme) == 7 then
+    couleurFondVide = couleurTheme .. "22"
+elseif string.len(couleurTheme) == 4 then
+    couleurFondVide = couleurTheme .. "2"
+end
+
 -- POLICES
 --
 --
@@ -40,9 +49,7 @@ local grisSombre  = "#5F5F5F"
 local grisSombre1  = "#636363"
 local rouge       = "#FF0000"
 --
---
-couleurTheme = "#0af"
-couleurFondVide = couleurTheme .. "2"
+
 -- {{{ Colors
 theme.bg_normal    = noir
 theme.bg_focus     = noir
@@ -57,7 +64,7 @@ theme.fg_minimize  = couleurFondVide
 --
 -- {{{ Borders
 theme.useless_gap         = dpi(0)
-theme.border_width        = 0
+theme.border_width        = 10
 theme.border_color_normal = couleurFondVide
 theme.border_color_active = couleurTheme
 theme.border_color_marked = rouge

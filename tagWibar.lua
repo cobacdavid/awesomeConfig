@@ -139,6 +139,19 @@ for s in screen do
                 height   = 30
             }
         )
+        s.mywibar:buttons(gears.table.join(
+                              awful.button({}, 1,
+                                  function()
+                                      awful.spawn.easy_async([[ bash -c "gcolor3 2>/dev/null" ]],
+                                          function(stdout)
+                                              local couleur = stdout:match("(.*)\n")
+                                              fu.changeCouleurTheme(couleur)
+                                              fu.restartAwesome()
+                                          end
+                                      )
+                                  end
+                              )
+        ))
         --
         local left_layout = wibox.layout.fixed.horizontal()
         --

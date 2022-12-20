@@ -21,6 +21,14 @@ local cairo = require("lgi").cairo
 --
 local fonctionsUtiles = {}
 --
+-- change couleur du thème
+function fonctionsUtiles.changeCouleurTheme(couleur)
+    local fh = io.open(config .. "/couleurTheme.lua", "w")
+    fh:write("-- date\n")
+    fh:write("couleurTheme = \"" .. couleur .. "\"")
+    fh:close()
+end
+
 -- couleur aléatoire
 function fonctionsUtiles.couleurAlea()
    local R = math.floor(math.random() * 256)
@@ -216,7 +224,7 @@ function fonctionsUtiles.executeUneFois(cmd)
                                            awful.spawn.easy_async(
                                               string.format([[ bash -c "%s"]], cmd),
                                               function(stdout,stderr,reason,exit_code)
-                                                 fu.montre(cmd .. " démarré " .. stderr)
+                                                 -- fu.montre(cmd .. " démarré " .. stderr)
                                               end
                                            )
                                         end

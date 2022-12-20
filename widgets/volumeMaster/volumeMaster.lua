@@ -92,6 +92,14 @@ function widget.createWidget(args)
     else
         tabTheme = widget_themes.gtheme(100)
     end
+    --
+    local bar_color
+    if string.len(from_color) == 7 then
+        bar_color = from_color .. "22"
+    else
+        bar_color = from_color .. "2"
+    end
+    --
     local k = 100 / (n_colors - 2)
     local limits = {0}
     for i = 1, n_colors-2 do
@@ -102,7 +110,7 @@ function widget.createWidget(args)
             forced_width        = width,
             bar_shape           = bshape,
             bar_height          = bheight,
-            bar_color           = args.from_color .. "2",
+            bar_color           = bar_color,
             -- bar_active_color    = bcolor,
             -- handle_shape        = gears.shape.circle,
             handle_shape        = function(cr, w, h)
