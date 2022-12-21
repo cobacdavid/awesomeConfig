@@ -55,8 +55,8 @@ firefoxCmd       = "firefox"
 firefoxClass     = "Firefox"
 --browser          = "opera-developer"
 --browserClass     = "Opera developer"
-browser          = chromiumCmd --firefoxCmd -- chromiumCmd
-browserClass     = chromiumClass -- firefoxClass -- firefoxClass
+browser          = firefoxCmd -- chromiumCmd
+browserClass     = firefoxClass -- chromiumClass
 browser_alt      = operaCmd
 browser_altClass = operaClass
 urlGoogle        = "https://www.google.com/"
@@ -138,7 +138,8 @@ appsDemarrage    = {
    -- mpdscribble,
    "wmname LG3D",
    -- radio,
-   "openrgb --server"
-}
+   "openrgb --server",
+   "serveurHTTP.sh"
+   }
 
 -- }}}

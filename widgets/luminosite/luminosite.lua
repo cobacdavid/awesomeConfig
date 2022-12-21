@@ -69,6 +69,8 @@ function widget.createWidget(args)
     local from_color = args.from_color    or "#f0f"
     local to_color   = args.to_color      or "#f00"
     local n_colors   = args.n_colors      or 100
+    local text       = args.text          or "lum."
+    
     --
     local tabTheme
     if hcolortype == "gradient" then
@@ -102,7 +104,7 @@ function widget.createWidget(args)
     })
     -- le widget text
     local luminositeTexte = wibox.widget({
-            text                = "lum.",
+            text                = text,
             align               = "center",
             widget              = wibox.widget.textbox,
     })

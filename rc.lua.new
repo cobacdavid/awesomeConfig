@@ -169,7 +169,7 @@ end
 --
 ecranFlou.isActivated = false
 ppeintTag.imagesFonds({
-        strip_color = couleurTheme .. "5"
+        strip_color = couleurFondVide
 })
 -- ppeintDesc = ppeintNasa()
 --

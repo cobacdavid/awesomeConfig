@@ -1,2 +1,2 @@
 -- date
-couleurTheme = "#e64639"
+couleurTheme = "#ff0000"
