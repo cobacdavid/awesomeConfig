@@ -78,7 +78,7 @@ globalkeys = gears.table.join(
                     font         = "Northwood High", --"HP15C Simulator Font",
                     seg          = false,
                     seg_dark     = .35,
-                    fg           = "#A0A0A0",
+                    fg           = couleurTheme,
                     border_width = 20,
                     screen       = mouse.screen,
                     size         = 300,
@@ -108,8 +108,8 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "F7",
         function()
             -- ppeintDesc est l'instance de wibox créé dans rc.lua
-            ppeintNasa.afficheDescription(ppeintDesc,
-                                          myhome .. ".config/awesome/widgets/ppeintNasa/fondDescription")
+            -- ppeintNasa.afficheDescription(ppeintDesc,
+            --                              myhome .. ".config/awesome/widgets/ppeintNasa/fondDescription")
         end
     ),
     awful.key({modkey}, "F8",           function()  end),

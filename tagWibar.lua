@@ -298,35 +298,34 @@ for s in screen do
       end
       --
       left_layout:add(separateur())
-      local ak = flower_pbar({
-            sectors      = 10,
-            sector_angle = 26,
-            inner_radius = 10, 
-            line_width   = 1,
-            fg           = "#0000",
-            color        = couleurTheme,
-            color_type   = "solid",
-            font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
-            font_size    = 9,
-            text         = function(v, m, M)
-               -- return tostring(math.floor(v *100))
-            end
-      })
-      gears.timer({
-            timeout   = 10,
-            call_now  = true,
-            autostart = true,
-            callback  = function()
-               local commande = "free |grep Mem"
-               awful.spawn.easy_async_with_shell(
-                  commande, function(stdout)
-                     local total, used, free, shared, buff_cache, available
-                        = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
-                     -- fu.montre((total-free)/total)
-                     ak:set_value((total - available)/total)
-               end)
-            end
-      })
+      local ak = flower_pbar {
+         sectors      = 10,
+         sector_angle = 26,
+         inner_radius = 10, 
+         line_width   = 1,
+         fg           = "#0000",
+         color        = couleurTheme,
+         color_type   = "solid",
+         font_weight  = "CAIRO_FONT_WEIGHT_BOLD",
+         font_size    = 9,
+         text         = function(v, m, M)
+            -- return tostring(math.floor(v *100))
+         end
+      }
+      gears.timer {
+         timeout   = 10,
+         call_now  = true,
+         autostart = true,
+         callback  = function()
+            local commande = "free |grep Mem"
+            awful.spawn.easy_async_with_shell(
+               commande, function(stdout)
+                  local total, used, free, shared, buff_cache, available
+                     = stdout:match('Mem:%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*')
+                  ak:set_value((total - available)/total)
+            end)
+         end
+      }
       left_layout:add(ak)
       left_layout:add(separateur())
       local bk = flower_pbar({
@@ -360,17 +359,18 @@ for s in screen do
       left_layout:add(separateur())
       --
       --
-      -- local twm = wmatrice({
+      -- local twm = wmatrice {
       --         -- la commande nécessite lm-sensors
       --         COMMANDE = [[ bash -c "sensors | grep Package | cut -d \" \" -f 5-6" ]],
       --         title = '<b>CPU °C</b>',
-      --         text = '',
+      --         text = 'value',
       --         fun = function(s)
       --             local valeur = s:match("%d+")
       --             return valeur
       --         end
-      -- })
-      -- left_layout:add(twm)
+      -- }
+      -- left_layout:add(twm.widget)
+
       -- left_layout:add(separateur())
       -- local rwm = wmatrice({
       --         COMMANDE = 'bash -c "free | grep Mem"',

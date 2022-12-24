@@ -51,12 +51,14 @@ local rouge       = "#FF0000"
 --
 
 -- {{{ Colors
+theme.bg           = noir
 theme.bg_normal    = noir
 theme.bg_focus     = noir
 theme.bg_urgent    = rouge
 theme.bg_minimize  = grisSombre1
 theme.bg_systray   = noir
 --
+theme.fg           = couleurTheme
 theme.fg_normal    = couleurTheme
 theme.fg_focus     = couleurTheme
 theme.fg_urgent    = couleurTheme

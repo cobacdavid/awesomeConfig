@@ -80,19 +80,19 @@ function ppeintTag.fondEcran(t, args)
     local hauteurBandeau = texteH + 3
     --
     -- bandeau
-    cr:set_source(gears.color(args.strip_color))
-    cr:rectangle(0, positionBandeauDebut, w, hauteurBandeau)
-    cr:fill()
+    -- cr:set_source(gears.color(args.strip_color))
+    -- cr:rectangle(0, positionBandeauDebut, w, hauteurBandeau)
+    -- cr:fill()
     --
     -- texte
-    cr:set_source(gears.color(args.bg))
+    cr:set_source(gears.color(args.strip_color)) -- cr:set_source(gears.color(args.bg))
     cr:move_to(w/2 - texteW/2, positionBandeauDebut + texteH) -- (h + texteH) / 2
     cr:show_text(monTexte)
     --
     -- les tags adjacents
     -- en lua les tableaux commencent à 1 !
     local hoffset = args.font_size // 4
-    cr:set_source(gears.color(args.bg))
+    cr:set_source(gears.color(args.strip_color)) -- cr:set_source(gears.color(args.bg))
     --
     nb_tags = 4 -- 2nb_tags vers l'avant et vers l'arrière
     --

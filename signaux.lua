@@ -158,6 +158,8 @@ client.connect_signal("focus",
                           if not c.blocage then
                               c.opacity = 1
                           end
+                          c.border_color = beautiful.border_color_active
+                          c.border_width = 3
                       end
 )
 
@@ -193,10 +195,6 @@ client.connect_signal("mouse::enter",
                           --     fu.commande_execute(clavierCmd .. " " .. configUrxvt)
                           -- end
                           --
-                          -- ci-dessous ne fonctionne pas
-                          c.border_color =  beautiful.border_color_active
-                          --
-                          --
                       end
 )
 
@@ -215,6 +213,8 @@ client.connect_signal("unfocus",
                               -- })
                               c.opacity = 0.8
                           end
+                          c.border_color = beautiful.border_color_normal
+                          c.border_width = 1
                       end
 )
 

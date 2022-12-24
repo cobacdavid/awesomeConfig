@@ -169,8 +169,9 @@ end
 --
 ecranFlou.isActivated = false
 ppeintTag.imagesFonds({
-        strip_color = couleurFondVide
+        strip_color = couleurTheme
 })
+dofile(config .. "/widgets/ppeint_auxiliaire/ppeint_auxiliaire.lua")
 -- ppeintDesc = ppeintNasa()
 --
 -- ppeintTag on first tag of first screen at startup
