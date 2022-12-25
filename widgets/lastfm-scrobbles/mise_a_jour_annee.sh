@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # david cobac
 # 2021
 #
@@ -17,10 +17,12 @@ fi
 # ouverture json existant et lecture de la dernière date
 ts=$(cat donnees/${annee}.json|jq -r "[.[].date.uts][0]")
 # dans le cas d'un "now playing", il n'y a pas de timestamp !
-if [ $ts == "null" ]; then
+if [[ $ts == "null" ]]; then
     ts=$(cat donnees/${annee}.json|jq -r "[.[].date.uts][1]")
 fi
 #
+# pour télécharger depuis le 01 janvier 
+# ts=$(date -d "01/01/2022 00:00" +%s)
 # requête avec from :
 # nombre de pages à télécharger
 tp=$(curl -s "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${USER}&api_key=${API_KEY}&page=1&from=${ts}&limit=200&format=json" | jq -r '.recenttracks."@attr".totalPages')
@@ -42,6 +44,6 @@ echo "]" >> $FILE
 python3 aplatissement_fichier_json.py ${annee} ${WIDGET_DIR}
 # on bouge l'ensemble
 mv /tmp/recup_lastfm_aplati_${annee}.json donnees/${annee}.json
-rm -f /tmp/recup_lastfm_pas_aplati.json
+# rm -f /tmp/recup_lastfm_pas_aplati.json
 #
 echo $USER
